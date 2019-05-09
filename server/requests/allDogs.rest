@@ -1,0 +1,6 @@
+POST https://pentutehdas.herokuapp.com/
+Content-Type: application/json
+
+{  
+  "query": "query {allDogs { name born isFemale breed id }}"    
+}
