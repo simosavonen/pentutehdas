@@ -18,5 +18,5 @@ Käyttöliittymän toteutus Bulmalla, varalla tuttu Bootstrap.
 
 | päivä | aika | mitä tein  |
 | :----:|:-----| :-----|
-| 9.5.  | 2    | react frontend kertausta, deployment surge.sh |
-| yht   | 2    | | 
+| 9.5.  | 5    | react frontend aloitus, graphql backend aloitus |
+| yht   | 5    | | 

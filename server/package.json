@@ -1,0 +1,31 @@
+{
+  "name": "pentutehdas",
+  "version": "1.0.0",
+  "description": "Pentutehtaan back-end",
+  "main": "index.js",
+  "scripts": {
+    "start": "cross-env NODE_ENV=production node index.js",
+    "watch": "cross-env NODE_ENV=development nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/simosavonen/pentutehdas.git"
+  },
+  "author": "Simo Savonen",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/simosavonen/pentutehdas/issues"
+  },
+  "homepage": "https://github.com/simosavonen/pentutehdas#readme",
+  "dependencies": {
+    "apollo-server": "^2.5.0",
+    "dotenv": "^8.0.0",
+    "graphql": "^14.3.0",
+    "mongoose": "^5.5.6"
+  },
+  "devDependencies": {
+    "cross-env": "^5.2.0",
+    "nodemon": "^1.19.0"
+  }
+}
