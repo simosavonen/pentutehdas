@@ -1,5 +1,5 @@
 # pentutehdas
-Ehdotus Full Stack harjoitustyön aiheeksi.
+Full Stack harjoitustyö.
 
 ### Arkkitehtuuri
 
@@ -14,14 +14,9 @@ Koitan kerrata kurssilla esitellyt teknologiat, Redux jne.
 
 Käyttöliittymän toteutus Bulmalla, varalla tuttu Bootstrap.
 
-### Sivuston idea
+### työaikakirjanpito
 
-Tehdään huumorilla 'liian hienot' kotisivut arvelluttavalle pentutehtailulle. Sivulla listataan tiineet koirat ja laskettu synnytyspäivä. Kävijät voivat varata pentuja joko anynyymisti tai halutessaan kirjautumisen kautta. Varaustieto on pelkkä puhelinnumeron loppuosa, johon emon omistaja voi soittaa sopiakseen toimituksesta Prisman parkkipaikalle.
-
-Back-end huolehtii siitä, että sivustolla on aina päivittynyttä dataa, annetaan vaikutelma suuresta käyttäjämäärästä ja vilkkaasta bisneksestä.
-
-### valinnaisia lisäominaisuuksia
-
-- kävijät voisivat lisätä myyntiin tai luovutukseen omia pentujaan
-- laajennetaan koiranpennuista kissanpoikiin, matelijoihin, mihin vaan.
-- sähköpostiin ilmoitus jos joku tekee varauksen pennuistasi
+| päivä | aika | mitä tein  |
+| :----:|:-----| :-----|
+| 9.5.  | 2    | react frontend kertausta, deployment surge.sh |
+| yht   | 2    | | 
