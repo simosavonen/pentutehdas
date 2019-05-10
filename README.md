@@ -17,12 +17,20 @@ Käyttöliittymän toteutus Bulmalla, varalla tuttu Bootstrap.
 ### Muistiinpanoja
 
 Koska backend on git repon alikansiossa, käytä heroku deploy komentoa:
-´git subtree --prefix server heroku master´
+`git subtree --prefix server heroku master`
 
+Frontti surge.sh palveluun: käytä komentoa `npm run deploy`
+
+backend url: https://pentutehdas.herokuapp.com 
+(vain graphql POST toimii tällä hetkellä)
+
+frontend url: https://pentutehdas.surge.sh
+(pelkkä skeleton vielä)
 
 ### työaikakirjanpito
 
 | päivä | aika | mitä tein  |
 | :----:|:-----| :-----|
 | 9.5.  | 6    | react frontend aloitus, graphql backend aloitus |
-| yht   | 6    | | 
+| 10.5.  | 1    | react apollo client |
+| yht   | 7    | | 
