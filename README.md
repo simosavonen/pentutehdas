@@ -32,5 +32,5 @@ frontend url: https://pentutehdas.surge.sh
 | päivä | aika | mitä tein  |
 | :----:|:-----| :-----|
 | 9.5.  | 6    | react frontend aloitus, graphql backend aloitus |
-| 10.5.  | 1    | react apollo client |
-| yht   | 7    | | 
+| 10.5.  | 4    | react apollo client, bulma table, timeformat with moment |
+| yht   | 10    | | 
