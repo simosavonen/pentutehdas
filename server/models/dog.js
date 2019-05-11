@@ -14,6 +14,10 @@ const schema = new mongoose.Schema({
   },
   breed: {
     type: String
+  },
+  owner: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
   }
 })
 

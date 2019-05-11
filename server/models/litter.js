@@ -21,6 +21,10 @@ const schema = new mongoose.Schema({
   ],
   price: {
     type: Number
+  },
+  breeder: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
   }
 })
 

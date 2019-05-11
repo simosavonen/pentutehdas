@@ -20,9 +20,12 @@
   "homepage": "https://github.com/simosavonen/pentutehdas#readme",
   "dependencies": {
     "apollo-server": "^2.5.0",
+    "bcrypt": "^3.0.6",
     "dotenv": "^8.0.0",
     "graphql": "^14.3.0",
-    "mongoose": "^5.5.6"
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.5.6",
+    "mongoose-unique-validator": "^2.0.3"
   },
   "devDependencies": {
     "cross-env": "^5.2.0",
