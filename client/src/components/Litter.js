@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import Moment from 'react-moment'
-import { Table, Progress } from 'react-bulma-components/full'
 
 
 const Litter = ({ result }) => {
@@ -20,8 +19,7 @@ const Litter = ({ result }) => {
 
   return (
     <div className='container'>
-      <h2 className='title'>Litters</h2>
-      <Table className='is-hoverable'>
+      <table className='table is-hoverable is-fullwidth'>
         <thead>
           <tr>
             <th>Due date</th>
@@ -43,7 +41,7 @@ const Litter = ({ result }) => {
                     {new Date(parseInt(litter.duedate, 10))}
                   </Moment>
                 </td>
-                <td><Progress max={65} value={15} color='primary' size='large' /></td>
+                <td><progress className='progress is-primary is-large' max='100' value='15' >15%</progress></td>
                 <td>{litter.dam.breed}</td>
                 <td>{litter.sire.breed}</td>
                 <td>{litter.price} €</td>
@@ -59,7 +57,7 @@ const Litter = ({ result }) => {
             </React.Fragment>
           )}
         </tbody>
-      </Table>
+      </table>
 
     </div>
   )

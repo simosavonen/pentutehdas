@@ -18,17 +18,18 @@ const LoginForm = (props) => {
 
       props.setToken(token)
       localStorage.setItem('pentutehdas-user-token', token)
+
     } catch (error) {
       console.log(error)
     }
   }
 
   return (
-    <div>
-      <form onSubmit={submit}>
-        <div className='field is-grouped is-grouped-right'>
-          <div className="control has-icons-left">
-            <div className='field'>
+    <div className='level-item'>
+      {!props.token &&
+        <form onSubmit={submit}>
+          <div className='field is-grouped'>
+            <div className="control has-icons-left">
               <input
                 className='input is-small'
                 type='text'
@@ -40,9 +41,7 @@ const LoginForm = (props) => {
                 <i className="fas fa-user"></i>
               </span>
             </div>
-          </div>
-          <div className="control has-icons-left">
-            <div className='field'>
+            <div className="control has-icons-left">
               <input
                 className='input is-small'
                 type='password'
@@ -54,12 +53,22 @@ const LoginForm = (props) => {
                 <i className="fas fa-lock"></i>
               </span>
             </div>
+            <div className='control'>
+              <button className='button is-success is-small' type='submit'>login</button>
+            </div>
+
           </div>
-          <div className='control'>
-            <button className='button is-primary is-small' type='submit'>login</button>
+        </form>
+      }
+      {props.token &&
+        <div className='field is-horizontal'>
+          <div className='field-label is-small'>
+            <label className='label'>Logged in</label>
           </div>
+          <button className='button is-warning is-small' onClick={props.logout}>logout</button>
         </div>
-      </form>
+      }
+
     </div>
   )
 }
