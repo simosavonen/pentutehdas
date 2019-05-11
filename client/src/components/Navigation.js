@@ -31,7 +31,6 @@ const Navigation = ({ token, login, logout, setToken, user }) => {
             token={token}
             login={login}
             logout={() => logout()}
-            setToken={(token) => setToken(token)}
           />
         </div>
       </div>

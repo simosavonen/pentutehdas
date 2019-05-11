@@ -10,11 +10,12 @@ import LitterForm from './components/LitterForm'
 import DogForm from './components/DogForm'
 import { ALL_LITTERS } from './graphql/litters'
 import { LOGIN } from './graphql/login'
+import { USER } from './graphql/user'
 
 
 const App = () => {
   const [token, setToken] = useState(null)
-
+  const [user, setUser] = useState(null)
 
   const client = useApolloClient()
 
@@ -22,8 +23,17 @@ const App = () => {
     setToken(localStorage.getItem('pentutehdas-user-token'))
   }, [])
 
+  useEffect(() => {
+    if (token) {
+      client.query({ query: USER, variables: { token } }).then(result => {
+        setUser(result.data.me)
+        console.log('user', user)
+      })
+    }
+  }, [token])
+
   const allLitters = useQuery(ALL_LITTERS)
-  const login = useMutation(LOGIN)
+  const loginMutation = useMutation(LOGIN)
 
   const logout = () => {
     setToken(null)
@@ -31,12 +41,26 @@ const App = () => {
     client.resetStore()
   }
 
+  const login = async (username, password) => {
+    try {
+      let result = await loginMutation({
+        variables: { username, password }
+      })
+
+      const token = result.data.login.value
+      setToken(token)
+      localStorage.setItem('pentutehdas-user-token', token)
+
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return (
     <div>
       <Router>
         <Navigation
           token={token}
-          setToken={setToken}
           login={login}
           logout={logout}
         />

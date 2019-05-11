@@ -1,8 +1,8 @@
 import { gql } from 'apollo-boost'
 
 export const USER = gql`
-{
-  me {
+query me($token: String){
+  me(token: $token) {
     username
     role
     phone

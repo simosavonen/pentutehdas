@@ -4,24 +4,9 @@ const LoginForm = (props) => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
-  const submit = async (event) => {
-
+  const submit = (event) => {
     event.preventDefault()
-
-    try {
-      const result = await props.login({
-        variables: { username, password }
-      })
-
-      const token = result.data.login.value
-
-
-      props.setToken(token)
-      localStorage.setItem('pentutehdas-user-token', token)
-
-    } catch (error) {
-      console.log(error)
-    }
+    props.login(username, password)
   }
 
   return (
