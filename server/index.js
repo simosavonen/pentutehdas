@@ -62,7 +62,7 @@ const typeDefs = gql`
   type Query {
     allLitters: [Litter!]!
     allDogs: [Dog!]!
-    me: User
+    me(token: String): User
   }
 
   type Mutation {
@@ -98,8 +98,12 @@ const resolvers = {
   Query: {
     allLitters: () => Litter.find({}).populate(['dam', 'sire', 'breeder']),
     allDogs: () => Dog.find({}).populate('owner'),
-    me: (root, args, context) => {
-      return context.currentUser
+    me: (root, args) => {
+      const decodedToken = jwt.verify(
+        args.token, process.env.JWT_SECRET
+      )
+      const currentUser = User.findById(decodedToken.id)
+      return { currentUser }
     },
   },
   Mutation: {
