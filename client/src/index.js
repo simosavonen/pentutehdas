@@ -7,6 +7,7 @@ import { ApolloProvider as ApolloHooksProvider } from 'react-apollo-hooks'
 import { createHttpLink } from 'apollo-link-http'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import { setContext } from 'apollo-link-context'
+import { BrowserRouter as Router } from 'react-router-dom'
 import './index.css'
 
 const httpLink = createHttpLink({
@@ -31,7 +32,9 @@ const client = new ApolloClient({
 ReactDOM.render(
   <ApolloProvider client={client}>
     <ApolloHooksProvider client={client}>
-      <App />
+      <Router>
+        <App />
+      </Router>
     </ApolloHooksProvider>
   </ApolloProvider>,
   document.getElementById('root')

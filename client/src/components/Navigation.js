@@ -1,27 +1,28 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
+import { withRouter } from 'react-router'
 import LoginForm from './LoginForm'
 
-
-const Navigation = ({ token, login, logout, setToken }) => {
+const Navigation = ({ token, login, logout, setToken, user }) => {
   return (
     <nav className='hero is-small is-info is-bold'>
       <div className='hero-body level'>
         <div className='level-left'>
-          <div className='level-item' href='index.html'>
+          <Link to='/' className='level-item'>
             <span className='icon is-large'>
               <i className='fas fa-paw fa-2x'></i>
             </span> PENTUTEHDAS
-          </div>
+          </Link>
           <div className='level-item'> </div>
           {token &&
-            <>
-              <div className='level-item'>
-                litters
-            </div>
-              <div className='level-item'>
-                dogs
-          </div>
-            </>
+            <React.Fragment>
+              <Link to='/litter' className='level-item'>
+                add a litter
+              </Link>
+              <Link to='/dog' className='level-item'>
+                add a dog
+              </Link>
+            </React.Fragment>
           }
 
         </div>
@@ -40,4 +41,4 @@ const Navigation = ({ token, login, logout, setToken }) => {
   )
 }
 
-export default Navigation
+export default withRouter(Navigation)

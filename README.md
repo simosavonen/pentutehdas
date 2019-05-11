@@ -33,5 +33,5 @@ frontend url: https://pentutehdas.surge.sh
 | :----:|:-----| :-----|
 | 9.5.  | 6    | react frontend aloitus, graphql backend aloitus |
 | 10.5.  | 4    | react apollo client, bulma table, timeformat with moment |
-| 11.5.  | 9    | login with JSONWebToken, dogs and litter have link to user, navbar, heropalkki navbarin tilalle |
-| yht   | 19    | | 
+| 11.5.  | 11    | login with JSONWebToken, dogs and litter have link to user, navbar, heropalkki navbarin tilalle, add routing |
+| yht   | 21    | | 

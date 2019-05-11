@@ -63,7 +63,7 @@ const LoginForm = (props) => {
       {props.token &&
         <div className='field is-horizontal'>
           <div className='field-label is-small'>
-            <label className='label'>Logged in</label>
+            <label className='label'>Logged in </label>
           </div>
           <button className='button is-warning is-small' onClick={props.logout}>logout</button>
         </div>
