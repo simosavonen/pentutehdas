@@ -1,6 +1,6 @@
 import { gql } from 'apollo-boost'
 
-export const allDogs = gql`
+export const ALL_DOGS = gql`
 {
   allDogs {
     name

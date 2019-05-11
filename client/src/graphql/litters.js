@@ -1,6 +1,6 @@
 import { gql } from 'apollo-boost'
 
-export const allLitters = gql`
+export const ALL_LITTERS = gql`
 {
   allLitters {
     duedate
