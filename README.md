@@ -17,7 +17,7 @@ Käyttöliittymän toteutus Bulmalla, varalla tuttu Bootstrap.
 ### Muistiinpanoja
 
 Koska backend on git repon alikansiossa, käytä heroku deploy komentoa:
-`git subtree --prefix server heroku master`
+`C:\pentutehdas\git subtree push --prefix server heroku master`
 
 Frontti surge.sh palveluun: käytä komentoa `npm run deploy`
 

@@ -7,6 +7,9 @@ export const allDogs = gql`
     born
     isFemale
     breed
+    owner {
+      username
+    }
     id
   }
 }

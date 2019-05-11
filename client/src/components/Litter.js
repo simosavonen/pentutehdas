@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import Moment from 'react-moment'
-import { Table } from 'react-bulma-components/full'
+import { Table, Progress } from 'react-bulma-components/full'
 
 
 const Litter = ({ result }) => {
@@ -25,8 +25,9 @@ const Litter = ({ result }) => {
         <thead>
           <tr>
             <th>Due date</th>
-            <th>Dam</th>
-            <th>Sire</th>
+            <th>Progress</th>
+            <th><i className='fas fa-venus'></i> Dam</th>
+            <th><i className='fas fa-mars'></i> Sire</th>
             <th>Price</th>
           </tr>
         </thead>
@@ -34,7 +35,7 @@ const Litter = ({ result }) => {
           {result.data.allLitters.map(litter =>
             <React.Fragment key={litter.id}>
               <tr id={litter.id}
-                onClick={(event) => toggleDetails(event.target.parentElement.id)}
+                onClick={(event) => toggleDetails(event.currentTarget.id)}
                 className='is-clickable'
               >
                 <td>
@@ -42,16 +43,17 @@ const Litter = ({ result }) => {
                     {new Date(parseInt(litter.duedate, 10))}
                   </Moment>
                 </td>
+                <td><Progress max={65} value={15} color='primary' size='large' /></td>
                 <td>{litter.dam.breed}</td>
                 <td>{litter.sire.breed}</td>
                 <td>{litter.price} €</td>
               </tr>
               {details.includes(litter.id) &&
                 <tr>
-                  <td></td>
+                  <td colSpan='2'>Breeder: {litter.breeder.username}</td>
                   <td>{litter.dam.name}</td>
                   <td>{litter.sire.name}</td>
-                  <td></td>
+                  <td><button>reserve a puppy</button></td>
                 </tr>
               }
             </React.Fragment>

@@ -13,6 +13,9 @@ export const allLitters = gql`
       breed
     }
     price
+    breeder {
+      username
+    }
     id
   }
 }
