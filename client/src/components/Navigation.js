@@ -22,6 +22,9 @@ const Navigation = ({ token, login, logout, setToken, user }) => {
               <Link to='/dog' className='level-item'>
                 add a dog
               </Link>
+              <Link to='/user' className='level-item'>
+                edit user
+              </Link>
             </React.Fragment>
           }
 

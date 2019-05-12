@@ -1,0 +1,124 @@
+import React, { useEffect, useState } from 'react'
+import { useApolloClient } from 'react-apollo-hooks'
+import { USER } from '../graphql/user'
+
+const UserForm = (props) => {
+  const [user, setUser] = useState(null)
+
+  const client = useApolloClient()
+
+  useEffect(() => {
+    client.query({ query: USER, variables: { token: props.token }, fetchPolicy: 'network-only' })
+      .then(result => { setUser(result.data.me) })
+  }, [client, props.token])
+
+  if (!user) {
+    return (
+      <div className='container'>loading...</div>
+    )
+  }
+  return (
+    <div className='columns'>
+      <div className='column'></div>
+      <form className='column is-half'>
+        <h1 className='title'>Edit user</h1>
+        <div className='field is-horizontal'>
+          <div className='field-label is-normal'>
+            <label className="label">username</label>
+          </div>
+          <div className="field-body">
+            <div className='field'>
+              <p className='control'>
+                <input
+                  className="input"
+                  type="text"
+                  placeholder="username"
+                  value={user.username}
+                />
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className='field is-horizontal'>
+          <div className='field-label is-normal'>
+            <label className="label">user role</label>
+          </div>
+          <div className="field-body">
+            <div className='field'>
+              <p className='control'>
+                <input
+                  className="input is-static"
+                  type="text"
+                  placeholder="role"
+                  readonly
+                  value={user.role}
+                />
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className='field is-horizontal'>
+          <div className='field-label is-normal'>
+            <label className="label">phone</label>
+          </div>
+          <div className="field-body">
+            <div className='field'>
+              <p className='control'>
+                <input
+                  className="input"
+                  type="text"
+                  placeholder="phone"
+                  value={user.phone}
+                />
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className='field is-horizontal'>
+          <div className='field-label is-normal'>
+            <label className="label">email</label>
+          </div>
+          <div className="field-body">
+            <div className='field'>
+              <p className='control'>
+                <input
+                  className="input"
+                  type="email"
+                  placeholder="email"
+                  value={user.email}
+                />
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className='field is-horizontal'>
+          <div className='field-label is-normal'>
+            <label className="label">city</label>
+          </div>
+          <div className="field-body">
+            <div className='field'>
+              <p className='control'>
+                <input
+                  className="input"
+                  type="text"
+                  placeholder="city"
+                  value={user.city}
+                />
+              </p>
+            </div>
+          </div>
+        </div>
+      </form>
+      <div className='column'></div>
+    </div>
+
+
+
+  )
+}
+
+export default UserForm

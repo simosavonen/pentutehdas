@@ -1,21 +1,18 @@
 import React, { useState, useEffect } from 'react'
 import { useQuery, useMutation, useApolloClient } from 'react-apollo-hooks'
-import {
-  BrowserRouter as Router,
-  Route, Redirect
-} from 'react-router-dom'
+import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom'
 import Litter from './components/Litter'
 import Navigation from './components/Navigation'
 import LitterForm from './components/LitterForm'
 import DogForm from './components/DogForm'
+import UserForm from './components/UserForm'
+import Footer from './components/Footer'
 import { ALL_LITTERS } from './graphql/litters'
 import { LOGIN } from './graphql/login'
-import { USER } from './graphql/user'
 
 
 const App = () => {
   const [token, setToken] = useState(null)
-  const [user, setUser] = useState(null)
 
   const client = useApolloClient()
 
@@ -28,7 +25,6 @@ const App = () => {
 
   const logout = () => {
     setToken(null)
-    setUser(null)
     localStorage.clear()
     client.resetStore()
   }
@@ -42,9 +38,6 @@ const App = () => {
       const token = result.data.login.value
       setToken(token)
       localStorage.setItem('pentutehdas-user-token', token)
-
-      const { data } = await client.query({ query: USER, variables: { token: token }, fetchPolicy: 'network-only' })
-      setUser(data.me)
 
     } catch (error) {
       console.log(error)
@@ -64,10 +57,10 @@ const App = () => {
           token ? <LitterForm /> : <Redirect to='/' />} />
         <Route exact path='/dog' render={() =>
           token ? <DogForm /> : <Redirect to='/' />} />
+        <Route exact path='/user' render={() =>
+          token ? <UserForm token={token} /> : <Redirect to='/' />} />
+        <Footer />
       </Router>
-      {user &&
-        <div>Footer: current user is {user.username}</div>
-      }
     </div>
   )
 }
