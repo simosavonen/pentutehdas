@@ -15,7 +15,10 @@
     "react-moment": "^0.9.2",
     "react-router": "^5.0.0",
     "react-router-dom": "^5.0.0",
-    "react-scripts": "3.0.1"
+    "react-scripts": "3.0.1",
+    "react-select": "^2.4.3",
+    "react-select-fast-filter-options": "^0.2.3",
+    "react-windowed-select": "0.0.3-alpha"
   },
   "scripts": {
     "start": "react-scripts start",

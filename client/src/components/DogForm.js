@@ -1,26 +1,26 @@
 import React, { useState, useEffect } from 'react'
 
-const DogForm = (props) => {
+const DogForm = () => {
   const [breeds, setBreeds] = useState([])
   const [name, setName] = useState('')
   const [born, setBorn] = useState('')
   const [isFemale, setIsFemale] = useState(true)
-  const [breed, setBreed] = useState('')
+  const [filter, setFilter] = useState('')
+  const [filtered, setFiltered] = useState([])
+
 
   useEffect(() => {
-    const dogBreeds = require('./Breeds.json')
-    const dogs = []
-    for (const breed in dogBreeds.message) {
-      const nameArray = dogBreeds.message[breed]
-      if (nameArray.length === 0) {
-        dogs.push(breed)
-      }
-      for (let i = 0; i < nameArray.length; i++) {
-        dogs.push(nameArray[i] + ' ' + breed)
-      }
-    }
-    setBreeds(dogs)
+    const { english } = require('./Breeds.json')
+    setBreeds(english)
+    setFiltered(english)
   }, [])
+
+
+  const handleChange = (filter) => {
+    setFilter(filter)
+    setFiltered(breeds.filter(b => b.toLowerCase().includes(filter.toLowerCase())))
+  }
+
 
   return (
     <div className='columns'>
@@ -51,10 +51,36 @@ const DogForm = (props) => {
             <label className='label'>breed</label>
           </div>
           <div className='field-body'>
-            <div className='field'>
+            <div className='field is-grouped'>
+
+              <p className='control has-icons-left has-icons-right'>
+                <input
+                  className='input'
+                  type='text'
+                  value={filter}
+                  onChange={({ target }) => handleChange(target.value)}
+                />
+                <span className="icon is-small is-left">
+                  <i className="fas fa-filter"></i>
+                </span>
+                {filtered.length === 1 ?
+                  <>
+                    <span className="icon is-small is-right has-text-success">
+                      <i className="fas fa-check"></i>
+                    </span>
+                    <span className='help has-text-success'>breed OK</span>
+                  </>
+                  : <span className='help'>filter the list and select one</span>
+                }
+
+              </p>
               <div className='select'>
-                <select value={breed} onChange={({ target }) => setBreed(target.value)}>
-                  {breeds.map(b => <option key={b} value={b}>{b}</option>)}
+                <select
+
+                  onBlur={({ target }) => handleChange(target.value)}>
+                  {filtered.map(b =>
+                    <option key={b} value={b}>{b}</option>
+                  )}
                 </select>
               </div>
             </div>
@@ -75,6 +101,34 @@ const DogForm = (props) => {
                   onChange={({ target }) => setBorn(target.value)}
                 />
               </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="field is-horizontal">
+          <div className="field-label">
+            <label className="label">gender</label>
+          </div>
+          <div className="field-body">
+            <div className="field is-narrow">
+              <div className="control">
+                <label className="radio">
+                  <input
+                    type="radio"
+                    name="isFemale"
+                    checked={isFemale}
+                    value='true'
+                    onChange={() => setIsFemale(true)} /> female
+                </label>
+                <label className="radio">
+                  <input
+                    type="radio"
+                    name="isFemale"
+                    checked={!isFemale}
+                    value='false'
+                    onChange={() => setIsFemale(false)} /> male
+                </label>
+              </div>
             </div>
           </div>
         </div>
