@@ -46,7 +46,7 @@ const typeDefs = gql`
   }
 
   type User {
-    username: String
+    username: String!
     passwordHash: String
     role: String
     phone: String
@@ -98,12 +98,14 @@ const resolvers = {
   Query: {
     allLitters: () => Litter.find({}).populate(['dam', 'sire', 'breeder']),
     allDogs: () => Dog.find({}).populate('owner'),
-    me: (root, args) => {
+    me: async (root, args) => {
       const decodedToken = jwt.verify(
         args.token, process.env.JWT_SECRET
       )
-      const currentUser = User.findById(decodedToken.id)
-      return { currentUser }
+      console.log('decodedToken.id ', decodedToken.id)
+      const currentUser = await User.findById(decodedToken.id)
+      console.log('currentUser ', currentUser)
+      return currentUser
     },
   },
   Mutation: {

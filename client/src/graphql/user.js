@@ -8,7 +8,7 @@ query me($token: String){
     phone
     email
     city
-    id
+    id    
   }
 }
 `

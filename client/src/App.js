@@ -23,33 +23,28 @@ const App = () => {
     setToken(localStorage.getItem('pentutehdas-user-token'))
   }, [])
 
-  useEffect(() => {
-    if (token) {
-      client.query({ query: USER, variables: { token } }).then(result => {
-        setUser(result.data.me)
-        console.log('user', user)
-      })
-    }
-  }, [token])
-
   const allLitters = useQuery(ALL_LITTERS)
   const loginMutation = useMutation(LOGIN)
 
   const logout = () => {
     setToken(null)
+    setUser(null)
     localStorage.clear()
     client.resetStore()
   }
 
   const login = async (username, password) => {
     try {
-      let result = await loginMutation({
+      const result = await loginMutation({
         variables: { username, password }
       })
 
       const token = result.data.login.value
       setToken(token)
       localStorage.setItem('pentutehdas-user-token', token)
+
+      const { data } = await client.query({ query: USER, variables: { token: token }, fetchPolicy: 'network-only' })
+      setUser(data.me)
 
     } catch (error) {
       console.log(error)
@@ -70,7 +65,9 @@ const App = () => {
         <Route exact path='/dog' render={() =>
           token ? <DogForm /> : <Redirect to='/' />} />
       </Router>
-
+      {user &&
+        <div>Footer: current user is {user.username}</div>
+      }
     </div>
   )
 }
