@@ -51,7 +51,7 @@ const UserForm = (props) => {
                   className="input is-static"
                   type="text"
                   placeholder="role"
-                  readonly
+                  readOnly
                   value={user.role}
                 />
               </p>
