@@ -35,4 +35,5 @@ frontend url: https://pentutehdas.surge.sh
 | 10.5.  | 4    | react apollo client, bulma table, timeformat with moment |
 | 11.5.  | 11    | login with JSONWebToken, dogs and litter have link to user, navbar, heropalkki navbarin tilalle, add routing |
 | 12.5.  | 9    | async await bugi, userform, footer, dogform, optimize breed select |
-| yht   | 31    | | 
+| 13.5.  | 3    | app.js handles user, fixed footer, start moving login away from navbar, random dog generator |
+| yht   | 34    | | 

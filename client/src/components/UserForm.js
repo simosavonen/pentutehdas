@@ -1,16 +1,6 @@
-import React, { useEffect, useState } from 'react'
-import { useApolloClient } from 'react-apollo-hooks'
-import { USER } from '../graphql/user'
+import React from 'react'
 
-const UserForm = (props) => {
-  const [user, setUser] = useState(null)
-
-  const client = useApolloClient()
-
-  useEffect(() => {
-    client.query({ query: USER, variables: { token: props.token }, fetchPolicy: 'network-only' })
-      .then(result => { setUser(result.data.me) })
-  }, [client, props.token])
+const UserForm = ({ user }) => {
 
   if (!user) {
     return (

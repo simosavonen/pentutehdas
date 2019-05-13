@@ -4,21 +4,29 @@ import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom'
 import Litter from './components/Litter'
 import Navigation from './components/Navigation'
 import LitterForm from './components/LitterForm'
+import LoginForm from './components/LoginForm'
 import DogForm from './components/DogForm'
 import UserForm from './components/UserForm'
 import Footer from './components/Footer'
 import { ALL_LITTERS } from './graphql/litters'
 import { LOGIN } from './graphql/login'
+import { USER } from './graphql/user'
 
 
 const App = () => {
   const [token, setToken] = useState(null)
+  const [user, setUser] = useState(null)
 
   const client = useApolloClient()
 
   useEffect(() => {
     setToken(localStorage.getItem('pentutehdas-user-token'))
   }, [])
+
+  useEffect(() => {
+    client.query({ query: USER, fetchPolicy: 'network-only' })
+      .then(result => { setUser(result.data.me) })
+  }, [client, token])
 
   const allLitters = useQuery(ALL_LITTERS)
   const loginMutation = useMutation(LOGIN)
@@ -45,20 +53,31 @@ const App = () => {
   }
 
   return (
-    <div>
+    <div className='site'>
       <Router>
         <Navigation
           token={token}
           login={login}
           logout={logout}
         />
-        <Route exact path='/' render={() => <Litter result={allLitters} />} />
-        <Route exact path='/litter' render={() =>
-          token ? <LitterForm /> : <Redirect to='/' />} />
-        <Route exact path='/dog' render={() =>
-          token ? <DogForm /> : <Redirect to='/' />} />
-        <Route exact path='/user' render={() =>
-          token ? <UserForm token={token} /> : <Redirect to='/' />} />
+        <div className='site-content'>
+          <section className='section'>
+            <Route exact path='/' render={() => <Litter result={allLitters} />} />
+            <Route exact path='/login' render={() => <LoginForm />} />
+            <Route exact path='/litter' render={() =>
+              user && ['breeder', 'admin'].includes(user.role)
+                ? <LitterForm user={user} />
+                : <Redirect to='/' />} />
+            <Route exact path='/dog' render={() =>
+              user && ['breeder', 'admin'].includes(user.role)
+                ? <DogForm user={user} />
+                : <Redirect to='/' />} />
+            <Route exact path='/user' render={() =>
+              user
+                ? <UserForm user={user} />
+                : <Redirect to='/' />} />
+          </section>
+        </div>
         <Footer />
       </Router>
     </div>

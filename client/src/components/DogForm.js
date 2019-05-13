@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 
-const DogForm = () => {
+const { maleDogNames, femaleDogNames } = require('./DogNames.json')
+
+const DogForm = (props) => {
   const [breeds, setBreeds] = useState([])
   const [name, setName] = useState('')
   const [born, setBorn] = useState('')
@@ -16,16 +18,40 @@ const DogForm = () => {
   }, [])
 
 
-  const handleChange = (filter) => {
+  const handleFilter = (filter) => {
     setFilter(filter)
     setFiltered(breeds.filter(b => b.toLowerCase().includes(filter.toLowerCase())))
+  }
+
+  const randomDog = (event) => {
+    event.preventDefault()
+
+    setIsFemale(Math.random() < 0.5)
+
+    if (isFemale) {
+      setName(femaleDogNames[Math.floor(Math.random() * femaleDogNames.length)])
+    } else {
+      setName(maleDogNames[Math.floor(Math.random() * maleDogNames.length)])
+    }
+
+    const randomBreed = breeds[Math.floor(Math.random() * breeds.length)]
+    handleFilter(randomBreed)
+
+    const yearAgo = new Date(new Date().setFullYear(new Date().getFullYear() - 1))
+    const randomBirthday = new Date(+(yearAgo) - Math.floor(Math.random() * 100000000000))
+    setBorn(randomBirthday.toISOString().slice(0, 10))
+  }
+
+  const submit = (event) => {
+    event.preventDefault()
+
   }
 
 
   return (
     <div className='columns'>
       <div className='column'></div>
-      <form className='column is-half'>
+      <form className='column is-three-quarters'>
         <h1 className='title'>Add a dog</h1>
         <div className='field is-horizontal'>
           <div className='field-label is-normal'>
@@ -53,31 +79,32 @@ const DogForm = () => {
           <div className='field-body'>
             <div className='field is-grouped'>
 
-              <p className='control has-icons-left has-icons-right'>
+              <p className='control is-expanded has-icons-left has-icons-right'>
                 <input
                   className='input'
                   type='text'
+                  placeholder='filter'
                   value={filter}
-                  onChange={({ target }) => handleChange(target.value)}
+                  onChange={({ target }) => handleFilter(target.value)}
                 />
-                <span className="icon is-small is-left">
-                  <i className="fas fa-filter"></i>
+                <span className='icon is-small is-left'>
+                  <i className='fas fa-filter'></i>
                 </span>
-                {filtered.length === 1 ?
+                {(filtered.length === 1 && filtered[0] === filter) ?
                   <>
-                    <span className="icon is-small is-right has-text-success">
-                      <i className="fas fa-check"></i>
+                    <span className='icon is-small is-right has-text-success'>
+                      <i className='fas fa-check'></i>
                     </span>
-                    <span className='help has-text-success'>breed OK</span>
+                    <span className='help has-text-success'>breed name is valid</span>
                   </>
                   : <span className='help'>filter the list and select one</span>
                 }
-
               </p>
               <div className='select'>
                 <select
-
-                  onBlur={({ target }) => handleChange(target.value)}>
+                  onChange={({ target }) => handleFilter(target.value)}
+                  onBlur={({ target }) => handleFilter(target.value)}
+                >
                   {filtered.map(b =>
                     <option key={b} value={b}>{b}</option>
                   )}
@@ -105,25 +132,25 @@ const DogForm = () => {
           </div>
         </div>
 
-        <div className="field is-horizontal">
-          <div className="field-label">
-            <label className="label">gender</label>
+        <div className='field is-horizontal'>
+          <div className='field-label'>
+            <label className='label'>gender</label>
           </div>
-          <div className="field-body">
-            <div className="field is-narrow">
-              <div className="control">
-                <label className="radio">
+          <div className='field-body'>
+            <div className='field is-narrow'>
+              <div className='control'>
+                <label className='radio'>
                   <input
-                    type="radio"
-                    name="isFemale"
+                    type='radio'
+                    name='isFemale'
                     checked={isFemale}
                     value='true'
                     onChange={() => setIsFemale(true)} /> female
                 </label>
-                <label className="radio">
+                <label className='radio'>
                   <input
-                    type="radio"
-                    name="isFemale"
+                    type='radio'
+                    name='isFemale'
                     checked={!isFemale}
                     value='false'
                     onChange={() => setIsFemale(false)} /> male
@@ -131,6 +158,25 @@ const DogForm = () => {
               </div>
             </div>
           </div>
+        </div>
+
+        <div className='field is-horizontal'>
+          <div className='field-label'></div>
+          <div className='field-body'>
+            <div className='field is-grouped'>
+              <div className="control">
+                <button className='button is-success' onClick={submit}>
+                  add a dog
+                </button>
+              </div>
+              <div className="control">
+                <button className='button' onClick={randomDog}>
+                  randomize
+                </button>
+              </div>
+            </div>
+          </div>
+
         </div>
 
       </form>
