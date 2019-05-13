@@ -5,10 +5,11 @@ import Litter from './components/Litter'
 import Navigation from './components/Navigation'
 import LitterForm from './components/LitterForm'
 import LoginForm from './components/LoginForm'
-import DogForm from './components/DogForm'
+import Dogs from './components/Dogs'
 import UserForm from './components/UserForm'
 import Footer from './components/Footer'
 import { ALL_LITTERS } from './graphql/litters'
+import { ALL_DOGS, CREATE_DOG } from './graphql/dogs'
 import { LOGIN } from './graphql/login'
 import { USER } from './graphql/user'
 
@@ -28,8 +29,17 @@ const App = () => {
       .then(result => { setUser(result.data.me) })
   }, [client, token])
 
+  const handleError = (error) => {
+    console.log(error)
+  }
+
   const allLitters = useQuery(ALL_LITTERS)
+  const allDogs = useQuery(ALL_DOGS)
   const loginMutation = useMutation(LOGIN)
+  const addDog = useMutation(CREATE_DOG, {
+    onError: handleError,
+    refetchQueries: [{ query: ALL_DOGS }]
+  })
 
   const logout = () => {
     setToken(null)
@@ -70,7 +80,7 @@ const App = () => {
                 : <Redirect to='/' />} />
             <Route exact path='/dog' render={() =>
               user && ['breeder', 'admin'].includes(user.role)
-                ? <DogForm user={user} />
+                ? <Dogs user={user} result={allDogs} addDog={addDog} />
                 : <Redirect to='/' />} />
             <Route exact path='/user' render={() =>
               user

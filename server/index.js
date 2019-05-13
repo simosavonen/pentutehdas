@@ -37,7 +37,7 @@ const typeDefs = gql`
   }
 
   type Dog {
-    name: String
+    name: String!
     born: String,
     isFemale: Boolean,
     breed: String,
@@ -103,15 +103,20 @@ const resolvers = {
     },
   },
   Mutation: {
-    addDog: async (root, args) => {
+    addDog: async (root, args, context) => {
+      const currentUser = context.currentUser
+      if (!currentUser) {
+        throw new AuthenticationError('not authenticated')
+      }
+
       let dog
       try {
-
         dog = new Dog({
           name: args.name,
           born: args.born,
           isFemale: args.isFemale,
-          breed: args.breed
+          breed: args.breed,
+          owner: currentUser // pelkkä ObjectID viittaus
         })
         await dog.save()
 
@@ -120,7 +125,7 @@ const resolvers = {
           invalidArgs: args,
         })
       }
-      return dog
+      return dog.populate('owner') // tarvitaan populate
     },
     addLitter: async (root, args) => {
       let litter

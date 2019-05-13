@@ -10,13 +10,12 @@ import { setContext } from 'apollo-link-context'
 import { BrowserRouter as Router } from 'react-router-dom'
 import './index.css'
 
-//const httpLink = createHttpLink({
-//  uri: 'https://pentutehdas.herokuapp.com/graphql',
-//})
-
 const httpLink = createHttpLink({
   uri: 'http://localhost:4000/graphql',
 })
+
+//  http://localhost:4000/graphql
+//  https://pentutehdas.herokuapp.com/graphql
 
 
 const authLink = setContext((_, { headers }) => {

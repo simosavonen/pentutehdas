@@ -3,11 +3,11 @@ import React, { useState, useEffect } from 'react'
 const { maleDogNames, femaleDogNames } = require('./DogNames.json')
 
 const DogForm = (props) => {
-  const [breeds, setBreeds] = useState([])
   const [name, setName] = useState('')
   const [born, setBorn] = useState('')
   const [isFemale, setIsFemale] = useState(true)
   const [filter, setFilter] = useState('')
+  const [breeds, setBreeds] = useState([])
   const [filtered, setFiltered] = useState([])
 
 
@@ -42,9 +42,20 @@ const DogForm = (props) => {
     setBorn(randomBirthday.toISOString().slice(0, 10))
   }
 
-  const submit = (event) => {
+  const submit = async (event) => {
     event.preventDefault()
 
+    await props.addDog({
+      variables: {
+        name, born, isFemale,
+        breed: filter
+      }
+    })
+
+    setName('')
+    setBorn('')
+    setFilter('')
+    setFiltered(breeds)
   }
 
 
