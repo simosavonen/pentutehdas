@@ -183,13 +183,14 @@ const DogForm = (props) => {
                 </button>
               </div>
               <div className="control">
-                <button className='button' onClick={randomDog}>
-                  randomize
+                {props.user.role === 'admin' &&
+                  <button className='button' onClick={randomDog}>
+                    randomize
                 </button>
+                }
               </div>
             </div>
           </div>
-
         </div>
 
       </form>

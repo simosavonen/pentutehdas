@@ -12,7 +12,7 @@ Full Stack harjoitustyö.
 Koska backend on git repon alikansiossa, käytä heroku deploy komentoa:
 `C:\pentutehdas\git subtree push --prefix server heroku master`
 
-Frontti surge.sh palveluun: käytä komentoa `npm run deploy`
+Frontti surge.sh palveluun: käytä komentoa `C:\pentutehdas\client\npm run deploy`
 
 backend url: https://pentutehdas.herokuapp.com 
 
@@ -36,5 +36,5 @@ frontend url: https://pentutehdas.surge.sh
 | 11.5. | 11    | login with JSONWebToken, dogs and litter have link to user, navbar, heropalkki navbarin tilalle, add routing |
 | 12.5. | 9     | async await bugi, userform, footer, dogform, optimize breed select |
 | 13.5. | 6     | app.js handles user, fixed footer, start moving login away from navbar, random dog generator, actually add dogs |
-| 14.5. | 3     | delete dogs |
-| yht   | 40    | | 
+| 14.5. | 5     | delete dogs, show breeders only their own dogs, prepare to show dog info from wiki |
+| yht   | 42    | | 
