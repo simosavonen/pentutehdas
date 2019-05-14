@@ -3,6 +3,13 @@ import DogForm from './DogForm'
 import Moment from 'react-moment'
 
 const Dogs = (props) => {
+
+  const handleDelete = async (id) => {
+    await props.deleteDog({
+      variables: { id }
+    })
+  }
+
   return (
     <>
       <DogForm user={props.user} addDog={props.addDog} />
@@ -10,7 +17,7 @@ const Dogs = (props) => {
         <div>Loading dogs...</div>
       }
       {!props.result.loading &&
-        <div className='container'>
+        <div className='section'>
           <table className='table is-hoverable is-fullwidth'>
             <thead>
               <tr>
@@ -32,7 +39,15 @@ const Dogs = (props) => {
                       {new Date(parseInt(dog.born, 10))}
                     </Moment>
                   </td>
-                  <td>{dog.owner.username}</td>
+                  <td>
+                    {dog.owner.username} &nbsp;
+                    {dog.owner.username === props.user.username &&
+                      <button
+                        className='button is-outlined is-danger is-small is-rounded'
+                        onClick={() => handleDelete(dog.id)}
+                      >remove</button>
+                    }
+                  </td>
                 </tr>
               )}
             </tbody>

@@ -8,9 +8,8 @@ const UserForm = ({ user }) => {
     )
   }
   return (
-    <div className='columns'>
-      <div className='column'></div>
-      <form className='column is-half'>
+    <div className='container'>
+      <form className='box'>
         <h1 className='title'>Edit user</h1>
         <div className='field is-horizontal'>
           <div className='field-label is-normal'>
@@ -103,7 +102,6 @@ const UserForm = ({ user }) => {
           </div>
         </div>
       </form>
-      <div className='column'></div>
     </div>
 
 

@@ -22,7 +22,7 @@ frontend url: https://pentutehdas.surge.sh
 
 | Feature     | Create | Read   | Update | Delete |
 | :----       | :----  | :----  | :----  | :----  |
-| Dog         | F, B   | F, B   |        |        |
+| Dog         | F, B   | F, B   |        | F, B   |
 | Litter      |        | F, B   |        |        |
 | User        | B      | F, B   |        |        |
 | Reservation |        | B      |        |        |
@@ -36,4 +36,5 @@ frontend url: https://pentutehdas.surge.sh
 | 11.5. | 11    | login with JSONWebToken, dogs and litter have link to user, navbar, heropalkki navbarin tilalle, add routing |
 | 12.5. | 9     | async await bugi, userform, footer, dogform, optimize breed select |
 | 13.5. | 6     | app.js handles user, fixed footer, start moving login away from navbar, random dog generator, actually add dogs |
-| yht   | 37    | | 
+| 14.5. | 3     | delete dogs |
+| yht   | 40    | | 

@@ -26,9 +26,12 @@ const DogForm = (props) => {
   const randomDog = (event) => {
     event.preventDefault()
 
-    setIsFemale(Math.random() < 0.5)
+    const isGirl = Math.random() < 0.5
+    setIsFemale(isGirl)
 
-    if (isFemale) {
+    // if we use isFemale, the value is out of sync?
+    // sometimes resulting in female dogs with a male name
+    if (isGirl) {
       setName(femaleDogNames[Math.floor(Math.random() * femaleDogNames.length)])
     } else {
       setName(maleDogNames[Math.floor(Math.random() * maleDogNames.length)])
@@ -60,9 +63,8 @@ const DogForm = (props) => {
 
 
   return (
-    <div className='columns'>
-      <div className='column'></div>
-      <form className='column is-three-quarters'>
+    <div className='container'>
+      <form className='box'>
         <h1 className='title'>Add a dog</h1>
         <div className='field is-horizontal'>
           <div className='field-label is-normal'>
@@ -88,7 +90,7 @@ const DogForm = (props) => {
             <label className='label'>breed</label>
           </div>
           <div className='field-body'>
-            <div className='field is-grouped'>
+            <div className='field is-grouped is-grouped-multiline'>
 
               <p className='control is-expanded has-icons-left has-icons-right'>
                 <input
@@ -191,7 +193,6 @@ const DogForm = (props) => {
         </div>
 
       </form>
-      <div className='column'></div>
     </div>
   )
 }

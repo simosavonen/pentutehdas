@@ -9,7 +9,7 @@ import Dogs from './components/Dogs'
 import UserForm from './components/UserForm'
 import Footer from './components/Footer'
 import { ALL_LITTERS } from './graphql/litters'
-import { ALL_DOGS, CREATE_DOG } from './graphql/dogs'
+import { ALL_DOGS, CREATE_DOG, DELETE_DOG } from './graphql/dogs'
 import { LOGIN } from './graphql/login'
 import { USER } from './graphql/user'
 
@@ -36,9 +36,30 @@ const App = () => {
   const allLitters = useQuery(ALL_LITTERS)
   const allDogs = useQuery(ALL_DOGS)
   const loginMutation = useMutation(LOGIN)
-  const addDog = useMutation(CREATE_DOG, {
+  const addDogMutation = useMutation(CREATE_DOG, {
     onError: handleError,
-    refetchQueries: [{ query: ALL_DOGS }]
+    update: (store, response) => {
+      const dataInStore = store.readQuery({ query: ALL_DOGS })
+      dataInStore.allDogs.push(response.data.addDog)
+      store.writeQuery({
+        query: ALL_DOGS,
+        data: dataInStore
+      })
+    }
+  })
+  const deleteDogMutation = useMutation(DELETE_DOG, {
+    onError: handleError,
+    update: (store, response) => {
+      const dataInStore = store.readQuery({ query: ALL_DOGS })
+      //console.log('response.data.deleteDog', response.data.deleteDog)
+      //console.log('before filter', dataInStore.allDogs)
+      dataInStore.allDogs = dataInStore.allDogs.filter(dog => dog.id !== response.data.deleteDog.id)
+      //console.log('after filter', dataInStore.allDogs)
+      store.writeQuery({
+        query: ALL_DOGS,
+        data: dataInStore
+      })
+    }
   })
 
   const logout = () => {
@@ -62,6 +83,7 @@ const App = () => {
     }
   }
 
+
   return (
     <div className='site'>
       <Router>
@@ -80,7 +102,12 @@ const App = () => {
                 : <Redirect to='/' />} />
             <Route exact path='/dog' render={() =>
               user && ['breeder', 'admin'].includes(user.role)
-                ? <Dogs user={user} result={allDogs} addDog={addDog} />
+                ? <Dogs
+                  user={user}
+                  result={allDogs}
+                  addDog={addDogMutation}
+                  deleteDog={deleteDogMutation}
+                />
                 : <Redirect to='/' />} />
             <Route exact path='/user' render={() =>
               user

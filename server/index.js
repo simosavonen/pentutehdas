@@ -1,7 +1,7 @@
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
 }
-const { ApolloServer, UserInputError, AuthenticationError, gql } = require('apollo-server')
+const { ApolloServer, UserInputError, AuthenticationError, ForbiddenError, gql } = require('apollo-server')
 
 const mongoose = require('mongoose')
 const jwt = require('jsonwebtoken')
@@ -72,6 +72,9 @@ const typeDefs = gql`
       isFemale: Boolean!
       breed: String
     ): Dog
+    deleteDog(
+      id: ID!
+    ): Dog
     addLitter(
       duedate: String!
       dam: String
@@ -98,7 +101,7 @@ const resolvers = {
   Query: {
     allLitters: () => Litter.find({}).populate(['dam', 'sire', 'breeder']),
     allDogs: () => Dog.find({}).populate('owner'),
-    me: async (root, args, context) => {
+    me: (root, args, context) => {
       return context.currentUser
     },
   },
@@ -108,7 +111,6 @@ const resolvers = {
       if (!currentUser) {
         throw new AuthenticationError('not authenticated')
       }
-
       let dog
       try {
         dog = new Dog({
@@ -126,6 +128,24 @@ const resolvers = {
         })
       }
       return dog.populate('owner') // tarvitaan populate
+    },
+    deleteDog: async (root, args, context) => {
+      const currentUser = context.currentUser
+      if (!currentUser) {
+        throw new AuthenticationError('not authenticated')
+      }
+      const dogToBeDeleted = await Dog.findById(args.id)
+      if (!dogToBeDeleted) {
+        throw new UserInputError('cannot find a dog to delete')
+      }
+      const isAdmin = currentUser.role === 'admin'
+      // comparing the ObjectIDs did not work, change toString
+      if (currentUser._id.toString() === dogToBeDeleted.owner.toString() || isAdmin) {
+        const deletedDog = await Dog.findByIdAndDelete(args.id)
+        return deletedDog
+      } else {
+        throw new ForbiddenError('you are not the admin, or the dog owner')
+      }
     },
     addLitter: async (root, args) => {
       let litter

@@ -35,3 +35,13 @@ mutation createDog($name: String!, $born: String, $isFemale: Boolean!, $breed: S
 }
 `
 
+export const DELETE_DOG = gql`
+mutation deleteDog($id: ID!) {
+  deleteDog(
+    id: $id
+  ) {
+    id
+  }
+}
+`
+
