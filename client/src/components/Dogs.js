@@ -4,14 +4,16 @@ import Moment from 'react-moment'
 
 const Dogs = (props) => {
 
-  if (props.result.loading) {
-    return (<div>Loading dogs...</div>)
-  }
-
   const handleDelete = async (id) => {
     await props.deleteDog({
       variables: { id }
     })
+  }
+
+  if (props.result.loading) {
+    return (
+      <DogForm user={props.user} addDog={props.addDog} />
+    )
   }
 
   return (

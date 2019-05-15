@@ -3,10 +3,29 @@ Full Stack harjoitustyö.
 
 ### Arkkitehtuuri
 
-- back-end on Node.JS Apollo GraphQL API, suoritetaan herokussa
-- front-end on React.JS sovellus, sijoitetaan muualle
+- back-end on Node.js Apollo GraphQL API, suoritetaan herokussa
+- front-end on React sovellus, sijoitetaan surge.sh palveluun
 - tietokantana MongoDB atlaksessa
 
+Sovelluksen tilaa ylläpidetään Apollon välimuistissa. 
+Yksittäiset komponentit käyttävät **useState()**.
+Tarvittaessa otetaan Redux avuksi.
+
+Käyttäjiä on kolmea tyyppiä
+
+- **user** saa tehdä (rajallisen määrän) varauksia pennuista ja päivittää omat yhteystietonsa.
+- **breeder** voi luoda/poistaa omia koiriaan ja pesueitaan, voi muokata pesueen tietoja.
+- **admin** voi ylentää käyttäjän luokkaan breeder, voi poistaa kenen tahansa koiran tai pesueen.
+
+Harkitaan mahdollisuutta varata pentuja ilman kirjautumista. Miten estetään häiriköivä käyttäjä?
+
+Pesue voidaan luoda ennen synnytystä, jolloin sitä muokataan myöhemmin ja merkitään pentujen sukupuoli ja lukumäärä. Kun pentu on löytänyt uuden kodin, sen voi poistaa pesueesta.
+
+Varaus on pelkkä yhteystieto tai käyttäjätunnus. Kasvattaja ottaa yhteyttä varaajaan ja sopii yksityiskohdista: haluaako varaaja nartun tai urospennun, minkä Prisman parkkipaikalle pentu toimitetaan?
+
+Koiraroduista näytetään yleisiä tietoja esim. wikipediasta. Mietitään mahdollisuutta lisätä kuva omasta koirasta, tai sivu voisi hakea verkosta kuvan koirarodusta.
+
+ 
 ### Muistiinpanoja
 
 Koska backend on git repon alikansiossa, käytä heroku deploy komentoa:
@@ -37,4 +56,5 @@ frontend url: https://pentutehdas.surge.sh
 | 12.5. | 9     | async await bugi, userform, footer, dogform, optimize breed select |
 | 13.5. | 6     | app.js handles user, fixed footer, start moving login away from navbar, random dog generator, actually add dogs |
 | 14.5. | 5     | delete dogs, show breeders only their own dogs, prepare to show dog info from wiki |
+| 15.5. | 1     | use cross-env on client |
 | yht   | 42    | | 
