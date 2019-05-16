@@ -147,7 +147,12 @@ const resolvers = {
         throw new ForbiddenError('you are not the admin, or the dog owner')
       }
     },
-    addLitter: async (root, args) => {
+    addLitter: async (root, args, context) => {
+      const currentUser = context.currentUser
+      if (!currentUser) {
+        throw new AuthenticationError('not authenticated')
+      }
+
       let litter
       try {
 
@@ -157,7 +162,8 @@ const resolvers = {
           sire: args.sire,
           puppies: [],
           reservations: [],
-          price: args.price
+          price: args.price,
+          breeder: currentUser
         })
         await litter.save()
 

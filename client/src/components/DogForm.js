@@ -133,13 +133,16 @@ const DogForm = (props) => {
           </div>
           <div className='field-body'>
             <div className='field'>
-              <p className='control'>
+              <p className='control has-icons-left'>
                 <input
                   className='input'
                   type='date'
                   value={born}
                   onChange={({ target }) => setBorn(target.value)}
                 />
+                <span className="icon is-left">
+                  <i className="far fa-calendar-alt"></i>
+                </span>
               </p>
             </div>
           </div>

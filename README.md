@@ -17,6 +17,11 @@ Käyttäjiä on kolmea tyyppiä
 - **breeder** voi luoda/poistaa omia koiriaan ja pesueitaan, voi muokata pesueen tietoja.
 - **admin** voi ylentää käyttäjän luokkaan breeder, voi poistaa kenen tahansa koiran tai pesueen.
 
+Tunnus / salasana
+- usersimo / ananas
+- breedersimo / ananas
+- adminsimo / ananas
+
 Harkitaan mahdollisuutta varata pentuja ilman kirjautumista. Miten estetään häiriköivä käyttäjä?
 
 Pesue voidaan luoda ennen synnytystä, jolloin sitä muokataan myöhemmin ja merkitään pentujen sukupuoli ja lukumäärä. Kun pentu on löytänyt uuden kodin, sen voi poistaa pesueesta.
@@ -42,7 +47,7 @@ frontend url: https://pentutehdas.surge.sh
 | Feature     | Create | Read   | Update | Delete |
 | :----       | :----  | :----  | :----  | :----  |
 | Dog         | F, B   | F, B   |        | F, B   |
-| Litter      |        | F, B   |        |        |
+| Litter      | F, B   | F, B   |        |        |
 | User        | B      | F, B   |        |        |
 | Reservation |        | B      |        |        |
 
@@ -57,4 +62,5 @@ frontend url: https://pentutehdas.surge.sh
 | 13.5. | 6     | app.js handles user, fixed footer, start moving login away from navbar, random dog generator, actually add dogs |
 | 14.5. | 5     | delete dogs, show breeders only their own dogs, prepare to show dog info from wiki |
 | 15.5. | 1     | use cross-env on client |
-| yht   | 42    | | 
+| 16.5. | 4     | adding litters working 50%, no puppies yet  |
+| yht   | 47    | | 

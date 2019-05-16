@@ -8,7 +8,7 @@ import LoginForm from './components/LoginForm'
 import Dogs from './components/Dogs'
 import UserForm from './components/UserForm'
 import Footer from './components/Footer'
-import { ALL_LITTERS } from './graphql/litters'
+import { ALL_LITTERS, CREATE_LITTER } from './graphql/litters'
 import { ALL_DOGS, CREATE_DOG, DELETE_DOG } from './graphql/dogs'
 import { LOGIN } from './graphql/login'
 import { USER } from './graphql/user'
@@ -47,6 +47,12 @@ const App = () => {
       })
     }
   })
+
+  const addLitterMutation = useMutation(CREATE_LITTER, {
+    onError: handleError,
+    refetchQueries: [{ query: ALL_LITTERS }]
+  })
+
   const deleteDogMutation = useMutation(DELETE_DOG, {
     onError: handleError,
     update: (store, response) => {
@@ -98,7 +104,11 @@ const App = () => {
             <Route exact path='/login' render={() => <LoginForm />} />
             <Route exact path='/litter' render={() =>
               user && ['breeder', 'admin'].includes(user.role)
-                ? <LitterForm user={user} />
+                ? <LitterForm
+                  user={user}
+                  result={allDogs}
+                  addLitter={addLitterMutation}
+                />
                 : <Redirect to='/' />} />
             <Route exact path='/dog' render={() =>
               user && ['breeder', 'admin'].includes(user.role)

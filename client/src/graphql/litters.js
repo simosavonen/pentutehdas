@@ -20,3 +20,18 @@ export const ALL_LITTERS = gql`
   }
 }
 `
+
+export const CREATE_LITTER = gql`
+mutation createLitter($duedate: String!, $dam: String, $sire: String, $price: Int) {
+  addLitter(
+    duedate: $duedate,
+    dam: $dam,
+    sire: $sire,
+    price: $price    
+  ) {
+    duedate
+    price    
+    id
+  }
+}
+`
