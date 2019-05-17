@@ -76,15 +76,15 @@ const Litter = ({ result }) => {
                   </Moment>
                 </td>
                 <td><LitterProgressBar duedate={litter.duedate} /></td>
-                <td>{litter.dam.breed}</td>
-                <td>{litter.sire.breed}</td>
+                <td>{litter.dam ? litter.dam.breed : 'removed'}</td>
+                <td>{litter.sire ? litter.sire.breed : 'removed'}</td>
                 <td>{litter.price} €</td>
               </tr>
               {details.includes(litter.id) &&
                 <tr>
                   <td colSpan='2'>Breeder: {litter.breeder.username}</td>
-                  <td>{litter.dam.name}</td>
-                  <td>{litter.sire.name}</td>
+                  <td>{litter.dam ? litter.dam.name : 'removed'}</td>
+                  <td>{litter.sire ? litter.sire.name : 'removed'}</td>
                   <td><button>reserve a puppy</button></td>
                 </tr>
               }
