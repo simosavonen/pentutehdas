@@ -1,6 +1,40 @@
 import React, { useState } from 'react'
 import Moment from 'react-moment'
 
+const LitterProgressBar = (props) => {
+  // normal gestation period in dogs
+  const gestation = 63
+  const duedate = new Date(parseInt(props.duedate, 10)).getTime()
+  const today = new Date().getTime()
+  let days = (duedate - today) / (1000 * 60 * 60 * 24)
+
+  // should not be allowed to set due date too far into the future
+  if (days > gestation) {
+    days = gestation
+  }
+
+  let progress = 100
+
+  if (days < 0) {
+    days = 0
+  } else {
+    progress = Math.floor(100 * (gestation - days) / gestation)
+  }
+
+  let color = 'progress is-large is-success'
+  if (progress < 66) { color = 'progress is-large is-warning' }
+  if (progress < 33) { color = 'progress is-large is-danger' }
+
+  return (
+    <progress
+      className={color}
+      max={gestation}
+      value={Math.floor(gestation - days)}
+    >
+      {progress}%
+    </progress>
+  )
+}
 
 const Litter = ({ result }) => {
   const [details, setDetails] = useState([])
@@ -41,7 +75,7 @@ const Litter = ({ result }) => {
                     {new Date(parseInt(litter.duedate, 10))}
                   </Moment>
                 </td>
-                <td><progress className='progress is-primary is-large' max='100' value='15' >15%</progress></td>
+                <td><LitterProgressBar duedate={litter.duedate} /></td>
                 <td>{litter.dam.breed}</td>
                 <td>{litter.sire.breed}</td>
                 <td>{litter.price} €</td>
