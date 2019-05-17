@@ -69,50 +69,50 @@ const Litter = ({ result }) => {
   }
 
   return (
-    <div className='container'>
-      <table className='table is-hoverable is-fullwidth'>
-        <thead>
-          <tr>
-            <th>Due date</th>
-            <th>Progress</th>
-            <th><i className='fas fa-venus'></i> Dam</th>
-            <th><i className='fas fa-mars'></i> Sire</th>
-            <th>Puppies</th>
-            <th>Price</th>
-          </tr>
-        </thead>
-        <tbody>
-          {result.data.allLitters.map(litter =>
-            <React.Fragment key={litter.id}>
-              <tr id={litter.id}
-                onClick={(event) => toggleDetails(event.currentTarget.id)}
-                className='is-clickable'
-              >
-                <td>
-                  <Moment format="DD.MM.YYYY">
-                    {new Date(parseInt(litter.duedate, 10))}
-                  </Moment>
-                </td>
-                <td><LitterProgressBar duedate={litter.duedate} /></td>
-                <td>{litter.dam ? litter.dam.breed : 'removed'}</td>
-                <td>{litter.sire ? litter.sire.breed : 'removed'}</td>
-                <td><Puppies puppies={litter.puppies} /></td>
-                <td>{litter.price} €</td>
-              </tr>
-              {details.includes(litter.id) &&
-                <tr>
-                  <td colSpan='2'>Breeder: {litter.breeder.username}</td>
-                  <td>{litter.dam ? litter.dam.name : 'removed'}</td>
-                  <td>{litter.sire ? litter.sire.name : 'removed'}</td>
-                  <td></td>
-                  <td><button>reserve a puppy</button></td>
+    <div className='columns is-centered'>
+      <div className='column is-12-tablet is-11-desktop is-10-widescreen is-9-fullhd'>
+        <table className='table is-hoverable is-fullwidth'>
+          <thead>
+            <tr>
+              <th style={{ width: '10%' }}>Due date</th>
+              <th style={{ width: '20%' }}>Progress</th>
+              <th style={{ width: '20%' }}><i className='fas fa-venus'></i> Dam</th>
+              <th style={{ width: '20%' }}><i className='fas fa-mars'></i> Sire</th>
+              <th style={{ width: '20%' }}>Puppies</th>
+              <th style={{ width: 'auto' }}>Price</th>
+            </tr>
+          </thead>
+          <tbody>
+            {result.data.allLitters.map(litter =>
+              <React.Fragment key={litter.id}>
+                <tr id={litter.id}
+                  onClick={(event) => toggleDetails(event.currentTarget.id)}
+                  className='is-clickable'
+                >
+                  <td>
+                    <Moment format="DD.MM.YYYY">
+                      {new Date(parseInt(litter.duedate, 10))}
+                    </Moment>
+                  </td>
+                  <td><LitterProgressBar duedate={litter.duedate} /></td>
+                  <td>{litter.dam ? litter.dam.breed : 'removed'}</td>
+                  <td>{litter.sire ? litter.sire.breed : 'removed'}</td>
+                  <td><Puppies puppies={litter.puppies} /></td>
+                  <td>{litter.price}&nbsp;€</td>
                 </tr>
-              }
-            </React.Fragment>
-          )}
-        </tbody>
-      </table>
-
+                {details.includes(litter.id) &&
+                  <tr>
+                    <td colSpan='2'>Breeder: {litter.breeder.username}</td>
+                    <td>{litter.dam ? litter.dam.name : 'removed'}</td>
+                    <td>{litter.sire ? litter.sire.name : 'removed'}</td>
+                    <td colSpan='2'><button>reserve a puppy</button></td>
+                  </tr>
+                }
+              </React.Fragment>
+            )}
+          </tbody>
+        </table>
+      </div>
     </div>
   )
 }

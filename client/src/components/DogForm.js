@@ -63,8 +63,8 @@ const DogForm = (props) => {
 
 
   return (
-    <div className='container'>
-      <form className='box'>
+    <div className='columns is-centered'>
+      <form className='box column is-12-tablet is-9-desktop is-8-widescreen is-7-fullhd'>
         <h1 className='title'>Add a dog</h1>
         <div className='field is-horizontal'>
           <div className='field-label is-normal'>

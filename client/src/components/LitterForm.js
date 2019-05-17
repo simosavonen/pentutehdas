@@ -21,7 +21,7 @@ const LitterForm = ({ result, user, addLitter }) => {
     if (value === null) {
       setPuppies([])
     } else {
-      setPuppies(puppies.concat(value))
+      setPuppies(puppies.concat(value).sort().reverse())
     }
   }
 
@@ -30,7 +30,7 @@ const LitterForm = ({ result, user, addLitter }) => {
 
     await addLitter({
       variables: {
-        duedate, dam, sire, price
+        duedate, dam, sire, price, puppies
       }
     })
   }

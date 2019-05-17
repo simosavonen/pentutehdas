@@ -8,100 +8,102 @@ const UserForm = ({ user }) => {
     )
   }
   return (
-    <div className='container'>
-      <form className='box'>
-        <h1 className='title'>Edit user</h1>
-        <div className='field is-horizontal'>
-          <div className='field-label is-normal'>
-            <label className="label">username</label>
-          </div>
-          <div className="field-body">
-            <div className='field'>
-              <p className='control'>
-                <input
-                  className="input"
-                  type="text"
-                  placeholder="username"
-                  value={user.username}
-                />
-              </p>
+    <div className='columns is-centered'>
+      <div className='column is-10-tablet is-8-desktop is-6-widescreen'>
+        <form className='box'>
+          <h1 className='title'>Edit user</h1>
+          <div className='field is-horizontal'>
+            <div className='field-label is-normal'>
+              <label className="label">username</label>
+            </div>
+            <div className="field-body">
+              <div className='field'>
+                <p className='control'>
+                  <input
+                    className="input"
+                    type="text"
+                    placeholder="username"
+                    defaultValue={user.username}
+                  />
+                </p>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div className='field is-horizontal'>
-          <div className='field-label is-normal'>
-            <label className="label">user role</label>
-          </div>
-          <div className="field-body">
-            <div className='field'>
-              <p className='control'>
-                <input
-                  className="input is-static"
-                  type="text"
-                  placeholder="role"
-                  readOnly
-                  value={user.role}
-                />
-              </p>
+          <div className='field is-horizontal'>
+            <div className='field-label is-normal'>
+              <label className="label">user role</label>
+            </div>
+            <div className="field-body">
+              <div className='field'>
+                <p className='control'>
+                  <input
+                    className="input is-static"
+                    type="text"
+                    placeholder="role"
+                    readOnly
+                    defaultValue={user.role}
+                  />
+                </p>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div className='field is-horizontal'>
-          <div className='field-label is-normal'>
-            <label className="label">phone</label>
-          </div>
-          <div className="field-body">
-            <div className='field'>
-              <p className='control'>
-                <input
-                  className="input"
-                  type="text"
-                  placeholder="phone"
-                  value={user.phone}
-                />
-              </p>
+          <div className='field is-horizontal'>
+            <div className='field-label is-normal'>
+              <label className="label">phone</label>
+            </div>
+            <div className="field-body">
+              <div className='field'>
+                <p className='control'>
+                  <input
+                    className="input"
+                    type="text"
+                    placeholder="phone"
+                    defaultValue={user.phone}
+                  />
+                </p>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div className='field is-horizontal'>
-          <div className='field-label is-normal'>
-            <label className="label">email</label>
-          </div>
-          <div className="field-body">
-            <div className='field'>
-              <p className='control'>
-                <input
-                  className="input"
-                  type="email"
-                  placeholder="email"
-                  value={user.email}
-                />
-              </p>
+          <div className='field is-horizontal'>
+            <div className='field-label is-normal'>
+              <label className="label">email</label>
+            </div>
+            <div className="field-body">
+              <div className='field'>
+                <p className='control'>
+                  <input
+                    className="input"
+                    type="email"
+                    placeholder="email"
+                    defaultValue={user.email}
+                  />
+                </p>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div className='field is-horizontal'>
-          <div className='field-label is-normal'>
-            <label className="label">city</label>
-          </div>
-          <div className="field-body">
-            <div className='field'>
-              <p className='control'>
-                <input
-                  className="input"
-                  type="text"
-                  placeholder="city"
-                  value={user.city}
-                />
-              </p>
+          <div className='field is-horizontal'>
+            <div className='field-label is-normal'>
+              <label className="label">city</label>
+            </div>
+            <div className="field-body">
+              <div className='field'>
+                <p className='control'>
+                  <input
+                    className="input"
+                    type="text"
+                    placeholder="city"
+                    defaultValue={user.city}
+                  />
+                </p>
+              </div>
             </div>
           </div>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
 
 

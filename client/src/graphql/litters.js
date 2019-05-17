@@ -23,12 +23,13 @@ export const ALL_LITTERS = gql`
 `
 
 export const CREATE_LITTER = gql`
-mutation createLitter($duedate: String!, $dam: String, $sire: String, $price: Int) {
+mutation createLitter($duedate: String!, $dam: String, $sire: String, $price: Int, $puppies: [Boolean]) {
   addLitter(
     duedate: $duedate,
     dam: $dam,
     sire: $sire,
-    price: $price    
+    price: $price,
+    puppies: $puppies    
   ) {
     duedate
     price    

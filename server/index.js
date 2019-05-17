@@ -160,7 +160,7 @@ const resolvers = {
           duedate: args.duedate,
           dam: args.dam,
           sire: args.sire,
-          puppies: [],
+          puppies: args.puppies,
           reservations: [],
           price: args.price,
           breeder: currentUser

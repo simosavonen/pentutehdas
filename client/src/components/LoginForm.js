@@ -50,7 +50,7 @@ const LoginForm = (props) => {
           <div className='field-label is-small'>
             <label className='label'>Logged in </label>
           </div>
-          <button className='button is-warning is-small' onClick={props.logout}>logout</button>
+          <button className='button is-warning is-small' onClick={() => props.logout()}>logout</button>
         </div>
       }
 

@@ -63,5 +63,5 @@ frontend url: https://pentutehdas.surge.sh
 | 14.5. | 5     | delete dogs, show breeders only their own dogs, prepare to show dog info from wiki |
 | 15.5. | 1     | use cross-env on client |
 | 16.5. | 4     | adding litters working 50%, no puppies yet  |
-| 17.5. | 4     | progressbar, puppies listed on main page |
-| yht   | 51    | | 
+| 17.5. | 6     | progressbar, puppies listed on main page, bulma columns rock |
+| yht   | 53    | | 

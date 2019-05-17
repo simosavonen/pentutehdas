@@ -14,13 +14,16 @@ const Navigation = ({ token, login, logout, setToken, user }) => {
             </span> PENTUTEHDAS
           </Link>
           <div className='level-item'> </div>
+          <Link to='/' className='level-item'>
+            all litters
+          </Link>
           {token &&
             <React.Fragment>
               <Link to='/litter' className='level-item'>
-                add a litter
+                my litters
               </Link>
               <Link to='/dog' className='level-item'>
-                add a dog
+                my dogs
               </Link>
               <Link to='/user' className='level-item'>
                 edit user
@@ -33,7 +36,7 @@ const Navigation = ({ token, login, logout, setToken, user }) => {
           <LoginForm
             token={token}
             login={login}
-            logout={() => logout()}
+            logout={logout}
           />
         </div>
       </div>
