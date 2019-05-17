@@ -36,6 +36,23 @@ const LitterProgressBar = (props) => {
   )
 }
 
+const Puppies = (props) => {
+  if (!props.puppies) {
+    return null
+  }
+  return (
+    <>
+      {props.puppies.map((isFemale, index) =>
+        isFemale
+          ? <i key={index} className='fas fa-venus has-text-danger'
+            style={{ marginRight: "0.25em" }}></i>
+          : <i key={index} className='fas fa-mars has-text-info'
+            style={{ marginLeft: "0.15em" }}></i>
+      )}
+    </>
+  )
+}
+
 const Litter = ({ result }) => {
   const [details, setDetails] = useState([])
 
@@ -60,6 +77,7 @@ const Litter = ({ result }) => {
             <th>Progress</th>
             <th><i className='fas fa-venus'></i> Dam</th>
             <th><i className='fas fa-mars'></i> Sire</th>
+            <th>Puppies</th>
             <th>Price</th>
           </tr>
         </thead>
@@ -78,6 +96,7 @@ const Litter = ({ result }) => {
                 <td><LitterProgressBar duedate={litter.duedate} /></td>
                 <td>{litter.dam ? litter.dam.breed : 'removed'}</td>
                 <td>{litter.sire ? litter.sire.breed : 'removed'}</td>
+                <td><Puppies puppies={litter.puppies} /></td>
                 <td>{litter.price} €</td>
               </tr>
               {details.includes(litter.id) &&
@@ -85,6 +104,7 @@ const Litter = ({ result }) => {
                   <td colSpan='2'>Breeder: {litter.breeder.username}</td>
                   <td>{litter.dam ? litter.dam.name : 'removed'}</td>
                   <td>{litter.sire ? litter.sire.name : 'removed'}</td>
+                  <td></td>
                   <td><button>reserve a puppy</button></td>
                 </tr>
               }

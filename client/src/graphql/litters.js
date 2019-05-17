@@ -12,6 +12,7 @@ export const ALL_LITTERS = gql`
       name
       breed
     }
+    puppies
     price
     breeder {
       username
