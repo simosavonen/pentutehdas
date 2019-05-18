@@ -1,12 +1,14 @@
 import React, { useState } from 'react'
+import { withRouter } from 'react-router-dom'
 
-const LoginForm = (props) => {
+let LoginForm = (props) => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
   const submit = (event) => {
     event.preventDefault()
     props.login(username, password)
+    props.history.push('/')
   }
 
   return (
@@ -58,4 +60,4 @@ const LoginForm = (props) => {
   )
 }
 
-export default LoginForm
+export default LoginForm = withRouter(LoginForm)
