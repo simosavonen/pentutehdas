@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { withRouter } from 'react-router'
 import LoginForm from './LoginForm'
 
-const Navigation = ({ token, login, logout, setToken, user }) => {
+const Navigation = ({ token, login, logout }) => {
   return (
     <nav className='hero is-small is-info is-bold'>
       <div className='hero-body level'>

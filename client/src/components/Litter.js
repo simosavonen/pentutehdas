@@ -53,7 +53,7 @@ const Puppies = (props) => {
   )
 }
 
-const Litter = ({ result }) => {
+const Litter = ({ result, user }) => {
   const [details, setDetails] = useState([])
 
   const toggleDetails = (id) => {
@@ -105,7 +105,15 @@ const Litter = ({ result }) => {
                     <td colSpan='2'>Breeder: {litter.breeder.username}</td>
                     <td>{litter.dam ? litter.dam.name : 'removed'}</td>
                     <td>{litter.sire ? litter.sire.name : 'removed'}</td>
-                    <td colSpan='2'><button>reserve a puppy</button></td>
+                    <td colSpan='2'>
+                      {user
+                        ? <button className='button is-small is-success'>reserve a puppy</button>
+                        : <span>login to reserve a puppy</span>
+                      }
+                      {(user && litter.breeder.username === user.username)
+                        && <button className='button is-small is-info' style={{ marginLeft: '1em' }}>edit the litter</button>
+                      }
+                    </td>
                   </tr>
                 }
               </React.Fragment>

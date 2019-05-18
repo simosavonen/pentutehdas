@@ -64,4 +64,5 @@ frontend url: https://pentutehdas.surge.sh
 | 15.5. | 1     | use cross-env on client |
 | 16.5. | 4     | adding litters working 50%, no puppies yet  |
 | 17.5. | 6     | progressbar, puppies listed on main page, bulma columns rock |
-| yht   | 53    | | 
+| 18.5. | 2     | prepare to edit litters |
+| yht   | 55    | | 

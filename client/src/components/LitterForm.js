@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
+import { withRouter } from 'react-router-dom'
 
-
-const LitterForm = ({ result, user, addLitter }) => {
+let LitterForm = (props) => {
   const [duedate, setDuedate] = useState('')
   const [dam, setDam] = useState('')
   const [sire, setSire] = useState('')
@@ -11,10 +11,10 @@ const LitterForm = ({ result, user, addLitter }) => {
 
 
   useEffect(() => {
-    const filtered = result.data.allDogs.filter(dog =>
-      dog.owner.username === user.username)
+    const filtered = props.result.data.allDogs.filter(dog =>
+      dog.owner.username === props.user.username)
     setMyDogs(filtered)
-  }, [result, user])
+  }, [props.result, props.user])
 
   const adjustPuppies = (event, value) => {
     event.preventDefault()
@@ -28,11 +28,12 @@ const LitterForm = ({ result, user, addLitter }) => {
   const submit = async (event) => {
     event.preventDefault()
 
-    await addLitter({
+    await props.addLitter({
       variables: {
         duedate, dam, sire, price, puppies
       }
     })
+    props.history.push('/')
   }
 
   if (!myDogs) {
@@ -189,4 +190,4 @@ const LitterForm = ({ result, user, addLitter }) => {
   )
 }
 
-export default LitterForm
+export default LitterForm = withRouter(LitterForm)

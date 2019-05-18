@@ -100,7 +100,7 @@ const App = () => {
         />
         <div className='site-content'>
           <section className='section'>
-            <Route exact path='/' render={() => <Litter result={allLitters} />} />
+            <Route exact path='/' render={() => <Litter result={allLitters} user={user} />} />
             <Route exact path='/login' render={() => <LoginForm />} />
             <Route exact path='/litter' render={() =>
               user && ['breeder', 'admin'].includes(user.role)
