@@ -5,7 +5,7 @@ let LitterForm = (props) => {
   const [duedate, setDuedate] = useState('')
   const [dam, setDam] = useState('')
   const [sire, setSire] = useState('')
-  const [price, setPrice] = useState('')
+  const [price, setPrice] = useState(0)
   const [puppies, setPuppies] = useState([])
   const [myDogs, setMyDogs] = useState(null)
 
@@ -121,7 +121,13 @@ let LitterForm = (props) => {
                   className='input'
                   type='number'
                   value={price}
-                  onChange={({ target }) => setPrice(parseInt(target.value, 10))}
+                  onChange={({ target }) =>
+                    setPrice(
+                      Number.isNaN(parseInt(target.value, 10))
+                        ? 0
+                        : parseInt(target.value, 10)
+                    )
+                  }
                 />
                 <span className='icon is-right'>
                   <i className='fas fa-euro-sign'></i>
