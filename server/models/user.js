@@ -18,12 +18,10 @@ const schema = new mongoose.Schema({
   phone: {
     type: String,
     unique: true,
-    minlength: 5
   },
   email: {
     type: String,
     unique: true,
-    minlength: 3
   },
   city: {
     type: String
