@@ -2,8 +2,8 @@ import React from 'react'
 
 const Footer = () => {
   return (
-    <footer className='footer'>
-      <div className='container has-text-centered'>
+    <footer className='footer has-background-grey-lighter'>
+      <div className='container has-text-centered has-text-grey-darker'>
         <p>
           <strong>PENTUTEHDAS</strong> by Simo Savonen. An exercise project for <a href='https://fullstackopen.com/challenge/'>#fullstackhaaste</a>
         </p>

@@ -64,6 +64,10 @@ const Litter = ({ result, user }) => {
     }
   }
 
+  const tableStyles = {
+    backgroundColor: 'rgba(255, 255, 255, 0.3)'
+  }
+
   if (result.loading) {
     return <div className='container'>loading...</div>
   }
@@ -72,7 +76,7 @@ const Litter = ({ result, user }) => {
 
     <div className='columns is-centered'>
       <div className='column is-12-tablet is-11-desktop is-10-widescreen is-9-fullhd'>
-        <table className='table is-hoverable is-fullwidth'>
+        <table className='table is-hoverable is-fullwidth' style={tableStyles}>
           <thead>
             <tr>
               <th style={{ width: '10%' }}>Due date</th>

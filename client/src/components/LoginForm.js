@@ -56,7 +56,7 @@ let LoginForm = (props) => {
 
   return (
     <div className='columns is-centered'>
-      <div className='box column is-6-tablet is-5-desktop is-4-widescreen is-3-fullhd'>
+      <div className='box column is-7-tablet is-6-desktop is-5-widescreen is-4-fullhd'>
         <form style={formStyles} onSubmit={submit}>
           <h1 className='title'>
             {isNewUser ? 'Register new user' : 'Login'}
