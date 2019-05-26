@@ -11,7 +11,7 @@ import Footer from './components/Footer'
 import { ALL_LITTERS, CREATE_LITTER } from './graphql/litters'
 import { ALL_DOGS, CREATE_DOG, DELETE_DOG } from './graphql/dogs'
 import { LOGIN } from './graphql/login'
-import { USER, CREATE_USER } from './graphql/user'
+import { USER, CREATE_USER, UPDATE_USER } from './graphql/user'
 
 
 
@@ -51,6 +51,14 @@ const App = () => {
 
   const addUserMutation = useMutation(CREATE_USER, {
     onError: handleError
+  })
+
+  const updateUserMutation = useMutation(UPDATE_USER, {
+    onError: handleError,
+    update: (store, response) => {
+      console.log(response.data.updateUser)
+      setUser(response.data.updateUser)
+    }
   })
 
   const addLitterMutation = useMutation(CREATE_LITTER, {
@@ -124,7 +132,7 @@ const App = () => {
               : <Redirect to='/' />} />
           <Route exact path='/user' render={() =>
             user
-              ? <UserForm user={user} />
+              ? <UserForm user={user} updateUser={updateUserMutation} />
               : <Redirect to='/' />} />
         </section>
 

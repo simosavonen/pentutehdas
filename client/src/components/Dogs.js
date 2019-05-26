@@ -10,6 +10,10 @@ const Dogs = (props) => {
     })
   }
 
+  const tableStyles = {
+    backgroundColor: 'rgba(255, 255, 255, 0.4)'
+  }
+
   if (props.result.loading) {
     return (
       <DogForm user={props.user} addDog={props.addDog} />
@@ -22,7 +26,7 @@ const Dogs = (props) => {
       <section className='section'>
         <div className='columns is-centered'>
           <div className='column is-12-tablet is-11-desktop is-10-widescreen is-9-fullhd'>
-            <table className='table is-hoverable is-fullwidth'>
+            <table className='table is-hoverable is-fullwidth' style={tableStyles}>
               <thead>
                 <tr>
                   <th>Name</th>

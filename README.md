@@ -45,16 +45,16 @@ frontend url: https://pentutehdas.surge.sh
 ### Valmiit toiminnot, Front / Back
 
 | Feature     | Create | Read   | Update | Delete |
-| :----       | :----  | :----  | :----  | :----  |
+| :----       | :----: | :----: | :----: | :----: |
 | Dog         | F, B   | F, B   |        | F, B   |
 | Litter      | F, B   | F, B   |        |        |
-| User        | F, B   | F, B   |        |        |
+| User        | F, B   | F, B   |  F, B  |        |
 | Reservation |        | B      |        |        |
 
 ### työaikakirjanpito
 
 | päivä | aika  | mitä tein |
-| :----:| :---- | :-----    |
+| :----:| :----:| :-----    |
 | 9.5.  | 6     | react frontend aloitus, graphql backend aloitus |
 | 10.5. | 4     | react apollo client, bulma table, timeformat with moment |
 | 11.5. | 11    | login with JSONWebToken, dogs and litter have link to user, navbar, heropalkki navbarin tilalle, add routing |
@@ -65,5 +65,5 @@ frontend url: https://pentutehdas.surge.sh
 | 16.5. | 4     | adding litters working 50%, no puppies yet  |
 | 17.5. | 6     | progressbar, puppies listed on main page, bulma columns rock |
 | 18.5. | 5     | prepare to edit litters, return to using navbar and place login on the page, NaN bug |
-| 26.5. | 10     | clean up forms, return to using react-select for the dog breed combobox, remove randomDog(), createUser frontend working, get rid of unique index for user.phone and user.email, background image |
-| yht   | 70    | | 
+| 26.5. | 12     | clean up forms, return to using react-select for the dog breed combobox, remove randomDog(), createUser frontend working, get rid of unique index for user.phone and user.email, background image, updating user working |
+| yht   | 72    | | 

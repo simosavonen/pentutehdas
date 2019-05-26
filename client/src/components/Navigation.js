@@ -5,7 +5,7 @@ const Navigation = ({ user, logout }) => {
   const [burgerOpen, setBurgerOpen] = useState(false)
 
   return (
-    <nav className='navbar is-info' role='navigation'>
+    <nav className='navbar is-dark' role='navigation'>
       <div className='container'>
         <div className='navbar-brand'>
           <Link to='/' className='navbar-item'>
@@ -24,7 +24,7 @@ const Navigation = ({ user, logout }) => {
           <div className="navbar-start">
             <Link to='/' className='navbar-item'>
               all litters
-          </Link>
+            </Link>
             {(user && ['breeder', 'admin'].includes(user.role)) &&
               <React.Fragment>
                 <Link to='/litter' className='navbar-item'>
@@ -43,7 +43,7 @@ const Navigation = ({ user, logout }) => {
           </div>
           <div className='navbar-end'>
             {user
-              ? <Link to='/' className='navbar-item' onClick={() => logout()}>Logout</Link>
+              ? <> <p className='navbar-item has-text-grey-light'>Logged in as {user.username}</p> <Link to='/' className='navbar-item' onClick={() => logout()}>Logout</Link></>
               : <Link to='/login' className='navbar-item'>Login / Register</Link>
             }
           </div>

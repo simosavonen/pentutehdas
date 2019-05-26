@@ -91,6 +91,13 @@ const typeDefs = gql`
       email: String
       city: String
     ): User
+    updateUser(
+      username: String!      
+      phone: String
+      email: String
+      city: String
+      id: ID!
+    ): User
     login(
       username: String!
       password: String!
@@ -197,6 +204,24 @@ const resolvers = {
             invalidArgs: args,
           })
         })
+    },
+    updateUser: async (root, args, context) => {
+      const currentUser = context.currentUser
+      if (!currentUser) {
+        throw new AuthenticationError('not authenticated')
+      }
+      if (currentUser._id.toString() !== args.id.toString()) {
+        throw new AuthenticationError('not authenticated')
+      }
+
+      const updatedUser = await User.findByIdAndUpdate(currentUser._id, {
+        username: args.username,
+        phone: args.phone,
+        email: args.email,
+        city: args.city
+      }, { new: true })
+
+      return updatedUser
     },
     login: async (root, args) => {
       const user = await User.findOne({ username: args.username })

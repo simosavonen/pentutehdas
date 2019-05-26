@@ -1,16 +1,39 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { withRouter } from 'react-router-dom'
 
-const UserForm = ({ user }) => {
+let UserForm = (props) => {
+  const [username, setUsername] = useState(props.user.username)
+  const [phone, setPhone] = useState(props.user.phone)
+  const [email, setEmail] = useState(props.user.email)
+  const [city, setCity] = useState(props.user.city)
 
-  if (!user) {
+  const formStyles = {
+    padding: '1em'
+  }
+
+  const submit = async (event) => {
+    event.preventDefault()
+    try {
+      await props.updateUser({
+        variables: {
+          id: props.user.id, username, phone, email, city
+        }
+      })
+      props.history.push('/')
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  if (!props.user) {
     return (
       <div className='container'>loading...</div>
     )
   }
   return (
     <div className='columns is-centered'>
-      <div className='column is-10-tablet is-8-desktop is-6-widescreen'>
-        <form className='box'>
+      <div className='box column is-8-tablet is-7-desktop is-5-widescreen'>
+        <form style={formStyles} onSubmit={submit}>
           <h1 className='title'>Edit user</h1>
           <div className='field is-horizontal'>
             <div className='field-label is-normal'>
@@ -23,7 +46,8 @@ const UserForm = ({ user }) => {
                     className="input"
                     type="text"
                     placeholder="username"
-                    defaultValue={user.username}
+                    value={username}
+                    onChange={({ target }) => setUsername(target.value)}
                   />
                 </p>
               </div>
@@ -42,7 +66,7 @@ const UserForm = ({ user }) => {
                     type="text"
                     placeholder="role"
                     readOnly
-                    defaultValue={user.role}
+                    defaultValue={props.user.role}
                   />
                 </p>
               </div>
@@ -60,7 +84,8 @@ const UserForm = ({ user }) => {
                     className="input"
                     type="text"
                     placeholder="phone"
-                    defaultValue={user.phone}
+                    value={phone}
+                    onChange={({ target }) => setPhone(target.value)}
                   />
                 </p>
               </div>
@@ -78,7 +103,8 @@ const UserForm = ({ user }) => {
                     className="input"
                     type="email"
                     placeholder="email"
-                    defaultValue={user.email}
+                    value={email}
+                    onChange={({ target }) => setEmail(target.value)}
                   />
                 </p>
               </div>
@@ -96,12 +122,27 @@ const UserForm = ({ user }) => {
                     className="input"
                     type="text"
                     placeholder="city"
-                    defaultValue={user.city}
+                    value={city}
+                    onChange={({ target }) => setCity(target.value)}
                   />
                 </p>
               </div>
             </div>
           </div>
+
+          <div className='field is-horizontal'>
+            <div className='field-label is-normal'>
+              <label className="label"></label>
+            </div>
+            <div className="field-body">
+              <div className='field'>
+                <div className='control'>
+                  <button className='button is-info is-outlined' type='submit'>save</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
         </form>
       </div>
     </div>
@@ -111,4 +152,4 @@ const UserForm = ({ user }) => {
   )
 }
 
-export default UserForm
+export default UserForm = withRouter(UserForm)

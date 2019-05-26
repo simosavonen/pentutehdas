@@ -37,6 +37,25 @@ mutation createUser(
 }
 `
 
+export const UPDATE_USER = gql`
+mutation updateUser($id:ID!, $username:String!, $phone:String, $email:String, $city:String) {
+  updateUser(
+    id:$id,
+    username:$username,
+    phone:$phone,
+    email:$email,
+    city:$city    
+  ) {
+    username
+    role
+    phone
+    email
+    city
+    id   
+  }
+}
+`
+
 export const USER_AVAILABLE = gql`
 query userAvailable($username:String!) {
   userAvailable(username:$username)  
