@@ -63,6 +63,7 @@ const typeDefs = gql`
     allLitters: [Litter!]!
     allDogs: [Dog!]!
     me(token: String): User
+    userAvailable(username: String!): Boolean
   }
 
   type Mutation {
@@ -104,6 +105,10 @@ const resolvers = {
     me: (root, args, context) => {
       return context.currentUser
     },
+    userAvailable: async (root, args) => {
+      const taken = await User.findOne({ username: args.username })
+      return taken ? false : true
+    }
   },
   Mutation: {
     addDog: async (root, args, context) => {
@@ -155,7 +160,6 @@ const resolvers = {
 
       let litter
       try {
-
         litter = new Litter({
           duedate: args.duedate,
           dam: args.dam,

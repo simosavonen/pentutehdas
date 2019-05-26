@@ -44,7 +44,7 @@ const Navigation = ({ user, logout }) => {
           <div className='navbar-end'>
             {user
               ? <Link to='/' className='navbar-item' onClick={() => logout()}>Logout</Link>
-              : <Link to='/login' className='navbar-item'>Login</Link>
+              : <Link to='/login' className='navbar-item'>Login / Register</Link>
             }
           </div>
 

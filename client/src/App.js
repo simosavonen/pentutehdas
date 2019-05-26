@@ -11,7 +11,7 @@ import Footer from './components/Footer'
 import { ALL_LITTERS, CREATE_LITTER } from './graphql/litters'
 import { ALL_DOGS, CREATE_DOG, DELETE_DOG } from './graphql/dogs'
 import { LOGIN } from './graphql/login'
-import { USER } from './graphql/user'
+import { USER, CREATE_USER } from './graphql/user'
 
 
 const App = () => {
@@ -46,6 +46,10 @@ const App = () => {
         data: dataInStore
       })
     }
+  })
+
+  const addUserMutation = useMutation(CREATE_USER, {
+    onError: handleError
   })
 
   const addLitterMutation = useMutation(CREATE_LITTER, {
@@ -99,7 +103,7 @@ const App = () => {
 
         <section className='section site-content'>
           <Route exact path='/' render={() => <Litter result={allLitters} user={user} />} />
-          <Route exact path='/login' render={() => <LoginForm login={login} />} />
+          <Route exact path='/login' render={() => <LoginForm login={login} addUser={addUserMutation} />} />
           <Route exact path='/litter' render={() =>
             user && ['breeder', 'admin'].includes(user.role)
               ? <LitterForm
