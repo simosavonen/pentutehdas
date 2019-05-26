@@ -23,6 +23,7 @@ let LoginForm = (props) => {
         })
         setIsNewUser(false)
       } catch (error) {
+        console.log(error)
         setNotification('Failed to create user.')
         setFailed(true)
       }
@@ -46,6 +47,7 @@ let LoginForm = (props) => {
   const toggleRegistering = (event) => {
     event.preventDefault()
     setIsNewUser(!isNewUser)
+    setFailed(false)
   }
 
   const formStyles = {

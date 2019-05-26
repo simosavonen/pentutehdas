@@ -16,12 +16,10 @@ const schema = new mongoose.Schema({
     enum: ['user', 'breeder', 'admin']
   },
   phone: {
-    type: String,
-    unique: true,
+    type: String
   },
   email: {
-    type: String,
-    unique: true,
+    type: String
   },
   city: {
     type: String
