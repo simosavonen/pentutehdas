@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 
-const Navigation = ({ token, logout }) => {
+const Navigation = ({ user, logout }) => {
   const [burgerOpen, setBurgerOpen] = useState(false)
 
   return (
@@ -25,22 +25,24 @@ const Navigation = ({ token, logout }) => {
             <Link to='/' className='navbar-item'>
               all litters
           </Link>
-            {token &&
+            {(user && ['breeder', 'admin'].includes(user.role)) &&
               <React.Fragment>
                 <Link to='/litter' className='navbar-item'>
-                  my litters
+                  add a litter
               </Link>
                 <Link to='/dog' className='navbar-item'>
                   my dogs
               </Link>
-                <Link to='/user' className='navbar-item'>
-                  edit user
-              </Link>
               </React.Fragment>
+            }
+            {user &&
+              <Link to='/user' className='navbar-item'>
+                edit user
+              </Link>
             }
           </div>
           <div className='navbar-end'>
-            {token
+            {user
               ? <Link to='/' className='navbar-item' onClick={() => logout()}>Logout</Link>
               : <Link to='/login' className='navbar-item'>Login</Link>
             }

@@ -1,202 +1,141 @@
 import React, { useState, useEffect } from 'react'
-
-const { maleDogNames, femaleDogNames } = require('./DogNames.json')
+import Select from 'react-select'
 
 const DogForm = (props) => {
   const [name, setName] = useState('')
   const [born, setBorn] = useState('')
   const [isFemale, setIsFemale] = useState(true)
-  const [filter, setFilter] = useState('')
-  const [breeds, setBreeds] = useState([])
-  const [filtered, setFiltered] = useState([])
+  const [breed, setBreed] = useState('')
+  const [options, setOptions] = useState([])
 
 
   useEffect(() => {
     const { english } = require('./Breeds.json')
-    setBreeds(english)
-    setFiltered(english)
+    setOptions(english.map(b => {
+      return { value: b, label: b }
+    }))
   }, [])
-
-
-  const handleFilter = (filter) => {
-    setFilter(filter)
-    setFiltered(breeds.filter(b => b.toLowerCase().includes(filter.toLowerCase())))
-  }
-
-  const randomDog = (event) => {
-    event.preventDefault()
-
-    const isGirl = Math.random() < 0.5
-    setIsFemale(isGirl)
-
-    // if we use isFemale, the value is out of sync?
-    // sometimes resulting in female dogs with a male name
-    if (isGirl) {
-      setName(femaleDogNames[Math.floor(Math.random() * femaleDogNames.length)])
-    } else {
-      setName(maleDogNames[Math.floor(Math.random() * maleDogNames.length)])
-    }
-
-    const randomBreed = breeds[Math.floor(Math.random() * breeds.length)]
-    handleFilter(randomBreed)
-
-    const yearAgo = new Date(new Date().setFullYear(new Date().getFullYear() - 1))
-    const randomBirthday = new Date(+(yearAgo) - Math.floor(Math.random() * 100000000000))
-    setBorn(randomBirthday.toISOString().slice(0, 10))
-  }
 
   const submit = async (event) => {
     event.preventDefault()
 
     await props.addDog({
       variables: {
-        name, born, isFemale,
-        breed: filter
+        name, born, isFemale, breed: breed.value
       }
     })
 
     setName('')
     setBorn('')
-    setFilter('')
-    setFiltered(breeds)
+    setBreed('')
   }
 
+  const formStyles = {
+    padding: '1em'
+  }
 
   return (
     <div className='columns is-centered'>
-      <form className='box column is-12-tablet is-9-desktop is-8-widescreen is-7-fullhd'>
-        <h1 className='title'>Add a dog</h1>
-        <div className='field is-horizontal'>
-          <div className='field-label is-normal'>
-            <label className='label'>dog name</label>
-          </div>
-          <div className='field-body'>
-            <div className='field'>
-              <p className='control'>
-                <input
-                  className='input'
-                  type='text'
-                  placeholder='dog name'
-                  value={name}
-                  onChange={({ target }) => setName(target.value)}
-                />
-              </p>
+      <div className='box column is-12-tablet is-9-desktop is-8-widescreen is-7-fullhd'>
+        <form style={formStyles}>
+          <h1 className='title'>Add a dog</h1>
+          <div className='field is-horizontal'>
+            <div className='field-label is-normal'>
+              <label className='label'>dog name</label>
             </div>
-          </div>
-        </div>
-
-        <div className='field is-horizontal'>
-          <div className='field-label is-normal'>
-            <label className='label'>breed</label>
-          </div>
-          <div className='field-body'>
-            <div className='field is-grouped is-grouped-multiline'>
-
-              <p className='control is-expanded has-icons-left has-icons-right'>
-                <input
-                  className='input'
-                  type='text'
-                  placeholder='filter'
-                  value={filter}
-                  onChange={({ target }) => handleFilter(target.value)}
-                />
-                <span className='icon is-small is-left'>
-                  <i className='fas fa-filter'></i>
-                </span>
-                {(filtered.length === 1 && filtered[0] === filter) ?
-                  <>
-                    <span className='icon is-small is-right has-text-success'>
-                      <i className='fas fa-check'></i>
-                    </span>
-                    <span className='help has-text-success'>breed name is valid</span>
-                  </>
-                  : <span className='help'>filter the list and select one</span>
-                }
-              </p>
-              <div className='select'>
-                <select
-                  onChange={({ target }) => handleFilter(target.value)}
-                  onBlur={({ target }) => handleFilter(target.value)}
-                >
-                  {filtered.map(b =>
-                    <option key={b} value={b}>{b}</option>
-                  )}
-                </select>
+            <div className='field-body'>
+              <div className='field'>
+                <p className='control'>
+                  <input
+                    className='input'
+                    type='text'
+                    placeholder='dog name'
+                    value={name}
+                    onChange={({ target }) => setName(target.value)}
+                  />
+                </p>
               </div>
             </div>
           </div>
-        </div>
 
-        <div className='field is-horizontal'>
-          <div className='field-label is-normal'>
-            <label className='label'>born</label>
-          </div>
-          <div className='field-body'>
-            <div className='field'>
-              <p className='control has-icons-left'>
-                <input
-                  className='input'
-                  type='date'
-                  value={born}
-                  onChange={({ target }) => setBorn(target.value)}
-                />
-                <span className="icon is-left">
-                  <i className="far fa-calendar-alt"></i>
-                </span>
-              </p>
+
+          <div className='field is-horizontal'>
+            <div className='field-label is-normal'>
+              <label className='label'>breed</label>
             </div>
-          </div>
-        </div>
-
-        <div className='field is-horizontal'>
-          <div className='field-label'>
-            <label className='label'>gender</label>
-          </div>
-          <div className='field-body'>
-            <div className='field is-narrow'>
-              <div className='control'>
-                <label className='radio'>
-                  <input
-                    type='radio'
-                    name='isFemale'
-                    checked={isFemale}
-                    value='true'
-                    onChange={() => setIsFemale(true)} /> female
-                </label>
-                <label className='radio'>
-                  <input
-                    type='radio'
-                    name='isFemale'
-                    checked={!isFemale}
-                    value='false'
-                    onChange={() => setIsFemale(false)} /> male
-                </label>
+            <div className='field-body'>
+              <div className='field'>
+                <Select
+                  value={breed}
+                  onChange={(selected) => setBreed(selected)}
+                  options={options}
+                  placeholder='Start typing to see a filtered list of breeds'
+                />
               </div>
             </div>
           </div>
-        </div>
 
-        <div className='field is-horizontal'>
-          <div className='field-label'></div>
-          <div className='field-body'>
-            <div className='field is-grouped'>
-              <div className="control">
-                <button className='button is-success' onClick={submit}>
-                  add a dog
+          <div className='field is-horizontal'>
+            <div className='field-label is-normal'>
+              <label className='label'>born</label>
+            </div>
+            <div className='field-body'>
+              <div className='field'>
+                <p className='control'>
+                  <input
+                    className='input'
+                    type='date'
+                    value={born}
+                    onChange={({ target }) => setBorn(target.value)}
+                  />
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className='field is-horizontal'>
+            <div className='field-label'>
+              <label className='label'>gender</label>
+            </div>
+            <div className='field-body'>
+              <div className='field is-narrow'>
+                <div className='control'>
+                  <label className='radio'>
+                    <input
+                      type='radio'
+                      name='isFemale'
+                      checked={isFemale}
+                      value='true'
+                      onChange={() => setIsFemale(true)} /> female
+                </label>
+                  <label className='radio'>
+                    <input
+                      type='radio'
+                      name='isFemale'
+                      checked={!isFemale}
+                      value='false'
+                      onChange={() => setIsFemale(false)} /> male
+                </label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className='field is-horizontal'>
+            <div className='field-label'></div>
+            <div className='field-body'>
+              <div className='field'>
+                <div className="control">
+                  <button className='button is-success is-outlined' onClick={submit}>
+                    add a dog
                 </button>
-              </div>
-              <div className="control">
-                {props.user.role === 'admin' &&
-                  <button className='button' onClick={randomDog}>
-                    randomize
-                  </button>
-                }
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
-      </form>
+        </form>
+      </div>
     </div>
   )
 }

@@ -30,7 +30,7 @@ const typeDefs = gql`
     dam: Dog,
     sire: Dog,
     puppies: [Boolean],
-    reservations: [String],
+    reservations: [User],
     price: Int,
     breeder: User!
     id: ID!

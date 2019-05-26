@@ -69,6 +69,7 @@ const Litter = ({ result, user }) => {
   }
 
   return (
+
     <div className='columns is-centered'>
       <div className='column is-12-tablet is-11-desktop is-10-widescreen is-9-fullhd'>
         <table className='table is-hoverable is-fullwidth'>
@@ -122,6 +123,7 @@ const Litter = ({ result, user }) => {
         </table>
       </div>
     </div>
+
   )
 }
 

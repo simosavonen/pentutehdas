@@ -79,13 +79,12 @@ const App = () => {
       const result = await loginMutation({
         variables: { username, password }
       })
-
       const token = result.data.login.value
       setToken(token)
       localStorage.setItem('pentutehdas-user-token', token)
-
+      return true
     } catch (error) {
-      console.log(error)
+      return false
     }
   }
 
@@ -94,36 +93,36 @@ const App = () => {
     <div className='site'>
       <Router>
         <Navigation
-          token={token}
+          user={user}
           logout={logout}
         />
-        <div className='site-content'>
-          <section className='section'>
-            <Route exact path='/' render={() => <Litter result={allLitters} user={user} />} />
-            <Route exact path='/login' render={() => <LoginForm login={login} />} />
-            <Route exact path='/litter' render={() =>
-              user && ['breeder', 'admin'].includes(user.role)
-                ? <LitterForm
-                  user={user}
-                  result={allDogs}
-                  addLitter={addLitterMutation}
-                />
-                : <Redirect to='/' />} />
-            <Route exact path='/dog' render={() =>
-              user && ['breeder', 'admin'].includes(user.role)
-                ? <Dogs
-                  user={user}
-                  result={allDogs}
-                  addDog={addDogMutation}
-                  deleteDog={deleteDogMutation}
-                />
-                : <Redirect to='/' />} />
-            <Route exact path='/user' render={() =>
-              user
-                ? <UserForm user={user} />
-                : <Redirect to='/' />} />
-          </section>
-        </div>
+
+        <section className='section site-content'>
+          <Route exact path='/' render={() => <Litter result={allLitters} user={user} />} />
+          <Route exact path='/login' render={() => <LoginForm login={login} />} />
+          <Route exact path='/litter' render={() =>
+            user && ['breeder', 'admin'].includes(user.role)
+              ? <LitterForm
+                user={user}
+                result={allDogs}
+                addLitter={addLitterMutation}
+              />
+              : <Redirect to='/' />} />
+          <Route exact path='/dog' render={() =>
+            user && ['breeder', 'admin'].includes(user.role)
+              ? <Dogs
+                user={user}
+                result={allDogs}
+                addDog={addDogMutation}
+                deleteDog={deleteDogMutation}
+              />
+              : <Redirect to='/' />} />
+          <Route exact path='/user' render={() =>
+            user
+              ? <UserForm user={user} />
+              : <Redirect to='/' />} />
+        </section>
+
         <Footer />
       </Router>
     </div>
