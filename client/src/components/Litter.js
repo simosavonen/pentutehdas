@@ -53,6 +53,33 @@ const Puppies = (props) => {
   )
 }
 
+const Reservations = (props) => {
+  const resStyles = {
+    padding: '0.6em',
+    margin: '1em 1em 0 0',
+    border: '1px solid lightgrey'
+
+  }
+
+  if (props.reservations.length === 0) {
+    return null
+  }
+  return (
+    <>
+      <p>Reservations</p>
+      <div>
+        {props.reservations.map((r, index) =>
+          <div key={r.username} style={resStyles} className='is-size-7 is-pulled-left'>
+            {r.phone && <p><strong>phone</strong> {r.phone}</p>}
+            {r.email && <p><strong>email</strong> {r.email}</p>}
+            {r.city && <p><strong>city</strong> {r.city}</p>}
+          </div>
+        )}
+      </div>
+    </>
+  )
+}
+
 const Litter = ({ result, user }) => {
   const [details, setDetails] = useState([])
 
@@ -65,7 +92,7 @@ const Litter = ({ result, user }) => {
   }
 
   const tableStyles = {
-    backgroundColor: 'rgba(255, 255, 255, 0.3)'
+    backgroundColor: 'rgba(255, 255, 255, 0.5)'
   }
 
   if (result.loading) {
@@ -79,12 +106,13 @@ const Litter = ({ result, user }) => {
         <table className='table is-hoverable is-fullwidth' style={tableStyles}>
           <thead>
             <tr>
-              <th style={{ width: '10%' }}>Due date</th>
-              <th style={{ width: '20%' }}>Progress</th>
+              <th style={{ width: '2%' }}></th>
+              <th style={{ width: '7%' }}>Due</th>
+              <th style={{ width: 'auto' }}>Progress</th>
               <th style={{ width: '20%' }}><i className='fas fa-venus'></i> Dam</th>
               <th style={{ width: '20%' }}><i className='fas fa-mars'></i> Sire</th>
-              <th style={{ width: '20%' }}>Puppies</th>
-              <th style={{ width: 'auto' }}>Price</th>
+              <th style={{ width: '15%' }}>Puppies</th>
+              <th style={{ width: '6%' }}>Price</th>
             </tr>
           </thead>
           <tbody>
@@ -94,8 +122,9 @@ const Litter = ({ result, user }) => {
                   onClick={(event) => toggleDetails(event.currentTarget.id)}
                   className='is-clickable'
                 >
+                  <td>{details.includes(litter.id) ? <strong>&#8722;</strong> : <strong>&#43;</strong>}</td>
                   <td>
-                    <Moment format="DD.MM.YYYY">
+                    <Moment format="DD.MM.YY">
                       {new Date(parseInt(litter.duedate, 10))}
                     </Moment>
                   </td>
@@ -103,21 +132,30 @@ const Litter = ({ result, user }) => {
                   <td>{litter.dam ? litter.dam.breed : 'removed'}</td>
                   <td>{litter.sire ? litter.sire.breed : 'removed'}</td>
                   <td><Puppies puppies={litter.puppies} /></td>
+
                   <td>{litter.price}&nbsp;€</td>
                 </tr>
                 {details.includes(litter.id) &&
                   <tr>
-                    <td colSpan='2'>Breeder: {litter.breeder.username}</td>
-                    <td>{litter.dam ? litter.dam.name : 'removed'}</td>
-                    <td>{litter.sire ? litter.sire.name : 'removed'}</td>
+                    <td></td>
                     <td colSpan='2'>
-                      {user
-                        ? <button className='button is-small is-success'>reserve a puppy</button>
-                        : <span>login to reserve a puppy</span>
+                      {(user && litter.breeder.username !== user.username) &&
+                        <p>Breeder: {litter.breeder.username}</p>
                       }
                       {(user && litter.breeder.username === user.username)
-                        && <button className='button is-small is-info' style={{ marginLeft: '1em' }}>edit the litter</button>
+                        && <Reservations reservations={litter.reservations} />
                       }
+                    </td>
+                    <td>{litter.dam ? litter.dam.name : 'removed'}</td>
+                    <td>{litter.sire ? litter.sire.name : 'removed'}</td>
+                    <td colSpan="2">
+                      {(user && litter.breeder.username !== user.username) &&
+                        <button className='button is-small is-success'>reserve a puppy</button>
+                      }
+                      {(user && litter.breeder.username === user.username)
+                        && <button className='button is-small is-info'>edit the litter</button>
+                      }
+                      {!user && <span>Login to reserve a puppy</span>}
                     </td>
                   </tr>
                 }

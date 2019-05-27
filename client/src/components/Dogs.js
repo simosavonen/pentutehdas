@@ -11,7 +11,7 @@ const Dogs = (props) => {
   }
 
   const tableStyles = {
-    backgroundColor: 'rgba(255, 255, 255, 0.4)'
+    backgroundColor: 'rgba(255, 255, 255, 0.5)'
   }
 
   if (props.result.loading) {

@@ -107,7 +107,7 @@ const typeDefs = gql`
 
 const resolvers = {
   Query: {
-    allLitters: () => Litter.find({}).populate(['dam', 'sire', 'breeder']),
+    allLitters: () => Litter.find({}).populate(['dam', 'sire', 'breeder', 'reservations']),
     allDogs: () => Dog.find({}).populate('owner'),
     me: (root, args, context) => {
       return context.currentUser

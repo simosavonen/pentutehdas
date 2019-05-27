@@ -17,7 +17,10 @@ const schema = new mongoose.Schema({
     { type: Boolean }
   ],
   reservations: [
-    { type: String }
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User'
+    }
   ],
   price: {
     type: Number
