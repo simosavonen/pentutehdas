@@ -23,7 +23,7 @@ const Navigation = ({ user, logout }) => {
         <div className={`navbar-menu ${burgerOpen && 'is-active'}`}>
           <div className="navbar-start">
             <Link to='/' className='navbar-item'>
-              all litters
+              home
             </Link>
             {(user && ['breeder', 'admin'].includes(user.role)) &&
               <React.Fragment>

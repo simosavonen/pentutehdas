@@ -66,5 +66,5 @@ frontend url: https://pentutehdas.surge.sh
 | 17.5. | 6     | progressbar, puppies listed on main page, bulma columns rock |
 | 18.5. | 5     | prepare to edit litters, return to using navbar and place login on the page, NaN bug |
 | 26.5. | 12     | clean up forms, return to using react-select for the dog breed combobox, remove randomDog(), createUser frontend working, get rid of unique index for user.phone and user.email, background image, updating user working |
-| 27.5. | 4     | litter details show reservations  |
-| yht   | 76    | | 
+| 27.5. | 6     | litter details show reservations, preparing to edit litter  |
+| yht   | 78    | | 

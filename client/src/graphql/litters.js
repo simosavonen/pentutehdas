@@ -7,10 +7,12 @@ export const ALL_LITTERS = gql`
     dam {
       name
       breed
+      born
     }
     sire {
       name
       breed
+      born
     }
     puppies
     reservations {

@@ -2,6 +2,10 @@
   cursor: pointer;
 }
 
+tr.is-clickable:hover {
+  background-color: rgba(0,0,0,0.05);
+}
+
 .site {
   display: flex;
   min-height: 100vh;
