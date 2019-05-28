@@ -14,7 +14,7 @@ const Dogs = (props) => {
     backgroundColor: 'rgba(255, 255, 255, 0.5)'
   }
 
-  if (props.result.loading) {
+  if (props.dogs.loading) {
     return (
       <DogForm user={props.user} addDog={props.addDog} />
     )
@@ -38,7 +38,7 @@ const Dogs = (props) => {
                 </tr>
               </thead>
               <tbody>
-                {props.result.data.allDogs.map(dog =>
+                {props.dogs.data.allDogs.map(dog =>
                   (props.user.role === 'admin' || props.user.username === dog.owner.username) &&
                   <tr key={dog.id}>
                     <td>{dog.name}</td>

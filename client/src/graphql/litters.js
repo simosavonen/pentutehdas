@@ -8,11 +8,13 @@ export const ALL_LITTERS = gql`
       name
       breed
       born
+      id
     }
     sire {
       name
       breed
       born
+      id
     }
     puppies
     reservations {
@@ -35,6 +37,22 @@ mutation createLitter($duedate: String!, $dam: String, $sire: String, $price: In
   addLitter(
     duedate: $duedate,
     dam: $dam,
+    sire: $sire,
+    price: $price,
+    puppies: $puppies    
+  ) {
+    duedate
+    price    
+    id
+  }
+}
+`
+
+export const UPDATE_LITTER = gql`
+mutation updateLitter($id: ID!, $duedate: String!, $sire: String, $price: Int, $puppies: [Boolean]) {
+  updateLitter(
+    id: $id,
+    duedate: $duedate,
     sire: $sire,
     price: $price,
     puppies: $puppies    

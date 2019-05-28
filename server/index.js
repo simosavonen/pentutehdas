@@ -84,6 +84,13 @@ const typeDefs = gql`
       reservations: [String]
       price: Int
     ): Litter
+    updateLitter(
+      id: ID!
+      duedate: String!      
+      sire: String
+      puppies: [Boolean]
+      price: Int
+    ): Litter
     createUser(
       username: String!
       password: String!
@@ -184,6 +191,21 @@ const resolvers = {
         })
       }
       return litter
+    },
+    updateLitter: async (root, args, context) => {
+      const currentUser = context.currentUser
+      if (!currentUser) {
+        throw new AuthenticationError('not authenticated')
+      }
+      console.log(args.price, typeof args.price)
+      console.log(args.duedate, typeof args.duedate)
+      const updatedLitter = await Litter.findByIdAndUpdate(args.id, {
+        duedate: args.duedate,
+        sire: args.sire,
+        puppies: args.puppies,
+        price: args.price
+      }, { new: true })
+      return updatedLitter
     },
     createUser: async (root, args) => {
       const saltRounds = 10

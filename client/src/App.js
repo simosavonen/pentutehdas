@@ -8,7 +8,7 @@ import LoginForm from './components/LoginForm'
 import Dogs from './components/Dogs'
 import UserForm from './components/UserForm'
 import Footer from './components/Footer'
-import { ALL_LITTERS, CREATE_LITTER } from './graphql/litters'
+import { ALL_LITTERS, CREATE_LITTER, UPDATE_LITTER } from './graphql/litters'
 import { ALL_DOGS, CREATE_DOG, DELETE_DOG } from './graphql/dogs'
 import { LOGIN } from './graphql/login'
 import { USER, CREATE_USER, UPDATE_USER } from './graphql/user'
@@ -66,6 +66,11 @@ const App = () => {
     refetchQueries: [{ query: ALL_LITTERS }]
   })
 
+  const editLitterMutation = useMutation(UPDATE_LITTER, {
+    onError: handleError,
+    refetchQueries: [{ query: ALL_LITTERS }]
+  })
+
   const deleteDogMutation = useMutation(DELETE_DOG, {
     onError: handleError,
     update: (store, response) => {
@@ -111,21 +116,31 @@ const App = () => {
         />
 
         <section className='section site-content'>
-          <Route exact path='/' render={() => <Litter result={allLitters} user={user} />} />
+          <Route exact path='/' render={() =>
+            <Litter
+              litters={allLitters}
+              dogs={allDogs}
+              user={user}
+              editLitter={editLitterMutation}
+            />} />
           <Route exact path='/login' render={() => <LoginForm login={login} addUser={addUserMutation} />} />
           <Route exact path='/litter' render={() =>
             user && ['breeder', 'admin'].includes(user.role)
-              ? <LitterForm
-                user={user}
-                result={allDogs}
-                addLitter={addLitterMutation}
-              />
+              ? <div className='columns is-centered'>
+                <div className='column is-full-mobile is-two-thirds-tablet is-half-desktop'>
+                  <LitterForm
+                    user={user}
+                    dogs={allDogs}
+                    addLitter={addLitterMutation}
+                  />
+                </div>
+              </div>
               : <Redirect to='/' />} />
           <Route exact path='/dog' render={() =>
             user && ['breeder', 'admin'].includes(user.role)
               ? <Dogs
                 user={user}
-                result={allDogs}
+                dogs={allDogs}
                 addDog={addDogMutation}
                 deleteDog={deleteDogMutation}
               />

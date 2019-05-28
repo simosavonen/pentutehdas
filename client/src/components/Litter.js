@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import Moment from 'react-moment'
+import LitterForm from './LitterForm'
 
 const LitterProgressBar = (props) => {
   // normal gestation period in dogs
@@ -83,9 +84,9 @@ const Reservations = (props) => {
   )
 }
 
-const Litter = ({ result, user }) => {
+const Litter = ({ litters, user, dogs, editLitter }) => {
   const [details, setDetails] = useState([])
-  const [editing, setEditing] = useState(false)
+  const [litterToEdit, setLitterToEdit] = useState(null)
 
   const toggleDetails = (id) => {
     if (details.includes(id)) {
@@ -95,99 +96,111 @@ const Litter = ({ result, user }) => {
     }
   }
 
-  const toggleEditing = () => {
-    setEditing(!editing)
-  }
+
 
   const tableStyles = {
-    backgroundColor: 'rgba(255, 255, 255, 0.5)'
+    backgroundColor: 'rgba(255, 255, 255, 0.5)',
   }
 
-  if (result.loading) {
+  if (litters.loading) {
     return <div className='container'>loading...</div>
   }
 
   return (
-
-    <div className='columns is-centered'>
-      <div className='column is-12-tablet is-11-desktop is-10-widescreen is-9-fullhd'>
-        <table className='table is-fullwidth is-size-7-mobile' style={tableStyles}>
-          <thead>
-            <tr>
-              <th style={{ width: '2%' }}></th>
-              <th style={{ width: '7%' }}>Due</th>
-              <th style={{ width: 'auto' }}>Progress</th>
-              <th style={{ width: '20%' }}><i className='fas fa-venus'></i> Dam</th>
-              <th style={{ width: '20%' }}><i className='fas fa-mars'></i> Sire</th>
-              <th style={{ width: '15%' }}>Puppies</th>
-              <th style={{ width: '6%' }}>Price</th>
-            </tr>
-          </thead>
-          <tbody>
-            {result.data.allLitters.map(litter =>
-              <React.Fragment key={litter.id}>
-                <tr id={litter.id}
-                  onClick={(event) => toggleDetails(event.currentTarget.id)}
-                  className='is-clickable'
-                >
-                  <td>{details.includes(litter.id) ? <strong>&#8722;</strong> : <strong>&#43;</strong>}</td>
-                  <td>
-                    <Moment format="DD.MM.YY">
-                      {new Date(parseInt(litter.duedate, 10))}
-                    </Moment>
-                  </td>
-                  <td><LitterProgressBar duedate={litter.duedate} /></td>
-                  <td>{litter.dam ? litter.dam.breed : 'removed'}</td>
-                  <td>{litter.sire ? litter.sire.breed : 'removed'}</td>
-                  <td><Puppies puppies={litter.puppies} /></td>
-                  <td>{litter.price}&nbsp;€</td>
-                </tr>
-                {details.includes(litter.id) &&
-                  <tr>
-                    <td></td>
-                    <td colSpan='2'>
-                      <p><strong>Breeder:</strong> {litter.breeder.username}</p>
-                    </td>
-                    <td>{litter.dam
-                      ? <ul>
-                        <li>"{litter.dam.name}"</li>
-                        <li>born <Moment format="DD.MM.YY">{new Date(parseInt(litter.dam.born, 10))}</Moment></li>
-                      </ul>
-                      : 'removed'
-                    }</td>
-                    <td>{litter.sire
-                      ? <ul>
-                        <li>"{litter.sire.name}"</li>
-                        <li>born <Moment format="DD.MM.YY">{new Date(parseInt(litter.sire.born, 10))}</Moment></li>
-                      </ul>
-                      : 'removed'
-                    }</td>
-                    <td colSpan="2">
-                      {(user && litter.breeder.username !== user.username) &&
-                        <button className='button is-small is-success'>reserve a puppy</button>
-                      }
-                      {(user && litter.breeder.username === user.username)
-                        && <button className='button is-small is-info' onClick={() => toggleEditing()}>edit the litter</button>
-                      }
-                      {!user && <span>Login to reserve a puppy</span>}
-                    </td>
-                  </tr>
-                }
-                {(details.includes(litter.id) && user && litter.breeder.username === user.username) &&
-                  <tr>
-                    <td></td>
-                    <td colSpan="6">
-                      <Reservations reservations={litter.reservations} />
-                    </td>
-                  </tr>
-                }
-              </React.Fragment>
-            )}
-          </tbody>
-        </table>
+    <>
+      <div className={`modal ${litterToEdit && 'is-active'}`}>
+        <div className='modal-background'></div>
+        <div className="modal-content">
+          {litterToEdit &&
+            <LitterForm
+              user={user}
+              dogs={dogs}
+              litter={litterToEdit}
+              editLitter={editLitter}
+            />}
+        </div>
+        <button className="modal-close is-large" aria-label="close" onClick={() => setLitterToEdit(null)}></button>
       </div>
-    </div>
-
+      <div className='columns is-centered'>
+        <div className='column is-12-tablet is-11-desktop is-10-widescreen is-9-fullhd'>
+          <table id="litterTable" className='table is-fullwidth is-size-7-mobile' style={tableStyles}>
+            <thead>
+              <tr>
+                <th style={{ width: '2%' }}></th>
+                <th style={{ width: '7%' }}>Due</th>
+                <th style={{ width: 'auto' }}>Progress</th>
+                <th style={{ width: '20%' }}><i className='fas fa-venus'></i> Dam</th>
+                <th style={{ width: '20%' }}><i className='fas fa-mars'></i> Sire</th>
+                <th style={{ width: '15%' }}>Puppies</th>
+                <th style={{ width: '6%' }}>Price</th>
+              </tr>
+            </thead>
+            <tbody>
+              {litters.data.allLitters.map(litter =>
+                <React.Fragment key={litter.id}>
+                  <tr id={litter.id}
+                    onClick={(event) => toggleDetails(event.currentTarget.id)}
+                    className='is-clickable'
+                  >
+                    <td>{details.includes(litter.id) ? <strong>&#8722;</strong> : <strong>&#43;</strong>}</td>
+                    <td>
+                      <Moment format="DD.MM.YY">
+                        {new Date(parseInt(litter.duedate, 10))}
+                      </Moment>
+                    </td>
+                    <td><LitterProgressBar duedate={litter.duedate} /></td>
+                    <td>{litter.dam ? litter.dam.breed : 'removed'}</td>
+                    <td>{litter.sire ? litter.sire.breed : 'removed'}</td>
+                    <td><Puppies puppies={litter.puppies} /></td>
+                    <td>{litter.price}&nbsp;€</td>
+                  </tr>
+                  {details.includes(litter.id) &&
+                    <tr>
+                      <td></td>
+                      <td colSpan='2'>
+                        <p><strong>Breeder</strong></p>
+                        <p>{litter.breeder.username}</p>
+                      </td>
+                      <td>{litter.dam
+                        ? <ul>
+                          <li>"{litter.dam.name}"</li>
+                          <li>born <Moment format="DD.MM.YY">{new Date(parseInt(litter.dam.born, 10))}</Moment></li>
+                        </ul>
+                        : 'removed'
+                      }</td>
+                      <td>{litter.sire
+                        ? <ul>
+                          <li>"{litter.sire.name}"</li>
+                          <li>born <Moment format="DD.MM.YY">{new Date(parseInt(litter.sire.born, 10))}</Moment></li>
+                        </ul>
+                        : 'removed'
+                      }</td>
+                      <td colSpan="2">
+                        {(user && litter.breeder.username !== user.username) &&
+                          <button className='button is-small is-success'>reserve a puppy</button>
+                        }
+                        {(user && litter.breeder.username === user.username)
+                          && <button className='button is-small is-info' onClick={() => setLitterToEdit(litter)}>edit the litter</button>
+                        }
+                        {!user && <span>Login to reserve a puppy</span>}
+                      </td>
+                    </tr>
+                  }
+                  {(details.includes(litter.id) && user && litter.breeder.username === user.username) &&
+                    <tr>
+                      <td></td>
+                      <td colSpan="6">
+                        <Reservations reservations={litter.reservations} />
+                      </td>
+                    </tr>
+                  }
+                </React.Fragment>
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </>
   )
 }
 
