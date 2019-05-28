@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { withRouter } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import PuppyList from './PuppyList'
 
 let LitterForm = (props) => {
   const { dogs, user, litter, history, addLitter, editLitter } = props
@@ -80,6 +81,7 @@ let LitterForm = (props) => {
                 type='date'
                 value={duedate}
                 onChange={({ target }) => setDuedate(target.value)}
+                required
               />
               <span className='icon is-left'>
                 <FontAwesomeIcon icon='calendar-alt' />
@@ -96,7 +98,7 @@ let LitterForm = (props) => {
           </div>
           <div className='field-body'>
             <div className='select'>
-              <select value={dam} onChange={({ target }) => setDam(target.value)}>
+              <select value={dam} required onChange={({ target }) => setDam(target.value)}>
                 <option value='' disabled hidden>Choose dam</option>
                 {myDogs.map(dog =>
                   dog.isFemale && <option key={dog.id} value={dog.id}>
@@ -128,7 +130,7 @@ let LitterForm = (props) => {
         </div>
         <div className='field-body'>
           <div className='select'>
-            <select value={sire} onChange={({ target }) => setSire(target.value)}>
+            <select value={sire} required onChange={({ target }) => setSire(target.value)}>
               <option value='' disabled hidden>Choose sire</option>
               {myDogs.map(dog =>
                 !dog.isFemale && <option key={dog.id} value={dog.id}>
@@ -173,26 +175,31 @@ let LitterForm = (props) => {
         </div>
         <div className='field-body'>
           <div className='field is-grouped'>
-            <p className='control is-expanded'>
+            <div className='control is-expanded'>
+              <div className='input'>
+                <PuppyList puppies={puppies} />
+              </div>
               <input
                 className='input is-small'
-                type='text'
+                type='hidden'
                 value={puppies}
                 onChange={({ target }) => setPuppies(target.value)}
                 readOnly
               />
-              <span className='help'>use the buttons to add female (true) or male (false)</span>
-            </p>
+              <span className='help'>
+                use the buttons to add a female <FontAwesomeIcon icon='venus'
+                /> or male <FontAwesomeIcon icon='mars' /> puppy</span>
+            </div>
             <p className='control'>
               <button className='button is-danger is-outlined is-medium' title='add female puppy'
                 onClick={(event) => adjustPuppies(event, true)}>
-                <i className='fas fa-venus'></i>
+                <FontAwesomeIcon icon='venus' />
               </button>
             </p>
             <p className='control'>
               <button className='button is-info is-outlined is-medium' title='add male puppy'
                 onClick={(event) => adjustPuppies(event, false)}>
-                <i className='fas fa-mars'></i>
+                <FontAwesomeIcon icon='mars' />
               </button>
             </p>
             <p className='control'>
@@ -211,7 +218,7 @@ let LitterForm = (props) => {
         <div className='field-body'>
           <div className='field is-grouped'>
             <p className='control'>
-              <button className='button is-primary' type='submit'>
+              <button className='button is-success is-outlined' type='submit'>
                 {litter ? 'save changes' : 'add a litter'}
               </button>
             </p>

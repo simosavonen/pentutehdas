@@ -135,9 +135,14 @@ let UserForm = (props) => {
               <label className="label"></label>
             </div>
             <div className="field-body">
-              <div className='field'>
+              <div className='field is-grouped'>
                 <div className='control'>
                   <button className='button is-info is-outlined' type='submit'>save</button>
+                </div>
+                <div className='control'>
+                  <button
+                    className='button is-danger is-outlined'
+                    onClick={(event) => { event.preventDefault(); props.history.push('/') }}>cancel</button>
                 </div>
               </div>
             </div>

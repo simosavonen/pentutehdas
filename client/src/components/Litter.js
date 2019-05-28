@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import Moment from 'react-moment'
 import LitterForm from './LitterForm'
+import PuppyList from './PuppyList'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const LitterProgressBar = (props) => {
@@ -37,22 +38,6 @@ const LitterProgressBar = (props) => {
     </progress>
   )
 }
-
-const Puppies = (props) => {
-  if (!props.puppies) {
-    return null
-  }
-  return (
-    <>
-      {props.puppies.map((isFemale, index) =>
-        isFemale
-          ? <FontAwesomeIcon key={index} icon='venus' className='has-text-danger' style={{ marginRight: "0.25em" }} />
-          : <FontAwesomeIcon key={index} icon='mars' className='has-text-info' style={{ marginLeft: "0.15em" }} />
-      )}
-    </>
-  )
-}
-
 const Reservations = (props) => {
   const resStyles = {
     padding: '0.6em',
@@ -151,7 +136,7 @@ const Litter = ({ litters, user, dogs, editLitter }) => {
                     <td><LitterProgressBar duedate={litter.duedate} /></td>
                     <td>{litter.dam ? litter.dam.breed : 'removed'}</td>
                     <td>{litter.sire ? litter.sire.breed : 'removed'}</td>
-                    <td><Puppies puppies={litter.puppies} /></td>
+                    <td><PuppyList puppies={litter.puppies} /></td>
                     <td>{litter.price}&nbsp;€</td>
                   </tr>
                   {details.includes(litter.id) &&

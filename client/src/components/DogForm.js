@@ -37,7 +37,7 @@ const DogForm = (props) => {
   return (
     <div className='columns is-centered'>
       <div className='box column is-12-tablet is-9-desktop is-8-widescreen is-7-fullhd'>
-        <form style={formStyles}>
+        <form style={formStyles} onSubmit={submit}>
           <h1 className='title'>Add a dog</h1>
           <div className='field is-horizontal'>
             <div className='field-label is-normal'>
@@ -52,6 +52,9 @@ const DogForm = (props) => {
                     placeholder='dog name'
                     value={name}
                     onChange={({ target }) => setName(target.value)}
+                    pattern='.{3,30}'
+                    required
+                    title='Name length between 3 and 30 characters.'
                   />
                 </p>
               </div>
@@ -87,6 +90,7 @@ const DogForm = (props) => {
                     type='date'
                     value={born}
                     onChange={({ target }) => setBorn(target.value)}
+                    required
                   />
                 </p>
               </div>
@@ -126,14 +130,13 @@ const DogForm = (props) => {
             <div className='field-body'>
               <div className='field'>
                 <div className="control">
-                  <button className='button is-success is-outlined' onClick={submit}>
+                  <button className='button is-success is-outlined' type='submit'>
                     add a dog
                 </button>
                 </div>
               </div>
             </div>
           </div>
-
         </form>
       </div>
     </div>
