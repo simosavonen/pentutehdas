@@ -11,7 +11,7 @@ import Footer from './components/Footer'
 import { ALL_LITTERS, CREATE_LITTER, UPDATE_LITTER } from './graphql/litters'
 import { ALL_DOGS, CREATE_DOG, DELETE_DOG } from './graphql/dogs'
 import { LOGIN } from './graphql/login'
-import { USER, CREATE_USER, UPDATE_USER } from './graphql/user'
+import { USER, CREATE_USER, UPDATE_USER, USER_AVAILABLE } from './graphql/user'
 
 
 
@@ -36,6 +36,7 @@ const App = () => {
 
   const allLitters = useQuery(ALL_LITTERS)
   const allDogs = useQuery(ALL_DOGS)
+  const userAvailableQuery = useMutation(USER_AVAILABLE)
   const loginMutation = useMutation(LOGIN)
   const addDogMutation = useMutation(CREATE_DOG, {
     onError: handleError,
@@ -123,7 +124,12 @@ const App = () => {
               user={user}
               editLitter={editLitterMutation}
             />} />
-          <Route exact path='/login' render={() => <LoginForm login={login} addUser={addUserMutation} />} />
+          <Route exact path='/login' render={() =>
+            <LoginForm
+              login={login}
+              addUser={addUserMutation}
+              userAvailable={userAvailableQuery}
+            />} />
           <Route exact path='/litter' render={() =>
             user && ['breeder', 'admin'].includes(user.role)
               ? <div className='columns is-centered'>

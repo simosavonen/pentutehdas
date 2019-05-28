@@ -10,6 +10,7 @@ let LoginForm = (props) => {
   const [failed, setFailed] = useState(false)
   const [isNewUser, setIsNewUser] = useState(false)
   const [notification, setNotification] = useState('')
+  const [taken, setTaken] = useState(false)
 
   const submit = async (event) => {
     event.preventDefault()
@@ -44,6 +45,13 @@ let LoginForm = (props) => {
     //setCity('')
   }
 
+  const checkAvailability = async () => {
+    const result = await props.userAvailable({
+      variables: { username }
+    })
+    setTaken(!result.data.userAvailable)
+  }
+
   const toggleRegistering = (event) => {
     event.preventDefault()
     setIsNewUser(!isNewUser)
@@ -72,6 +80,7 @@ let LoginForm = (props) => {
                 value={username}
                 pattern="^[a-zåäö0-9]{3,16}$"
                 onChange={({ target }) => setUsername(target.value)}
+                onBlur={checkAvailability}
                 required
                 title="Alphanumeric characters, length between 3 and 16."
               />
@@ -79,7 +88,10 @@ let LoginForm = (props) => {
                 <i className="fas fa-user"></i>
               </span>
             </div>
-            <p className="help">username, should be unrecognizable</p>
+            {isNewUser && taken
+              ? <p className="help has-text-danger">username not available</p>
+              : <p className="help">username, should be unrecognizable</p>
+            }
           </div>
 
           <div className='field'>

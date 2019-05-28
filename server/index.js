@@ -62,8 +62,7 @@ const typeDefs = gql`
   type Query {
     allLitters: [Litter!]!
     allDogs: [Dog!]!
-    me(token: String): User
-    userAvailable(username: String!): Boolean
+    me(token: String): User    
   }
 
   type Mutation {
@@ -109,6 +108,9 @@ const typeDefs = gql`
       username: String!
       password: String!
     ): Token
+    userAvailable(
+      username: String!
+    ): Boolean
   }
 `
 
@@ -119,10 +121,6 @@ const resolvers = {
     me: (root, args, context) => {
       return context.currentUser
     },
-    userAvailable: async (root, args) => {
-      const taken = await User.findOne({ username: args.username })
-      return taken ? false : true
-    }
   },
   Mutation: {
     addDog: async (root, args, context) => {
@@ -270,6 +268,10 @@ const resolvers = {
       }
 
       return { value: jwt.sign(userForToken, process.env.JWT_SECRET) }
+    },
+    userAvailable: async (root, args) => {
+      const taken = await User.findOne({ username: args.username })
+      return taken ? false : true
     }
   }
 }

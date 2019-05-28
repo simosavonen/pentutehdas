@@ -13,6 +13,12 @@ query me($token: String){
 }
 `
 
+export const USER_AVAILABLE = gql`
+mutation userAvailable($username:String!) {
+  userAvailable(username:$username)  
+}
+`
+
 export const CREATE_USER = gql`
 mutation createUser(
   $username:String!, 
@@ -56,8 +62,3 @@ mutation updateUser($id:ID!, $username:String!, $phone:String, $email:String, $c
 }
 `
 
-export const USER_AVAILABLE = gql`
-query userAvailable($username:String!) {
-  userAvailable(username:$username)  
-}
-`
