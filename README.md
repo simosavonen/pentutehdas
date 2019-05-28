@@ -47,7 +47,7 @@ frontend url: https://pentutehdas.surge.sh
 | Feature     | Create | Read   | Update | Delete |
 | :----       | :----: | :----: | :----: | :----: |
 | Dog         | F, B   | F, B   |        | F, B   |
-| Litter      | F, B   | F, B   |        |        |
+| Litter      | F, B   | F, B   |  F, B  |        |
 | User        | F, B   | F, B   |  F, B  |        |
 | Reservation |        | F, B   |        |        |
 
@@ -67,5 +67,5 @@ frontend url: https://pentutehdas.surge.sh
 | 18.5. | 5     | prepare to edit litters, return to using navbar and place login on the page, NaN bug |
 | 26.5. | 12     | clean up forms, return to using react-select for the dog breed combobox, remove randomDog(), createUser frontend working, get rid of unique index for user.phone and user.email, background image, updating user working |
 | 27.5. | 6     | litter details show reservations, preparing to edit litter  |
-| 28.5. | 5     | editing litters working but fontawesome icons causing errors when puppy list changes  |
-| yht   | 83    | | 
+| 28.5. | 6     | editing litters working but fontawesome icons causing errors when puppy list changes, use react-fontawesome, backend checks who is doing the updating |
+| yht   | 84    | | 

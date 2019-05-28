@@ -45,6 +45,7 @@ let LitterForm = (props) => {
           id: litter.id, duedate, sire, price, puppies
         }
       })
+      props.toggle(null)
     }
 
     history.push('/')

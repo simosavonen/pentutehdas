@@ -197,15 +197,23 @@ const resolvers = {
       if (!currentUser) {
         throw new AuthenticationError('not authenticated')
       }
-      console.log(args.price, typeof args.price)
-      console.log(args.duedate, typeof args.duedate)
-      const updatedLitter = await Litter.findByIdAndUpdate(args.id, {
-        duedate: args.duedate,
-        sire: args.sire,
-        puppies: args.puppies,
-        price: args.price
-      }, { new: true })
-      return updatedLitter
+      const litterToBeUpdated = await Litter.findById(args.id)
+      if (!litterToBeUpdated) {
+        throw new UserInputError('cannot find the litter to update')
+      }
+
+      const isAdmin = currentUser.role === 'admin'
+      if (currentUser._id.toString() === litterToBeUpdated.breeder.toString() || isAdmin) {
+        const updatedLitter = await Litter.findByIdAndUpdate(args.id, {
+          duedate: args.duedate,
+          sire: args.sire,
+          puppies: args.puppies,
+          price: args.price
+        }, { new: true })
+        return updatedLitter
+      } else {
+        throw new ForbiddenError('you are not the admin, or the breeder')
+      }
     },
     createUser: async (root, args) => {
       const saltRounds = 10
