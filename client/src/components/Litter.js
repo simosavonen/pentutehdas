@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import Moment from 'react-moment'
 import LitterForm from './LitterForm'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const LitterProgressBar = (props) => {
   // normal gestation period in dogs
@@ -45,10 +46,8 @@ const Puppies = (props) => {
     <>
       {props.puppies.map((isFemale, index) =>
         isFemale
-          ? <i key={index} className='fas fa-venus has-text-danger'
-            style={{ marginRight: "0.25em" }}></i>
-          : <i key={index} className='fas fa-mars has-text-info'
-            style={{ marginLeft: "0.15em" }}></i>
+          ? <FontAwesomeIcon key={index} icon='venus' className='has-text-danger' style={{ marginRight: "0.25em" }} />
+          : <FontAwesomeIcon key={index} icon='mars' className='has-text-info' style={{ marginLeft: "0.15em" }} />
       )}
     </>
   )
@@ -73,10 +72,10 @@ const Reservations = (props) => {
       <div className='is-clearfix'>
         {props.reservations.map((r, index) =>
           <div key={r.username} style={resStyles} className='is-pulled-left' title={`reservation #${index + 1}`}>
-            {r.phone && <p><span className="icon"><i className="fas fa-phone"></i></span> {r.phone}</p>}
-            {r.email && <p><span className="icon"><i className="fas fa-at"></i></span> <a href={`mailto:${r.email}`}>
+            {r.phone && <p><span className="icon"><FontAwesomeIcon icon='phone' /></span> {r.phone}</p>}
+            {r.email && <p><span className="icon"><FontAwesomeIcon icon='at' /></span> <a href={`mailto:${r.email}`}>
               {r.email}</a></p>}
-            {r.city && <p><span className="icon"><i className="fas fa-globe"></i></span> {r.city}</p>}
+            {r.city && <p><span className="icon"><FontAwesomeIcon icon='globe' /></span> {r.city}</p>}
           </div>
         )}
       </div>
@@ -117,6 +116,7 @@ const Litter = ({ litters, user, dogs, editLitter }) => {
               dogs={dogs}
               litter={litterToEdit}
               editLitter={editLitter}
+              toggle={setLitterToEdit}
             />}
         </div>
         <button className="modal-close is-large" aria-label="close" onClick={() => setLitterToEdit(null)}></button>

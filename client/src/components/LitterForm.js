@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { withRouter } from 'react-router-dom'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 let LitterForm = (props) => {
   const { dogs, user, litter, history, addLitter, editLitter } = props
@@ -80,7 +81,7 @@ let LitterForm = (props) => {
                 onChange={({ target }) => setDuedate(target.value)}
               />
               <span className='icon is-left'>
-                <i className='far fa-calendar-alt'></i>
+                <FontAwesomeIcon icon='calendar-alt' />
               </span>
               <span className='help'>the date when the puppies were born, or are due</span>
             </p>
@@ -106,7 +107,7 @@ let LitterForm = (props) => {
         </div>
         : <div className='field is-horizontal'>
           <div className='field-label is-normal'>
-            <label className='label'>dam <i className='fas fa-venus'></i></label>
+            <label className='label'>dam <FontAwesomeIcon icon='venus' /></label>
           </div>
           <div className='field-body'>
             <input
@@ -122,7 +123,7 @@ let LitterForm = (props) => {
 
       <div className='field is-horizontal'>
         <div className='field-label is-normal'>
-          <label className='label'>sire <i className='fas fa-mars'></i></label>
+          <label className='label'>sire <FontAwesomeIcon icon='mars' /></label>
         </div>
         <div className='field-body'>
           <div className='select'>
@@ -157,7 +158,7 @@ let LitterForm = (props) => {
                 }
               />
               <span className='icon is-right'>
-                <i className='fas fa-euro-sign'></i>
+                <FontAwesomeIcon icon='euro-sign' />
               </span>
               <span className='help'>price per 1 puppy</span>
             </p>
@@ -207,12 +208,20 @@ let LitterForm = (props) => {
         <div className='field-label is-normal'>
         </div>
         <div className='field-body'>
-          <div className='field'>
+          <div className='field is-grouped'>
             <p className='control'>
               <button className='button is-primary' type='submit'>
                 {litter ? 'save changes' : 'add a litter'}
               </button>
             </p>
+            {litter &&
+              <p className='control'>
+                <button className='button is-danger is-outlined'
+                  onClick={(event) => { event.preventDefault(); props.toggle(null) }}>
+                  cancel
+                  </button>
+              </p>
+            }
           </div>
         </div>
       </div>

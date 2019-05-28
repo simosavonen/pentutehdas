@@ -8,7 +8,12 @@ import { createHttpLink } from 'apollo-link-http'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import { setContext } from 'apollo-link-context'
 import { BrowserRouter as Router } from 'react-router-dom'
+
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faMars, faVenus, faAt, faPhone, faGlobe, faCalendarAlt, faEuroSign } from '@fortawesome/free-solid-svg-icons'
 import './index.css'
+
+library.add(faMars, faVenus, faAt, faPhone, faGlobe, faCalendarAlt, faEuroSign)
 
 let httpLink = createHttpLink({
   uri: 'https://pentutehdas.herokuapp.com/graphql',
