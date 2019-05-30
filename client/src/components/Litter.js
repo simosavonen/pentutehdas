@@ -24,21 +24,27 @@ const LitterProgressBar = (props) => {
     progress = Math.floor(100 * (gestation - days) / gestation)
   }
 
-  let color = 'progress is-large is-success'
-  if (progress < 66) { color = 'progress is-large is-warning' }
-  if (progress < 33) { color = 'progress is-large is-danger' }
+  let color = 'progress is-success'
+  if (progress < 66) { color = 'progress is-warning' }
+  if (progress < 33) { color = 'progress is-danger' }
+
+  const barStyle = {
+    marginTop: '0.25em',
+    maxWidth: '90%'
+  }
 
   return (
     <progress
       className={color}
       max={gestation}
       value={Math.floor(gestation - days)}
+      style={barStyle}
     >
       {progress}%
     </progress>
   )
 }
-const Reservations = (props) => {
+const Reservations = ({ reservations }) => {
   const resStyles = {
     padding: '0.6em',
     margin: '0.5em 1em 0.5em 0',
@@ -46,7 +52,7 @@ const Reservations = (props) => {
     backgroundColor: 'rgba(0,0,0,0.02)'
   }
 
-  if (props.reservations.length === 0) {
+  if (reservations.length === 0) {
     return (
       <p><strong>No reservations yet</strong></p>
     )
@@ -55,9 +61,10 @@ const Reservations = (props) => {
     <>
       <p><strong>Puppy reservations</strong></p>
       <div className='is-clearfix'>
-        {props.reservations.map((r, index) =>
+        {reservations.map((r, index) =>
           <div key={r.username} style={resStyles} className='is-pulled-left' title={`reservation #${index + 1}`}>
-            {r.phone && <p><span className="icon"><FontAwesomeIcon icon='phone' /></span> {r.phone}</p>}
+            <p><span className='icon'><strong>&#8470;</strong></span> {index + 1} / {reservations.length}</p>
+            {r.phone && <p><span className="icon"><FontAwesomeIcon icon='phone' /></span> <a href={`tel:${r.phone}`}>{r.phone}</a></p>}
             {r.email && <p><span className="icon"><FontAwesomeIcon icon='at' /></span> <a href={`mailto:${r.email}`}>
               {r.email}</a></p>}
             {r.city && <p><span className="icon"><FontAwesomeIcon icon='globe' /></span> {r.city}</p>}
@@ -74,16 +81,20 @@ const Litter = ({ litters, user, dogs, editLitter }) => {
 
   const toggleDetails = (id) => {
     if (details.includes(id)) {
-      setDetails(details.filter(d => d !== id))
+      setDetails([])
     } else {
-      setDetails([...details, id])
+      setDetails([id])
     }
   }
 
 
 
   const tableStyles = {
-    backgroundColor: 'rgba(255, 255, 255, 0.5)',
+    backgroundColor: 'rgba(255, 255, 255, 0.5)'
+  }
+
+  const detailStyles = {
+    backgroundColor: 'rgba(255, 255, 255, 0.8)'
   }
 
   if (litters.loading) {
@@ -113,10 +124,10 @@ const Litter = ({ litters, user, dogs, editLitter }) => {
               <tr>
                 <th style={{ width: '2%' }}></th>
                 <th style={{ width: '7%' }}>Due</th>
-                <th style={{ width: 'auto' }}>Progress</th>
-                <th style={{ width: '20%' }}><i className='fas fa-venus'></i> Dam</th>
-                <th style={{ width: '20%' }}><i className='fas fa-mars'></i> Sire</th>
-                <th style={{ width: '15%' }}>Puppies</th>
+                <th className='has-text-centered' style={{ width: '20%' }}>Location</th>
+                <th><FontAwesomeIcon icon='venus' /> Dam</th>
+                <th><FontAwesomeIcon icon='mars' /> Sire</th>
+                <th>Puppies</th>
                 <th style={{ width: '6%' }}>Price</th>
               </tr>
             </thead>
@@ -125,7 +136,8 @@ const Litter = ({ litters, user, dogs, editLitter }) => {
                 <React.Fragment key={litter.id}>
                   <tr id={litter.id}
                     onClick={(event) => toggleDetails(event.currentTarget.id)}
-                    className='is-clickable'
+                    className={details.includes(litter.id) ? 'is-clickable borderless' : 'is-clickable'}
+                    style={details.includes(litter.id) ? detailStyles : null}
                   >
                     <td>{details.includes(litter.id) ? <strong>&#8722;</strong> : <strong>&#43;</strong>}</td>
                     <td>
@@ -133,18 +145,18 @@ const Litter = ({ litters, user, dogs, editLitter }) => {
                         {new Date(parseInt(litter.duedate, 10))}
                       </Moment>
                     </td>
-                    <td><LitterProgressBar duedate={litter.duedate} /></td>
+                    <td className='has-text-centered'>{litter.breeder.city}</td>
                     <td>{litter.dam ? litter.dam.breed : 'removed'}</td>
                     <td>{litter.sire ? litter.sire.breed : 'removed'}</td>
                     <td><PuppyList puppies={litter.puppies} /></td>
-                    <td>{litter.price}&nbsp;€</td>
+                    <td className='has-text-right'>{litter.price}&nbsp;€</td>
                   </tr>
                   {details.includes(litter.id) &&
-                    <tr>
+                    <tr className='borderless' style={detailStyles}>
                       <td></td>
                       <td colSpan='2'>
-                        <p><strong>Breeder</strong></p>
-                        <p>{litter.breeder.username}</p>
+                        <p><strong>Progress</strong></p>
+                        <LitterProgressBar duedate={litter.duedate} />
                       </td>
                       <td>{litter.dam
                         ? <ul>
@@ -161,18 +173,19 @@ const Litter = ({ litters, user, dogs, editLitter }) => {
                         : 'removed'
                       }</td>
                       <td colSpan="2">
+                        <p><strong>Actions</strong></p>
                         {(user && litter.breeder.username !== user.username) &&
-                          <button className='button is-small is-success'>reserve a puppy</button>
+                          <button className='button is-small is-info is-outlined'>reserve a puppy</button>
                         }
                         {(user && litter.breeder.username === user.username)
-                          && <button className='button is-small is-info' onClick={() => setLitterToEdit(litter)}>edit the litter</button>
+                          && <button className='button is-small is-info is-outlined' onClick={() => setLitterToEdit(litter)}>edit the litter</button>
                         }
                         {!user && <span>Login to reserve a puppy</span>}
                       </td>
                     </tr>
                   }
                   {(details.includes(litter.id) && user && litter.breeder.username === user.username) &&
-                    <tr>
+                    <tr style={detailStyles}>
                       <td></td>
                       <td colSpan="6">
                         <Reservations reservations={litter.reservations} />

@@ -26,6 +26,7 @@ export const ALL_LITTERS = gql`
     price
     breeder {
       username
+      city
     }
     id
   }

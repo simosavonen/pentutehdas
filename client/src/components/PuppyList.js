@@ -23,7 +23,8 @@ const PuppyList = ({ puppies }) => {
           className='has-text-info'
           style={{ marginLeft: "0.15em" }}
         />
-      )} &nbsp;
+      )}
+      {puppies.length === 0 && 'none'} &nbsp;
     </div>
   )
 }

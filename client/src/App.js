@@ -56,8 +56,8 @@ const App = () => {
 
   const updateUserMutation = useMutation(UPDATE_USER, {
     onError: handleError,
+    refetchQueries: [{ query: ALL_LITTERS }],
     update: (store, response) => {
-      console.log(response.data.updateUser)
       setUser(response.data.updateUser)
     }
   })
@@ -76,10 +76,7 @@ const App = () => {
     onError: handleError,
     update: (store, response) => {
       const dataInStore = store.readQuery({ query: ALL_DOGS })
-      //console.log('response.data.deleteDog', response.data.deleteDog)
-      //console.log('before filter', dataInStore.allDogs)
       dataInStore.allDogs = dataInStore.allDogs.filter(dog => dog.id !== response.data.deleteDog.id)
-      //console.log('after filter', dataInStore.allDogs)
       store.writeQuery({
         query: ALL_DOGS,
         data: dataInStore

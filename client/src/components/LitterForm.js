@@ -37,13 +37,13 @@ let LitterForm = (props) => {
     if (!litter) {
       await addLitter({
         variables: {
-          duedate, dam, sire, price, puppies
+          duedate, dam, sire, price: parseInt(price, 10), puppies
         }
       })
     } else {
       await editLitter({
         variables: {
-          id: litter.id, duedate, sire, price, puppies
+          id: litter.id, duedate, sire, price: parseInt(price, 10), puppies
         }
       })
       props.toggle(null)
@@ -152,13 +152,11 @@ let LitterForm = (props) => {
                 className='input'
                 type='number'
                 value={price}
-                onChange={({ target }) =>
-                  setPrice(
-                    Number.isNaN(parseInt(target.value, 10))
-                      ? 0
-                      : parseInt(target.value, 10)
-                  )
-                }
+                onChange={({ target }) => setPrice(target.value)}
+                pattern='^0|[0-9]*[1-9][0-9]*$'
+                min='0'
+                max='9000'
+                required
               />
               <span className='icon is-right'>
                 <FontAwesomeIcon icon='euro-sign' />
