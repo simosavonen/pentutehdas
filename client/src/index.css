@@ -2,13 +2,11 @@
   cursor: pointer;
 }
 
-tr.is-clickable:hover {
-  background-color: rgba(0,0,0,0.05) !important;
+.is-clickable:hover {
+  background-color: rgba(255,255,255,0.7) !important;
 }
 
-tr.borderless td {
-  border-width: 0px 0px 0px 0px;
-}
+
 
 .site {
   display: flex;
