@@ -3,10 +3,12 @@ import LitterForm from './LitterForm'
 import PuppyList from './PuppyList'
 import Reservations from './Reservations'
 import LitterProgressBar from './LitterProgressBar'
+import Pagination from './Pagination'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const Litter = ({ litters, user, dogs, editLitter }) => {
   const [details, setDetails] = useState([])
+  const [cursor, setCursor] = useState(0)
   const [litterToEdit, setLitterToEdit] = useState(null)
 
   const toggleDetails = (id) => {
@@ -38,8 +40,19 @@ const Litter = ({ litters, user, dogs, editLitter }) => {
         <button className="modal-close is-large" aria-label="close" onClick={() => setLitterToEdit(null)}></button>
       </div>
 
-      {litters.data.allLitters.map(litter =>
-        <article className='container' key={litter.id} style={{ padding: '0.75rem', borderBottom: '3px solid grey', borderImage: 'radial-gradient(rgba(0,0,0,0.7), rgba(255,255,255,0)) 1' }}>
+      <div className='container'>
+        <div className='columns is-centered'>
+          <div className='column is-12-mobile is-11-tablet is-10-desktop is-9-widescreen is-8-fullhd'>
+            <Pagination data={litters.data.allLitters} cursor={cursor} setCursor={setCursor} />
+          </div>
+        </div>
+      </div>
+
+      {litters.data.allLitters.slice(cursor, cursor + 5).map(litter =>
+        <article
+          key={litter.id}
+          className='container'
+          style={{ padding: '0.75rem', borderBottom: '1px solid', borderTop: '1px solid', borderImage: 'radial-gradient(rgba(0,0,0,0.7), rgba(255,255,255,0)) 1' }}>
           <div className='columns is-centered is-mobile is-clickable' onClick={() => toggleDetails(litter.id)} style={{ padding: '1rem' }}>
             <div className='column is-2-mobile is-2-tablet is-1-desktop'>
               <div style={{ maxWidth: '65px' }}>
@@ -131,6 +144,15 @@ const Litter = ({ litters, user, dogs, editLitter }) => {
           </div>
         </article>
       )}
+
+      <div className='container'>
+        <div className='columns is-centered'>
+          <div className='column is-12-mobile is-11-tablet is-10-desktop is-9-widescreen is-8-fullhd'>
+            <Pagination data={litters.data.allLitters} cursor={cursor} setCursor={setCursor} />
+          </div>
+        </div>
+      </div>
+
     </>
   )
 }
