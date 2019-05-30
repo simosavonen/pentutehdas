@@ -2,78 +2,9 @@ import React, { useState } from 'react'
 import Moment from 'react-moment'
 import LitterForm from './LitterForm'
 import PuppyList from './PuppyList'
+import Reservations from './Reservations'
+import LitterProgressBar from './LitterProgressBar'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-
-const LitterProgressBar = (props) => {
-  // normal gestation period in dogs
-  const gestation = 63
-  const duedate = new Date(parseInt(props.duedate, 10)).getTime()
-  const today = new Date().getTime()
-  let days = (duedate - today) / (1000 * 60 * 60 * 24)
-
-  // should not be allowed to set due date too far into the future
-  if (days > gestation) {
-    days = gestation
-  }
-
-  let progress = 100
-
-  if (days < 0) {
-    days = 0
-  } else {
-    progress = Math.floor(100 * (gestation - days) / gestation)
-  }
-
-  let color = 'progress is-success'
-  if (progress < 66) { color = 'progress is-warning' }
-  if (progress < 33) { color = 'progress is-danger' }
-
-  const barStyle = {
-    marginTop: '0.25em',
-    maxWidth: '90%'
-  }
-
-  return (
-    <progress
-      className={color}
-      max={gestation}
-      value={Math.floor(gestation - days)}
-      style={barStyle}
-    >
-      {progress}%
-    </progress>
-  )
-}
-const Reservations = ({ reservations }) => {
-  const resStyles = {
-    padding: '0.6em',
-    margin: '0.5em 1em 0.5em 0',
-    border: '1px solid lightgrey',
-    backgroundColor: 'rgba(0,0,0,0.02)'
-  }
-
-  if (reservations.length === 0) {
-    return (
-      <p><strong>No reservations yet</strong></p>
-    )
-  }
-  return (
-    <>
-      <p><strong>Puppy reservations</strong></p>
-      <div className='is-clearfix'>
-        {reservations.map((r, index) =>
-          <div key={r.username} style={resStyles} className='is-pulled-left' title={`reservation #${index + 1}`}>
-            <p><span className='icon'><strong>&#8470;</strong></span> {index + 1} / {reservations.length}</p>
-            {r.phone && <p><span className="icon"><FontAwesomeIcon icon='phone' /></span> <a href={`tel:${r.phone}`}>{r.phone}</a></p>}
-            {r.email && <p><span className="icon"><FontAwesomeIcon icon='at' /></span> <a href={`mailto:${r.email}`}>
-              {r.email}</a></p>}
-            {r.city && <p><span className="icon"><FontAwesomeIcon icon='globe' /></span> {r.city}</p>}
-          </div>
-        )}
-      </div>
-    </>
-  )
-}
 
 const Litter = ({ litters, user, dogs, editLitter }) => {
   const [details, setDetails] = useState([])
@@ -86,8 +17,6 @@ const Litter = ({ litters, user, dogs, editLitter }) => {
       setDetails([id])
     }
   }
-
-
 
   const tableStyles = {
     backgroundColor: 'rgba(255, 255, 255, 0.5)'
@@ -117,6 +46,84 @@ const Litter = ({ litters, user, dogs, editLitter }) => {
         </div>
         <button className="modal-close is-large" aria-label="close" onClick={() => setLitterToEdit(null)}></button>
       </div>
+
+      {litters.data.allLitters.map(litter =>
+        <React.Fragment key={litter.id}>
+          <div className='columns is-centered is-mobile'>
+            <div className='column is-2-mobile is-2-tablet is-1-desktop'>
+              <div style={{ maxWidth: '65px' }}>
+                <LitterProgressBar date={litter.duedate} />
+              </div>
+            </div>
+            <div className='column is-8-mobile is-7-tablet is-6-desktop is-clickable' onClick={() => toggleDetails(litter.id)}>
+              <div className='columns'>
+                <div className='column'>
+                  <div>
+                    <p className="heading is-size-7 is-size-6-fullhd">Location</p>
+                    <p className='title is-size-6 is-size-5-fullhd'>{litter.breeder.city}</p>
+                  </div>
+                </div>
+                <div className='column'>
+                  <div>
+                    <p className='heading is-size-7 is-size-6-fullhd'><FontAwesomeIcon icon='venus' /> Dam</p>
+                    <p className='title is-size-6 is-size-5-fullhd'>{litter.dam ? litter.dam.breed : 'removed'}
+                      {litter.dam && details.includes(litter.id) &&
+                        <span className='is-size-7 is-size-6-fullhd'>
+                          <br />{`"${litter.dam.name}"`}
+                          <br />{`born ${new Intl.DateTimeFormat('en-US', { month: 'short', year: 'numeric' })
+                            .format(new Date(parseInt(litter.dam.born, 10)))}`}
+                        </span>
+                      }
+                    </p>
+                  </div>
+                </div>
+                <div className='column'>
+                  <div>
+                    <p className='heading is-size-7 is-size-6-fullhd'><FontAwesomeIcon icon='mars' /> Sire</p>
+                    <p className='title is-size-6 is-size-5-fullhd'>{litter.sire ? litter.sire.breed : 'removed'}
+                      {litter.sire && details.includes(litter.id) &&
+                        <span className='is-size-7 is-size-6-fullhd'>
+                          <br />{`"${litter.sire.name}"`}
+                          <br />{`born ${new Intl.DateTimeFormat('en-US', { month: 'short', year: 'numeric' })
+                            .format(new Date(parseInt(litter.sire.born, 10)))}`}
+                        </span>
+                      }
+                    </p>
+                  </div>
+                </div>
+                <div className='column'>
+                  <div>
+                    <p className='heading is-size-7 is-size-6-fullhd'>Puppies</p>
+                    <div className='is-size-6 is-size-5-fullhd'><PuppyList puppies={litter.puppies} /></div>
+                  </div>
+                </div>
+              </div>
+
+              {details.includes(litter.id) &&
+                <div className='columns'>
+                  <div className='column'>details</div>
+                  <div className='column'>details</div>
+                  <div className='column'>details</div>
+                  <div className='column'>details</div>
+                </div>
+              }
+
+            </div>
+            <div className='column is-2-desktop is-1-widescreen'>
+              <div>
+                <p className='heading is-size-7 is-size-6-fullhd'>Price</p>
+                <div className='is-size-6 is-size-5-fullhd'>{litter.price} €</div>
+              </div>
+            </div>
+          </div>
+
+
+          <div style={{ margin: '2em auto', width: '80%', height: '1em', borderTop: '1px solid grey' }}></div>
+        </React.Fragment>
+      )}
+
+
+
       <div className='columns is-centered'>
         <div className='column is-12-tablet is-11-desktop is-10-widescreen is-9-fullhd'>
           <table id="litterTable" className='table is-fullwidth is-size-7-mobile' style={tableStyles}>
@@ -132,8 +139,8 @@ const Litter = ({ litters, user, dogs, editLitter }) => {
               </tr>
             </thead>
             <tbody>
-              {litters.data.allLitters.map(litter =>
-                <React.Fragment key={litter.id}>
+              {litters.data.allLitters.map((litter, index) =>
+                <React.Fragment key={index}>
                   <tr id={litter.id}
                     onClick={(event) => toggleDetails(event.currentTarget.id)}
                     className={details.includes(litter.id) ? 'is-clickable borderless' : 'is-clickable'}
@@ -141,9 +148,7 @@ const Litter = ({ litters, user, dogs, editLitter }) => {
                   >
                     <td>{details.includes(litter.id) ? <strong>&#8722;</strong> : <strong>&#43;</strong>}</td>
                     <td>
-                      <Moment format="DD.MM.YY">
-                        {new Date(parseInt(litter.duedate, 10))}
-                      </Moment>
+                      <LitterProgressBar date={litter.duedate} />
                     </td>
                     <td className='has-text-centered'>{litter.breeder.city}</td>
                     <td>{litter.dam ? litter.dam.breed : 'removed'}</td>
@@ -156,7 +161,7 @@ const Litter = ({ litters, user, dogs, editLitter }) => {
                       <td></td>
                       <td colSpan='2'>
                         <p><strong>Progress</strong></p>
-                        <LitterProgressBar duedate={litter.duedate} />
+
                       </td>
                       <td>{litter.dam
                         ? <ul>
