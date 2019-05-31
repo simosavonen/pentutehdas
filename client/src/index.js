@@ -15,9 +15,10 @@ import { getMainDefinition } from 'apollo-utilities'
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faMars, faVenus, faAt, faPhone, faGlobe, faCalendarAlt, faEuroSign, faPaw } from '@fortawesome/free-solid-svg-icons'
+import { fab, faGithub, faLinkedin, faGithubSquare } from '@fortawesome/free-brands-svg-icons'
 import './index.css'
 
-library.add(faMars, faVenus, faAt, faPhone, faGlobe, faCalendarAlt, faEuroSign, faPaw)
+library.add(faMars, faVenus, faAt, faPhone, faGlobe, faCalendarAlt, faEuroSign, faPaw, fab, faGithub, faLinkedin, faGithubSquare)
 
 const socketUri = process.env.NODE_ENV === 'development'
   ? 'ws://localhost:4000/graphql'
@@ -30,7 +31,9 @@ const httpUri = process.env.NODE_ENV === 'development'
 const wsLink = new WebSocketLink({
   uri: socketUri,
   options: {
-    reconnect: true
+    reconnect: true,
+    lazy: true,
+    timeout: 20000,
   }
 })
 
