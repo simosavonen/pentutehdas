@@ -7,6 +7,8 @@ const Pagination = ({ data, cursor, setCursor }) => {
     cursors.push(i)
   }
 
+  const puppies = data.reduce((sum, litter) => sum + litter.puppies.length, 0)
+
   const tdStyles = {
     width: '50px',
     textAlign: 'center'
@@ -36,10 +38,13 @@ const Pagination = ({ data, cursor, setCursor }) => {
     <table className='table is-fullwidth' style={tableStyles}>
       <tbody>
         <tr>
-          <td style={{ width: '100%' }}></td>
+          <td style={{ width: '100%' }}>There are {puppies} puppies in {data.length} litters.</td>
           <td className='is-clickable' onClick={() => paginate(-1)}>&#171;</td>
           {cursors.map((i, index) =>
-            <td className={`is-clickable ${cursor === i && 'has-text-info'}`} style={{ tdStyles }} onClick={() => setCursor(i)}>{index + 1}</td>
+            <td key={i}
+              className={`is-clickable ${cursor === i && 'has-text-info'}`}
+              style={{ tdStyles }}
+              onClick={() => setCursor(i)}>{index + 1}</td>
           )}
           <td className='is-clickable' onClick={() => paginate(1)}>&#187;</td>
         </tr>

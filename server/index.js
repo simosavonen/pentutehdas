@@ -11,6 +11,9 @@ const Dog = require('./models/dog')
 const Litter = require('./models/litter')
 const User = require('./models/user')
 
+const { PubSub } = require('apollo-server')
+const pubsub = new PubSub()
+
 mongoose.set('useFindAndModify', false)
 mongoose.set('useCreateIndex', true)
 
@@ -112,10 +115,17 @@ const typeDefs = gql`
       username: String!
     ): Boolean
   }
+
+  type Subscription {
+    litterAdded: Litter!
+  }
 `
 
 const resolvers = {
   Query: {
+    // TODO: dont reveal sensitive information to just anyone
+    // reservations contains emails and phone numbers in plain text
+    // populate them elsewhere, when admin or breeder needs to see them
     allLitters: () => Litter.find({}).populate(['dam', 'sire', 'breeder', 'reservations']),
     allDogs: () => Dog.find({}).populate('owner'),
     me: (root, args, context) => {
@@ -188,7 +198,10 @@ const resolvers = {
           invalidArgs: args,
         })
       }
-      return litter
+
+      const populatedLitter = await Litter.findById(litter._id.toString()).populate(['dam', 'sire', 'breeder'])
+      pubsub.publish('LITTER_ADDED', { litterAdded: populatedLitter })
+      return populatedLitter
     },
     updateLitter: async (root, args, context) => {
       const currentUser = context.currentUser
@@ -273,6 +286,11 @@ const resolvers = {
       const taken = await User.findOne({ username: args.username })
       return taken ? false : true
     }
+  },
+  Subscription: {
+    litterAdded: {
+      subscribe: () => pubsub.asyncIterator(['LITTER_ADDED'])
+    }
   }
 }
 
@@ -292,6 +310,7 @@ const server = new ApolloServer({
   }
 })
 
-server.listen(process.env.PORT || 4000).then(({ url }) => {
+server.listen(process.env.PORT || 4000).then(({ url, subscriptionsUrl }) => {
   console.log(`Server ready at ${url}`)
+  console.log(`Subscriptions ready at ${subscriptionsUrl}`)
 })

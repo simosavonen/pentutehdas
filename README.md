@@ -69,4 +69,5 @@ frontend url: https://pentutehdas.surge.sh
 | 27.5. | 6     | litter details show reservations, preparing to edit litter  |
 | 28.5. | 9     | editing litters working but fontawesome icons causing errors when puppy list changes, use react-fontawesome, backend checks who is doing the updating, loginForm checks username availability when registering, puppies shown as a list of icons instead of true/false |
 | 30.5. | 10     | trying to get table look decent failed, start frontpage redesign with divs, halfway done with redesign, totally done, pagination |
-| yht   | 97    | | 
+| 31.5. | 2     | graphql fragments and LITTER_ADDED subscription |
+| yht   | 99    | | 

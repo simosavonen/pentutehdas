@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useQuery, useMutation, useApolloClient } from 'react-apollo-hooks'
+import { Subscription } from 'react-apollo'
 import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom'
 import Litter from './components/Litter'
 import Navigation from './components/Navigation'
@@ -8,7 +9,7 @@ import LoginForm from './components/LoginForm'
 import Dogs from './components/Dogs'
 import UserForm from './components/UserForm'
 import Footer from './components/Footer'
-import { ALL_LITTERS, CREATE_LITTER, UPDATE_LITTER } from './graphql/litters'
+import { ALL_LITTERS, CREATE_LITTER, UPDATE_LITTER, LITTER_ADDED } from './graphql/litters'
 import { ALL_DOGS, CREATE_DOG, DELETE_DOG } from './graphql/dogs'
 import { LOGIN } from './graphql/login'
 import { USER, CREATE_USER, UPDATE_USER, USER_AVAILABLE } from './graphql/user'
@@ -155,6 +156,17 @@ const App = () => {
         </section>
 
         <Footer />
+
+
+        <Subscription
+          subscription={LITTER_ADDED}
+          onSubscriptionData={({ subscriptionData }) => {
+            console.log('a litter was added:', subscriptionData)
+          }}
+        >
+          {() => null}
+        </Subscription>
+
       </Router>
     </div>
   )

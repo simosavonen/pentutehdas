@@ -13,7 +13,6 @@ const Reservations = ({ reservations }) => {
 
   }
   return (
-
     <div className='is-clearfix'>
       {reservations.map((r, index) =>
         <div

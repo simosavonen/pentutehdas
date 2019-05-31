@@ -9,6 +9,7 @@
     "apollo-boost": "^0.3.1",
     "apollo-link": "^1.2.11",
     "apollo-link-context": "^1.0.17",
+    "apollo-link-ws": "^1.0.17",
     "bulma-divider": "^0.2.0",
     "graphql": "^14.3.0",
     "moment": "^2.24.0",
@@ -21,7 +22,8 @@
     "react-router": "^5.0.0",
     "react-router-dom": "^5.0.0",
     "react-scripts": "3.0.1",
-    "react-select": "^2.4.3"
+    "react-select": "^2.4.3",
+    "subscriptions-transport-ws": "^0.9.16"
   },
   "scripts": {
     "start": "cross-env NODE_ENV=development react-scripts start",

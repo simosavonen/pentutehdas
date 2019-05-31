@@ -1,9 +1,8 @@
 import { gql } from 'apollo-boost'
 
-export const ALL_LITTERS = gql`
-{
-  allLitters {
-    duedate
+const LITTER_DETAILS = gql`
+fragment LitterDetails on Litter {
+  duedate
     dam {
       name
       breed
@@ -29,8 +28,25 @@ export const ALL_LITTERS = gql`
       city
     }
     id
+}
+`
+
+export const ALL_LITTERS = gql`
+{
+  allLitters {
+    ...LitterDetails
   }
 }
+${LITTER_DETAILS}
+`
+
+export const LITTER_ADDED = gql`
+subscription {
+  litterAdded {
+    ...LitterDetails
+  }
+}
+${LITTER_DETAILS}
 `
 
 export const CREATE_LITTER = gql`

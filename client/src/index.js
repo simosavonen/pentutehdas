@@ -9,21 +9,32 @@ import { InMemoryCache } from 'apollo-cache-inmemory'
 import { setContext } from 'apollo-link-context'
 import { BrowserRouter as Router } from 'react-router-dom'
 
+import { split } from 'apollo-link'
+import { WebSocketLink } from 'apollo-link-ws'
+import { getMainDefinition } from 'apollo-utilities'
+
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faMars, faVenus, faAt, faPhone, faGlobe, faCalendarAlt, faEuroSign } from '@fortawesome/free-solid-svg-icons'
 import './index.css'
 
 library.add(faMars, faVenus, faAt, faPhone, faGlobe, faCalendarAlt, faEuroSign)
 
-let httpLink = createHttpLink({
-  uri: 'https://pentutehdas.herokuapp.com/graphql',
+const socketUri = process.env.NODE_ENV === 'development'
+  ? 'ws://localhost:4000/graphql'
+  : 'ws://pentutehdas.herokuapp.com/graphql'
+
+const httpUri = process.env.NODE_ENV === 'development'
+  ? 'http://localhost:4000/graphql'
+  : 'https://pentutehdas.herokuapp.com/graphql'
+
+const wsLink = new WebSocketLink({
+  uri: socketUri,
+  options: { reconnect: true }
 })
 
-if (process.env.NODE_ENV === 'development') {
-  httpLink = createHttpLink({
-    uri: 'http://localhost:4000/graphql',
-  })
-}
+const httpLink = createHttpLink({
+  uri: httpUri,
+})
 
 const authLink = setContext((_, { headers }) => {
   const token = localStorage.getItem('pentutehdas-user-token')
@@ -35,8 +46,17 @@ const authLink = setContext((_, { headers }) => {
   }
 })
 
+const link = split(
+  ({ query }) => {
+    const { kind, operation } = getMainDefinition(query)
+    return kind === 'OperationDefinition' && operation === 'subscription'
+  },
+  wsLink,
+  authLink.concat(httpLink)
+)
+
 const client = new ApolloClient({
-  link: authLink.concat(httpLink),
+  link,
   cache: new InMemoryCache()
 })
 
