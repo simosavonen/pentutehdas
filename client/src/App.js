@@ -2,6 +2,10 @@ import React, { useState, useEffect } from 'react'
 import { useQuery, useMutation, useApolloClient } from 'react-apollo-hooks'
 import { Subscription } from 'react-apollo'
 import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom'
+
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.min.css'
+
 import Litter from './components/Litter'
 import Navigation from './components/Navigation'
 import LitterForm from './components/LitterForm'
@@ -9,12 +13,11 @@ import LoginForm from './components/LoginForm'
 import Dogs from './components/Dogs'
 import UserForm from './components/UserForm'
 import Footer from './components/Footer'
+
 import { ALL_LITTERS, CREATE_LITTER, UPDATE_LITTER, LITTER_ADDED } from './graphql/litters'
 import { ALL_DOGS, CREATE_DOG, DELETE_DOG } from './graphql/dogs'
 import { LOGIN } from './graphql/login'
 import { USER, CREATE_USER, UPDATE_USER, USER_AVAILABLE } from './graphql/user'
-
-
 
 const App = () => {
   const [token, setToken] = useState(null)
@@ -35,6 +38,9 @@ const App = () => {
     console.log(error)
   }
 
+  const includedIn = (set, object) =>
+    set.map(p => p.id).includes(object.id)
+
   const allLitters = useQuery(ALL_LITTERS)
   const allDogs = useQuery(ALL_DOGS)
   const userAvailableQuery = useMutation(USER_AVAILABLE)
@@ -48,6 +54,7 @@ const App = () => {
         query: ALL_DOGS,
         data: dataInStore
       })
+      toast('Dog was added.')
     }
   })
 
@@ -60,12 +67,25 @@ const App = () => {
     refetchQueries: [{ query: ALL_LITTERS }],
     update: (store, response) => {
       setUser(response.data.updateUser)
+      toast('User was updated.')
     }
   })
 
   const addLitterMutation = useMutation(CREATE_LITTER, {
     onError: handleError,
-    refetchQueries: [{ query: ALL_LITTERS }]
+    update: (store, response) => {
+      const dataInStore = store.readQuery({ query: ALL_LITTERS })
+      const addedLitter = response.data.addLitter
+
+      if (!includedIn(dataInStore.allLitters, addedLitter)) {
+        dataInStore.allLitters.push(addedLitter)
+        client.writeQuery({
+          query: ALL_LITTERS,
+          data: dataInStore
+        })
+        toast('You added a litter.')
+      }
+    }
   })
 
   const editLitterMutation = useMutation(UPDATE_LITTER, {
@@ -82,6 +102,7 @@ const App = () => {
         query: ALL_DOGS,
         data: dataInStore
       })
+      toast('Dog was removed.')
     }
   })
 
@@ -89,6 +110,7 @@ const App = () => {
     setToken(null)
     localStorage.clear()
     client.resetStore()
+    toast('Logout OK')
   }
 
   const login = async (username, password) => {
@@ -99,8 +121,10 @@ const App = () => {
       const token = result.data.login.value
       setToken(token)
       localStorage.setItem('pentutehdas-user-token', token)
+      toast('Successfully logged in!')
       return true
     } catch (error) {
+      toast('Login failed!')
       return false
     }
   }
@@ -157,17 +181,28 @@ const App = () => {
 
         <Footer />
 
-
-        <Subscription
-          subscription={LITTER_ADDED}
-          onSubscriptionData={({ subscriptionData }) => {
-            console.log('a litter was added:', subscriptionData)
-          }}
-        >
-          {() => null}
-        </Subscription>
-
       </Router>
+
+      <Subscription
+        subscription={LITTER_ADDED}
+        onSubscriptionData={({ subscriptionData }) => {
+          const addedLitter = subscriptionData.data.litterAdded
+          const dataInStore = client.readQuery({ query: ALL_LITTERS })
+          if (!includedIn(dataInStore.allLitters, addedLitter)) {
+            dataInStore.allLitters.push(addedLitter)
+            client.writeQuery({
+              query: ALL_LITTERS,
+              data: dataInStore
+            })
+            toast('A litter was added.')
+          }
+        }}
+      >
+        {() => null}
+      </Subscription>
+
+      <ToastContainer />
+
     </div>
   )
 }

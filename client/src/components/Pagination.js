@@ -42,8 +42,8 @@ const Pagination = ({ data, cursor, setCursor }) => {
           <td className='is-clickable' onClick={() => paginate(-1)}>&#171;</td>
           {cursors.map((i, index) =>
             <td key={i}
-              className={`is-clickable ${cursor === i && 'has-text-info'}`}
-              style={{ tdStyles }}
+              className={`is-clickable ${cursor === i && 'has-text-info is-bold'}`}
+              style={tdStyles}
               onClick={() => setCursor(i)}>{index + 1}</td>
           )}
           <td className='is-clickable' onClick={() => paginate(1)}>&#187;</td>

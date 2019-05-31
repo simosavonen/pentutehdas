@@ -14,14 +14,14 @@ import { WebSocketLink } from 'apollo-link-ws'
 import { getMainDefinition } from 'apollo-utilities'
 
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faMars, faVenus, faAt, faPhone, faGlobe, faCalendarAlt, faEuroSign } from '@fortawesome/free-solid-svg-icons'
+import { faMars, faVenus, faAt, faPhone, faGlobe, faCalendarAlt, faEuroSign, faPaw } from '@fortawesome/free-solid-svg-icons'
 import './index.css'
 
-library.add(faMars, faVenus, faAt, faPhone, faGlobe, faCalendarAlt, faEuroSign)
+library.add(faMars, faVenus, faAt, faPhone, faGlobe, faCalendarAlt, faEuroSign, faPaw)
 
 const socketUri = process.env.NODE_ENV === 'development'
   ? 'ws://localhost:4000/graphql'
-  : 'ws://pentutehdas.herokuapp.com/graphql'
+  : 'wss://pentutehdas.herokuapp.com/graphql'
 
 const httpUri = process.env.NODE_ENV === 'development'
   ? 'http://localhost:4000/graphql'
@@ -29,7 +29,9 @@ const httpUri = process.env.NODE_ENV === 'development'
 
 const wsLink = new WebSocketLink({
   uri: socketUri,
-  options: { reconnect: true }
+  options: {
+    reconnect: true
+  }
 })
 
 const httpLink = createHttpLink({

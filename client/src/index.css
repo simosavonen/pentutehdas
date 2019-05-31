@@ -1,9 +1,10 @@
-.is-clickable {
+.is-clickable:hover {
   cursor: pointer;
+  background-color: rgba(255,255,255,0.7) !important;
 }
 
-.is-clickable:hover {
-  background-color: rgba(255,255,255,0.7) !important;
+.is-bold {
+  font-weight: bold;
 }
 
 .site {

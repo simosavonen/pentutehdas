@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const Navigation = ({ user, logout }) => {
   const [burgerOpen, setBurgerOpen] = useState(false)
@@ -10,7 +11,7 @@ const Navigation = ({ user, logout }) => {
         <div className='navbar-brand'>
           <Link to='/' className='navbar-item'>
             <span className='icon is-medium' style={{ marginRight: '0.5em' }}>
-              <i className='fas fa-paw fa-2x'></i>
+              <FontAwesomeIcon icon='paw' size='2x' transform={{ rotate: 45 }} />
             </span> PENTUTEHDAS
           </Link>
           <div role="button" className={`navbar-burger burger ${burgerOpen && 'is-active'}`}
