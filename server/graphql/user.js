@@ -1,4 +1,8 @@
-const { gql } = require('apollo-server')
+const { UserInputError, AuthenticationError, gql } = require('apollo-server')
+const User = require('../models/user')
+const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
+
 
 export const typeDefs = gql`
   type User {

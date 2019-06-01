@@ -1,4 +1,5 @@
-const { gql } = require('apollo-server')
+const { UserInputError, AuthenticationError, ForbiddenError, gql } = require('apollo-server')
+const Dog = require('../models/dog')
 
 export const typeDefs = gql`
   type Dog {

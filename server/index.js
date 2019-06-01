@@ -1,17 +1,11 @@
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
 }
-const { ApolloServer, UserInputError, AuthenticationError, ForbiddenError, gql } = require('apollo-server')
+const { ApolloServer } = require('apollo-server')
 const mongoose = require('mongoose')
 const jwt = require('jsonwebtoken')
-const bcrypt = require('bcrypt')
 
-const Litter = require('./models/litter')
-const Dog = require('./models/dog')
 const User = require('./models/user')
-
-const { PubSub } = require('apollo-server')
-const pubsub = new PubSub()
 
 mongoose.set('useFindAndModify', false)
 mongoose.set('useCreateIndex', true)

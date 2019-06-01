@@ -1,4 +1,6 @@
-const { gql } = require('apollo-server')
+const { UserInputError, AuthenticationError, ForbiddenError, gql, PubSub } = require('apollo-server')
+const Litter = require('../models/litter')
+const pubsub = new PubSub()
 
 export const typeDefs = gql`
   type Litter {
@@ -36,8 +38,8 @@ export const typeDefs = gql`
       id: ID!
     ): Litter    
   }
-
-  extend type Subscription {
+  
+  type Subscription {
     litterAdded: Litter!
   }
 `
