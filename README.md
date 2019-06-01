@@ -70,5 +70,5 @@ frontend url: https://pentutehdas.surge.sh
 | 28.5. | 9     | editing litters working but fontawesome icons causing errors when puppy list changes, use react-fontawesome, backend checks who is doing the updating, loginForm checks username availability when registering, puppies shown as a list of icons instead of true/false |
 | 30.5. | 10     | trying to get table look decent failed, start frontpage redesign with divs, halfway done with redesign, totally done, pagination |
 | 31.5. | 6     | graphql fragments and LITTER_ADDED subscription, react-toast and subscription now adds litter to apollo cache, social links to footer, heroku free server slowness causing websocket errors |
-| 1.6.  | 3     | sort litters by puppies existing and puppy age |
-| yht   | 106    | | 
+| 1.6.  | 5     | sort litters by puppies existing and puppy age, let users hide over 2 month old litters |
+| yht   | 107    | | 

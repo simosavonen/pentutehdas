@@ -22,6 +22,7 @@ import { USER, CREATE_USER, UPDATE_USER, USER_AVAILABLE } from './graphql/user'
 const App = () => {
   const [token, setToken] = useState(null)
   const [user, setUser] = useState(null)
+  const [showAll, setShowAll] = useState(false) // for filtering litters
 
   const client = useApolloClient()
 
@@ -145,6 +146,8 @@ const App = () => {
               dogs={allDogs}
               user={user}
               editLitter={editLitterMutation}
+              showAll={showAll}
+              setShowAll={setShowAll}
             />} />
           <Route exact path='/login' render={() =>
             <LoginForm

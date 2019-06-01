@@ -6,7 +6,7 @@ import LitterProgressBar from './LitterProgressBar'
 import Pagination from './Pagination'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-const Litter = ({ litters, user, dogs, editLitter }) => {
+const Litter = ({ litters, user, dogs, editLitter, showAll, setShowAll }) => {
   const [details, setDetails] = useState([])
   const [cursor, setCursor] = useState(0)
   const [litterToEdit, setLitterToEdit] = useState(null)
@@ -21,6 +21,13 @@ const Litter = ({ litters, user, dogs, editLitter }) => {
 
   if (litters.loading) {
     return <div className='container'>loading...</div>
+  }
+
+  let filtered = litters.data.allLitters
+  if (!showAll) {
+    filtered = litters.data.allLitters.filter(litter =>
+      parseInt(litter.duedate, 10) > (+new Date() - 1000 * 60 * 60 * 24 * 60)
+    )
   }
 
   return (
@@ -43,12 +50,12 @@ const Litter = ({ litters, user, dogs, editLitter }) => {
       <div className='container'>
         <div className='columns is-centered'>
           <div className='column is-12-mobile is-11-tablet is-10-desktop is-9-widescreen is-8-fullhd'>
-            <Pagination data={litters.data.allLitters} cursor={cursor} setCursor={setCursor} />
+            <Pagination data={filtered} cursor={cursor} setCursor={setCursor} />
           </div>
         </div>
       </div>
 
-      {litters.data.allLitters.slice(cursor, cursor + 5).map(litter =>
+      {filtered.slice(cursor, cursor + 5).map(litter =>
         <article
           key={litter.id}
           className='container'
@@ -148,7 +155,14 @@ const Litter = ({ litters, user, dogs, editLitter }) => {
       <div className='container'>
         <div className='columns is-centered'>
           <div className='column is-12-mobile is-11-tablet is-10-desktop is-9-widescreen is-8-fullhd'>
-            <Pagination data={litters.data.allLitters} cursor={cursor} setCursor={setCursor} />
+            <Pagination data={filtered} cursor={cursor} setCursor={setCursor} />
+
+            <div style={{ paddingLeft: '1em' }}>
+              <label className='checkbox' title='Include over two month old litters?'>
+                <input type='checkbox' checked={showAll} onChange={() => setShowAll(!showAll)} /> Show all litters
+            </label>
+            </div>
+
           </div>
         </div>
       </div>
