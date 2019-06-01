@@ -55,7 +55,7 @@ const App = () => {
         query: ALL_DOGS,
         data: dataInStore
       })
-      toast('Dog was added.')
+      toast.info('Dog was added.')
     }
   })
 
@@ -68,25 +68,13 @@ const App = () => {
     refetchQueries: [{ query: ALL_LITTERS }],
     update: (store, response) => {
       setUser(response.data.updateUser)
-      toast('User was updated.')
+      toast.info('User was updated.')
     }
   })
 
   const addLitterMutation = useMutation(CREATE_LITTER, {
     onError: handleError,
-    update: (store, response) => {
-      const dataInStore = store.readQuery({ query: ALL_LITTERS })
-      const addedLitter = response.data.addLitter
-
-      if (!includedIn(dataInStore.allLitters, addedLitter)) {
-        dataInStore.allLitters.push(addedLitter)
-        client.writeQuery({
-          query: ALL_LITTERS,
-          data: dataInStore
-        })
-        toast('You added a litter.')
-      }
-    }
+    refetchQueries: [{ query: ALL_LITTERS }]
   })
 
   const editLitterMutation = useMutation(UPDATE_LITTER, {
@@ -103,7 +91,7 @@ const App = () => {
         query: ALL_DOGS,
         data: dataInStore
       })
-      toast('Dog was removed.')
+      toast.info('Dog was removed.')
     }
   })
 
@@ -111,7 +99,7 @@ const App = () => {
     setToken(null)
     localStorage.clear()
     client.resetStore()
-    toast('Logout OK')
+    toast.info('Logout OK')
   }
 
   const login = async (username, password) => {
@@ -122,10 +110,10 @@ const App = () => {
       const token = result.data.login.value
       setToken(token)
       localStorage.setItem('pentutehdas-user-token', token)
-      toast('Successfully logged in!')
+      toast.success('Successfully logged in!')
       return true
     } catch (error) {
-      toast('Login failed!')
+      toast.error('Login failed!')
       return false
     }
   }
@@ -197,14 +185,14 @@ const App = () => {
               query: ALL_LITTERS,
               data: dataInStore
             })
-            toast('A litter was added.')
+            toast.info('A litter was added.')
           }
         }}
       >
         {() => null}
       </Subscription>
 
-      <ToastContainer />
+      <ToastContainer className='toast-container' toastClassName="dark-toast" />
 
     </div>
   )

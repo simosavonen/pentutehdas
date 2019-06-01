@@ -25,9 +25,9 @@ const Litter = ({ litters, user, dogs, editLitter, showAll, setShowAll }) => {
 
   let filtered = litters.data.allLitters
   if (!showAll) {
-    filtered = litters.data.allLitters.filter(litter =>
-      parseInt(litter.duedate, 10) > (+new Date() - 1000 * 60 * 60 * 24 * 60)
-    )
+    const timeStamp = +new Date()
+    const sixtyDaysAgo = timeStamp - 1000 * 60 * 60 * 24 * 60
+    filtered = litters.data.allLitters.filter(litter => litter.duedate > sixtyDaysAgo)
   }
 
   return (
