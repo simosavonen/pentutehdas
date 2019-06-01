@@ -1,16 +1,23 @@
 import { gql } from 'apollo-boost'
 
+const USER_DETAILS = gql`
+fragment UserDetails on User {
+  username
+  role
+  phone
+  email
+  city
+  id   
+}
+`
+
 export const USER = gql`
 query me($token: String){
   me(token: $token) {
-    username
-    role
-    phone
-    email
-    city
-    id    
+    ...UserDetails
   }
 }
+${USER_DETAILS}
 `
 
 export const USER_AVAILABLE = gql`
@@ -33,18 +40,19 @@ mutation createUser(
     email:$email,
     city:$city    
   ) {
-    username
-    role
-    phone
-    email
-    city
-    id   
+    ...UserDetails  
   }
 }
+${USER_DETAILS}
 `
 
 export const UPDATE_USER = gql`
-mutation updateUser($id:ID!, $username:String!, $phone:String, $email:String, $city:String) {
+mutation updateUser(
+  $id:ID!, 
+  $username:String!, 
+  $phone:String, 
+  $email:String, 
+  $city:String) {
   updateUser(
     id:$id,
     username:$username,
@@ -52,13 +60,9 @@ mutation updateUser($id:ID!, $username:String!, $phone:String, $email:String, $c
     email:$email,
     city:$city    
   ) {
-    username
-    role
-    phone
-    email
-    city
-    id   
+    ...UserDetails 
   }
 }
+${USER_DETAILS}
 `
 

@@ -206,7 +206,7 @@ const App = () => {
         {() => null}
       </Subscription>
 
-      <ToastContainer className='toast-container' toastClassName="dark-toast" />
+      <ToastContainer />
 
     </div>
   )
