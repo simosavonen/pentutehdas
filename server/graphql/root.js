@@ -1,6 +1,6 @@
 const { gql } = require('apollo-server')
 
-export const root = gql`
+export const typeDefs = gql`
   type Query {
     root: String
   }
