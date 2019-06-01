@@ -126,7 +126,9 @@ const resolvers = {
     // TODO: dont reveal sensitive information to just anyone
     // reservations contains emails and phone numbers in plain text
     // populate them elsewhere, when admin or breeder needs to see them
-    allLitters: () => Litter.find({}).populate(['dam', 'sire', 'breeder', 'reservations']),
+    allLitters: () => Litter.find({})
+      .populate(['dam', 'sire', 'breeder', 'reservations'])
+      .sort('-hasPuppies duedate'),
     allDogs: () => Dog.find({}).populate('owner'),
     me: (root, args, context) => {
       return context.currentUser
@@ -187,6 +189,7 @@ const resolvers = {
           dam: args.dam,
           sire: args.sire,
           puppies: args.puppies,
+          hasPuppies: args.puppies.length > 0,
           reservations: [],
           price: args.price,
           breeder: currentUser
@@ -219,6 +222,7 @@ const resolvers = {
           duedate: args.duedate,
           sire: args.sire,
           puppies: args.puppies,
+          hasPuppies: args.puppies.length > 0,
           price: args.price
         }, { new: true })
         return updatedLitter

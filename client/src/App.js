@@ -177,8 +177,8 @@ const App = () => {
             user
               ? <UserForm user={user} updateUser={updateUserMutation} />
               : <Redirect to='/' />} />
-        </section>
 
+        </section>
         <Footer />
 
       </Router>

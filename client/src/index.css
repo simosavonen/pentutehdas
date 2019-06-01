@@ -15,9 +15,11 @@
 
 .site-content {
   flex: 1;
+  background-color: #F5F5F5;
   background-image: url(./images/snow_dog3.jpg);
   background-repeat: no-repeat;
   background-position: center bottom;
   background-size: cover;
+  padding-bottom: 400px;
 }
 
