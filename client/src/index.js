@@ -32,8 +32,9 @@ const wsLink = new WebSocketLink({
   uri: socketUri,
   options: {
     reconnect: true,
+    reconnectionAttempts: 3,
     lazy: true,
-    timeout: 20000,
+    timeout: 300000
   }
 })
 

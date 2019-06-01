@@ -2,6 +2,8 @@ import React from 'react'
 
 const Pagination = ({ data, cursor, setCursor }) => {
 
+  if (data === undefined) return null
+
   const cursors = []
   for (let i = 0; i < data.length; i += 5) {
     cursors.push(i)

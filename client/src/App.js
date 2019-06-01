@@ -13,6 +13,7 @@ import LoginForm from './components/LoginForm'
 import Dogs from './components/Dogs'
 import UserForm from './components/UserForm'
 import Footer from './components/Footer'
+import ErrorHandler from './components/ErrorHandler'
 
 import { ALL_LITTERS, CREATE_LITTER, UPDATE_LITTER, LITTER_ADDED, DELETE_LITTER } from './graphql/litters'
 import { ALL_DOGS, CREATE_DOG, DELETE_DOG } from './graphql/dogs'
@@ -22,7 +23,7 @@ import { USER, CREATE_USER, UPDATE_USER, USER_AVAILABLE } from './graphql/user'
 const App = () => {
   const [token, setToken] = useState(null)
   const [user, setUser] = useState(null)
-  const [showAll, setShowAll] = useState(true) // for filtering litters
+  const [showAll, setShowAll] = useState(false) // for filtering litters
 
   const client = useApolloClient()
 
@@ -142,15 +143,18 @@ const App = () => {
 
         <section className='section site-content'>
           <Route exact path='/' render={() =>
-            <Litter
-              litters={allLitters}
-              dogs={allDogs}
-              user={user}
-              editLitter={editLitterMutation}
-              deleteLitter={deleteLitterMutation}
-              showAll={showAll}
-              setShowAll={setShowAll}
-            />} />
+            <ErrorHandler>
+              <Litter
+                litters={allLitters}
+                dogs={allDogs}
+                user={user}
+                editLitter={editLitterMutation}
+                deleteLitter={deleteLitterMutation}
+                showAll={showAll}
+                setShowAll={setShowAll}
+              />
+            </ErrorHandler>
+          } />
           <Route exact path='/login' render={() =>
             <LoginForm
               login={login}
@@ -182,7 +186,6 @@ const App = () => {
             user
               ? <UserForm user={user} updateUser={updateUserMutation} />
               : <Redirect to='/' />} />
-
         </section>
         <Footer />
 
