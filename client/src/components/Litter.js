@@ -4,13 +4,23 @@ import PuppyList from './PuppyList'
 import Reservations from './Reservations'
 import LitterProgressBar from './LitterProgressBar'
 import Pagination from './Pagination'
+import ConfirmButton from './ConfirmButton'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-const Litter = ({ litters, user, dogs, editLitter, showAll, setShowAll }) => {
+
+const Litter = ({ litters, user, dogs, editLitter, deleteLitter, showAll, setShowAll }) => {
   const [details, setDetails] = useState([])
   const [cursor, setCursor] = useState(0)
   const [litterToEdit, setLitterToEdit] = useState(null)
 
+  const handleDelete = async (id) => {
+    await deleteLitter({
+      variables: { id }
+    })
+  }
+
+  // initially it was possible to open up multiple detail views
+  // To-Do: get rid of the array
   const toggleDetails = (id) => {
     if (details.includes(id)) {
       setDetails([])
@@ -129,10 +139,13 @@ const Litter = ({ litters, user, dogs, editLitter, showAll, setShowAll }) => {
                         >reserve a puppy</button>
                       }
                       {(user && litter.breeder.username === user.username)
-                        && <button
-                          className='button is-info is-outlined'
-                          onClick={(event) => { event.stopPropagation(); setLitterToEdit(litter) }}
-                        >edit the litter</button>
+                        && <div className='buttons'>
+                          <button
+                            className='button is-info is-outlined'
+                            onClick={(event) => { event.stopPropagation(); setLitterToEdit(litter) }}
+                          >edit the litter</button>
+                          <ConfirmButton action={handleDelete} payload={litter.id} />
+                        </div>
                       }
                       {!user && <p className='title is-size-7 is-size-6-fullhd'>Login to reserve a puppy</p>}
 

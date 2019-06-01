@@ -38,7 +38,7 @@ const Pagination = ({ data, cursor, setCursor }) => {
     <table className='table is-fullwidth' style={tableStyles}>
       <tbody>
         <tr>
-          <td style={{ width: '100%' }}>There are {puppies} puppies in {data.length} litters.</td>
+          <td style={{ width: '100%' }}>Showing {puppies} puppies and {data.length} litters.</td>
           <td className='is-clickable' onClick={() => paginate(-1)}>&#171;</td>
           {cursors.map((i, index) =>
             <td key={i}

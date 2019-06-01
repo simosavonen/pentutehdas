@@ -80,3 +80,13 @@ mutation updateLitter($id: ID!, $duedate: String!, $sire: String, $price: Int, $
   }
 }
 `
+
+export const DELETE_LITTER = gql`
+mutation deleteLitter($id: ID!) {
+  deleteLitter(
+    id: $id
+  ) {
+    id
+  }
+}
+`

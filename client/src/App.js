@@ -14,7 +14,7 @@ import Dogs from './components/Dogs'
 import UserForm from './components/UserForm'
 import Footer from './components/Footer'
 
-import { ALL_LITTERS, CREATE_LITTER, UPDATE_LITTER, LITTER_ADDED } from './graphql/litters'
+import { ALL_LITTERS, CREATE_LITTER, UPDATE_LITTER, LITTER_ADDED, DELETE_LITTER } from './graphql/litters'
 import { ALL_DOGS, CREATE_DOG, DELETE_DOG } from './graphql/dogs'
 import { LOGIN } from './graphql/login'
 import { USER, CREATE_USER, UPDATE_USER, USER_AVAILABLE } from './graphql/user'
@@ -95,6 +95,19 @@ const App = () => {
     }
   })
 
+  const deleteLitterMutation = useMutation(DELETE_LITTER, {
+    onError: handleError,
+    update: (store, response) => {
+      const dataInStore = store.readQuery({ query: ALL_LITTERS })
+      dataInStore.allLitters = dataInStore.allLitters.filter(litter => litter.id !== response.data.deleteLitter.id)
+      store.writeQuery({
+        query: ALL_LITTERS,
+        data: dataInStore
+      })
+      toast.info('Litter was removed.')
+    }
+  })
+
   const logout = () => {
     setToken(null)
     localStorage.clear()
@@ -134,6 +147,7 @@ const App = () => {
               dogs={allDogs}
               user={user}
               editLitter={editLitterMutation}
+              deleteLitter={deleteLitterMutation}
               showAll={showAll}
               setShowAll={setShowAll}
             />} />

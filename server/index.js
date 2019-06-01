@@ -93,6 +93,9 @@ const typeDefs = gql`
       puppies: [Boolean]
       price: Int
     ): Litter
+    deleteLitter(
+      id: ID!
+    ): Litter
     createUser(
       username: String!
       password: String!
@@ -226,6 +229,23 @@ const resolvers = {
           price: args.price
         }, { new: true })
         return updatedLitter
+      } else {
+        throw new ForbiddenError('you are not the admin, or the breeder')
+      }
+    },
+    deleteLitter: async (root, args, context) => {
+      const currentUser = context.currentUser
+      if (!currentUser) {
+        throw new AuthenticationError('not authenticated')
+      }
+      const litterToBeDeleted = await Litter.findById(args.id)
+      if (!litterToBeDeleted) {
+        throw new UserInputError('cannot find the litter to delete')
+      }
+      const isAdmin = currentUser.role === 'admin'
+      if (currentUser._id.toString() === litterToBeDeleted.breeder.toString() || isAdmin) {
+        const deletedLitter = await Litter.findByIdAndDelete(args.id)
+        return deletedLitter
       } else {
         throw new ForbiddenError('you are not the admin, or the breeder')
       }
