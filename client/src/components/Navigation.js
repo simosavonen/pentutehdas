@@ -30,10 +30,10 @@ const Navigation = ({ user, logout }) => {
               <React.Fragment>
                 <Link to='/litter' className='navbar-item'>
                   add a litter
-              </Link>
+                </Link>
                 <Link to='/dog' className='navbar-item'>
                   my dogs
-              </Link>
+                </Link>
               </React.Fragment>
             }
             {user &&

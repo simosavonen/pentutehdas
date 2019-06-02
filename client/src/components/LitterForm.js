@@ -204,7 +204,7 @@ let LitterForm = (props) => {
               <button className='button is-outlined'
                 onClick={(event) => adjustPuppies(event, null)}>
                 Reset
-                </button>
+              </button>
             </p>
           </div>
         </div>
@@ -225,7 +225,7 @@ let LitterForm = (props) => {
                 <button className='button is-danger is-outlined'
                   onClick={(event) => { event.preventDefault(); props.toggle(null) }}>
                   cancel
-                  </button>
+                </button>
               </p>
             }
           </div>

@@ -111,7 +111,7 @@ const DogForm = (props) => {
                       checked={isFemale}
                       value='true'
                       onChange={() => setIsFemale(true)} /> female
-                </label>
+                  </label>
                   <label className='radio'>
                     <input
                       type='radio'
@@ -119,7 +119,7 @@ const DogForm = (props) => {
                       checked={!isFemale}
                       value='false'
                       onChange={() => setIsFemale(false)} /> male
-                </label>
+                  </label>
                 </div>
               </div>
             </div>
@@ -132,7 +132,7 @@ const DogForm = (props) => {
                 <div className="control">
                   <button className='button is-success is-outlined' type='submit'>
                     add a dog
-                </button>
+                  </button>
                 </div>
               </div>
             </div>

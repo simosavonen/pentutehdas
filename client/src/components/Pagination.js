@@ -25,14 +25,14 @@ const Pagination = ({ data, cursor, setCursor }) => {
   const paginate = (direction) => {
     const current = cursors.indexOf(cursor)
     switch (direction) {
-      case -1:
-        current === 0 ? setCursor(cursors[cursors.length - 1]) : setCursor(cursors[current - 1])
-        return
-      case 1:
-        current === cursors.length - 1 ? setCursor(cursors[0]) : setCursor(cursors[current + 1])
-        return
-      default:
-        return
+    case -1:
+      current === 0 ? setCursor(cursors[cursors.length - 1]) : setCursor(cursors[current - 1])
+      return
+    case 1:
+      current === cursors.length - 1 ? setCursor(cursors[0]) : setCursor(cursors[current + 1])
+      return
+    default:
+      return
     }
   }
 

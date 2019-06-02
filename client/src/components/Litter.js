@@ -142,7 +142,7 @@ const Litter = ({ litters, user, dogs, editLitter, deleteLitter, showAll, setSho
                       {(user && litter.breeder.username !== user.username) &&
                         <button
                           className='button is-info is-outlined'
-                          onClick={(event) => { event.stopPropagation(); }}
+                          onClick={(event) => { event.stopPropagation() }}
                         >reserve a puppy</button>
                       }
                       {(user && litter.breeder.username === user.username)
@@ -180,7 +180,7 @@ const Litter = ({ litters, user, dogs, editLitter, deleteLitter, showAll, setSho
               <div style={{ paddingLeft: '1em' }}>
                 <label className='checkbox' title='Include over two month old litters?'>
                   <input type='checkbox' checked={showAll} onChange={() => setShowAll(!showAll)} /> Show all litters
-            </label>
+                </label>
               </div>
 
             </div>

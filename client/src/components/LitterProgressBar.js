@@ -1,6 +1,6 @@
 import React from 'react'
-import { CircularProgressbarWithChildren } from 'react-circular-progressbar';
-import 'react-circular-progressbar/dist/styles.css';
+import { CircularProgressbarWithChildren } from 'react-circular-progressbar'
+import 'react-circular-progressbar/dist/styles.css'
 
 const LitterProgressBar = ({ date }) => {
   // normal gestation period in dogs

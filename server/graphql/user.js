@@ -101,7 +101,7 @@ export const resolvers = {
         : await bcrypt.compare(args.password, user.passwordHash)
 
       if (!(user && passwordCorrect)) {
-        throw new UserInputError("wrong credentials")
+        throw new UserInputError('wrong credentials')
       }
 
       const userForToken = {

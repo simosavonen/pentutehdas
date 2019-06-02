@@ -6,7 +6,7 @@
   "scripts": {
     "start": "cross-env NODE_ENV=production node -r esm index.js",
     "watch": "cross-env NODE_ENV=development nodemon -r esm index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "lint": "eslint ."
   },
   "repository": {
     "type": "git",
@@ -31,6 +31,7 @@
   },
   "devDependencies": {
     "cross-env": "^5.2.0",
+    "eslint": "^5.16.0",
     "nodemon": "^1.19.0"
   }
 }

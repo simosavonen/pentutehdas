@@ -26,3 +26,5 @@ export const resolvers = [
   dogResolvers,
   userResolvers
 ]
+
+

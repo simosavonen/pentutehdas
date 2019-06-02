@@ -31,7 +31,9 @@
     "build": "react-scripts build",
     "deploy": "cross-env NODE_ENV=production npm run build && mv build/index.html build/200.html && surge build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lint": "eslint .",
+    "lintfix": "eslint . --fix"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -49,6 +51,8 @@
     ]
   },
   "devDependencies": {
-    "cross-env": "^5.2.0"
+    "cross-env": "^5.2.0",
+    "eslint": "^5.16.0",
+    "eslint-plugin-react": "^7.13.0"
   }
 }
