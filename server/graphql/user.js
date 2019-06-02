@@ -20,7 +20,8 @@ export const typeDefs = gql`
   }
 
   extend type Query {    
-    me(token: String): User    
+    me(token: String): User
+    users(ids: [String!]!): [User]    
   }
 
   extend type Mutation {
@@ -53,6 +54,13 @@ export const resolvers = {
     me: (root, args, context) => {
       return context.currentUser
     },
+    users: async (root, args, context) => {
+      const currentUser = context.currentUser
+      if (currentUser && ['admin', 'breeder'].includes(currentUser.role)) {
+        const result = await User.find({ '_id': { $in: args.ids } })
+        return result
+      }
+    }
   },
   Mutation: {
     createUser: async (root, args) => {

@@ -20,6 +20,15 @@ query me($token: String){
 ${USER_DETAILS}
 `
 
+export const USERS = gql`
+query users($ids: [String!]!){
+  users(ids: $ids) {
+    ...UserDetails
+  }
+}
+${USER_DETAILS}
+`
+
 export const USER_AVAILABLE = gql`
 mutation userAvailable($username:String!) {
   userAvailable(username:$username)  

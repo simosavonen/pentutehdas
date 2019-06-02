@@ -18,9 +18,7 @@ fragment LitterDetails on Litter {
     puppies
     reservations {
       username
-      phone
-      email
-      city
+      id      
     }
     price
     breeder {

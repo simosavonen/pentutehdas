@@ -49,9 +49,6 @@ export const typeDefs = gql`
 
 export const resolvers = {
   Query: {
-    // TODO: dont reveal sensitive information to just anyone
-    // reservations contains emails and phone numbers in plain text
-    // populate them elsewhere, when admin or breeder needs to see them
     allLitters: () => Litter.find({})
       .populate(['dam', 'sire', 'breeder', 'reservations'])
       .sort('-hasPuppies duedate')

@@ -144,8 +144,10 @@ const Litter = ({ litters, user, dogs, editLitter, deleteLitter, toggleReservati
                       <p className="heading is-size-7 is-size-6-fullhd">
                         {litter.reservations.length} Reservation{litter.reservations.length !== 1 && 's'}
                       </p>
-                      {(user && (litter.breeder.username === user.username || user.role === 'admin')) &&
-                        <Reservations reservations={litter.reservations} />
+                      {(user
+                        && (litter.breeder.username === user.username || user.role === 'admin')
+                        && litter.reservations.length > 0)
+                        && <Reservations reservations={litter.reservations.map(r => r.id)} />
                       }
                     </div>
                   </div>
