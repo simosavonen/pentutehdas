@@ -49,7 +49,7 @@ frontend url: https://pentutehdas.surge.sh
 | Dog         | F, B   | F, B   |        | F, B   |
 | Litter      | F, B   | F, B   |  F, B  | F, B   |
 | User        | F, B   | F, B   |  F, B  |        |
-| Reservation |        | F, B   |        |        |
+| Reservation | F, B   | F, B   |  F, B  | F, B   |
 
 ### työaikakirjanpito
 
@@ -71,5 +71,5 @@ frontend url: https://pentutehdas.surge.sh
 | 30.5. | 10     | trying to get table look decent failed, start frontpage redesign with divs, halfway done with redesign, totally done, pagination |
 | 31.5. | 6     | graphql fragments and LITTER_ADDED subscription, react-toast and subscription now adds litter to apollo cache, social links to footer, heroku free server slowness causing websocket errors |
 | 1.6.  | 11     | sort litters by puppies existing and puppy age, let users hide over 2 month old litters, newly added litters by user went to end of the list, remove litters with a button that asks to confirm, split typeDefs into separate files, split resolvers, error boundary |
-| 2.6.  | 1     | start using ESLint |
-| yht   | 114    | | 
+| 2.6.  | 4     | start using ESLint, making and deleting reservations is working and we are feature complete |
+| yht   | 117    | | 

@@ -8,7 +8,7 @@ import ConfirmButton from './ConfirmButton'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 
-const Litter = ({ litters, user, dogs, editLitter, deleteLitter, showAll, setShowAll }) => {
+const Litter = ({ litters, user, dogs, editLitter, deleteLitter, toggleReservation, showAll, setShowAll }) => {
   const [details, setDetails] = useState([])
   const [cursor, setCursor] = useState(0)
   const [litterToEdit, setLitterToEdit] = useState(null)
@@ -30,6 +30,12 @@ const Litter = ({ litters, user, dogs, editLitter, deleteLitter, showAll, setSho
     })
   }
 
+  const handleReservation = async (id) => {
+    await toggleReservation({
+      variables: { id }
+    })
+  }
+
   // initially it was possible to open up multiple detail views
   // To-Do: get rid of the array
   const toggleDetails = (id) => {
@@ -45,6 +51,10 @@ const Litter = ({ litters, user, dogs, editLitter, deleteLitter, showAll, setSho
     const timeStamp = +new Date()
     const sixtyDaysAgo = timeStamp - 1000 * 60 * 60 * 24 * 60
     filtered = litters.data.allLitters.filter(litter => litter.duedate > sixtyDaysAgo)
+  }
+
+  if (filtered === undefined) {
+    return null
   }
 
   return (
@@ -72,7 +82,7 @@ const Litter = ({ litters, user, dogs, editLitter, deleteLitter, showAll, setSho
         </div>
       </div>
 
-      {filtered !== undefined && filtered.slice(cursor, cursor + 5).map(litter =>
+      {filtered.slice(cursor, cursor + 5).map(litter =>
         <article
           key={litter.id}
           className='container'
@@ -83,7 +93,7 @@ const Litter = ({ litters, user, dogs, editLitter, deleteLitter, showAll, setSho
                 <LitterProgressBar date={litter.duedate} />
               </div>
             </div>
-            <div className='column is-8-mobile is-7-tablet is-6-desktop'>
+            <div className='column is-8-mobile is-7-tablet'>
               <div className='columns'>
                 <div className='column'>
                   <div>
@@ -131,8 +141,12 @@ const Litter = ({ litters, user, dogs, editLitter, deleteLitter, showAll, setSho
                 <div className='columns'>
                   <div className='column'>
                     <div>
-                      <p className="heading is-size-7 is-size-6-fullhd">{litter.reservations.length} Reservations</p>
-                      <Reservations reservations={litter.reservations} />
+                      <p className="heading is-size-7 is-size-6-fullhd">
+                        {litter.reservations.length} Reservation{litter.reservations.length !== 1 && 's'}
+                      </p>
+                      {(user && (litter.breeder.username === user.username || user.role === 'admin')) &&
+                        <Reservations reservations={litter.reservations} />
+                      }
                     </div>
                   </div>
                   <div className='column'>
@@ -142,8 +156,10 @@ const Litter = ({ litters, user, dogs, editLitter, deleteLitter, showAll, setSho
                       {(user && litter.breeder.username !== user.username) &&
                         <button
                           className='button is-info is-outlined'
-                          onClick={(event) => { event.stopPropagation() }}
-                        >reserve a puppy</button>
+                          onClick={(event) => { event.stopPropagation(); handleReservation(litter.id) }}
+                        >
+                          {litter.reservations.map(user => user.username).includes(user.username) ? 'cancel reservation' : 'reserve a puppy'}
+                        </button>
                       }
                       {(user && litter.breeder.username === user.username)
                         && <div className='buttons'>
@@ -171,22 +187,22 @@ const Litter = ({ litters, user, dogs, editLitter, deleteLitter, showAll, setSho
           </div>
         </article>
       )}
-      {filtered !== undefined &&
-        <div className='container'>
-          <div className='columns is-centered'>
-            <div className='column is-12-mobile is-11-tablet is-10-desktop is-9-widescreen is-8-fullhd'>
-              <Pagination data={filtered} cursor={cursor} setCursor={setCursor} />
 
-              <div style={{ paddingLeft: '1em' }}>
-                <label className='checkbox' title='Include over two month old litters?'>
-                  <input type='checkbox' checked={showAll} onChange={() => setShowAll(!showAll)} /> Show all litters
-                </label>
-              </div>
+      <div className='container'>
+        <div className='columns is-centered'>
+          <div className='column is-12-mobile is-11-tablet is-10-desktop is-9-widescreen is-8-fullhd'>
+            <Pagination data={filtered} cursor={cursor} setCursor={setCursor} />
 
+            <div style={{ paddingLeft: '1em' }}>
+              <label className='checkbox' title='Include over two month old litters?'>
+                <input type='checkbox' checked={showAll} onChange={() => setShowAll(!showAll)} /> Show all litters
+              </label>
             </div>
+
           </div>
         </div>
-      }
+      </div>
+
     </>
   )
 }

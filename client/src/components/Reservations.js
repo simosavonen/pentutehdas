@@ -2,31 +2,25 @@ import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const Reservations = ({ reservations }) => {
-  const resStyles = {
-    padding: '0.6em',
-    margin: '0.5em 1em 0.5em 0',
-    border: '1px solid lightgrey',
-  }
-
   if (reservations.length === 0) {
     return null
-
   }
   return (
-    <div className='is-clearfix'>
+    <div>
       {reservations.map((r, index) =>
-        <div
+        <div className='media'
           key={r.username}
-          style={resStyles}
-          className='is-pulled-left is-size-7 is-size-6-fullhd'
           title={`reservation #${index + 1}`}
           onClick={(event) => event.stopPropagation()}
         >
-          <p><span className='icon'><strong>&#8470;</strong></span> {index + 1} / {reservations.length}</p>
-          {r.phone && <p><span className="icon"><FontAwesomeIcon icon='phone' /></span> <a href={`tel:${r.phone}`}>{r.phone}</a></p>}
-          {r.email && <p><span className="icon"><FontAwesomeIcon icon='at' /></span> <a href={`mailto:${r.email}`}>
-            {r.email}</a></p>}
-          {r.city && <p><span className="icon"><FontAwesomeIcon icon='globe' /></span> {r.city}</p>}
+          <div className='media-left is-size-6-mobile is-size-7-tablet is-size-6-desktop has-text-centered'>
+            <figure style={{ border: '1px solid grey', padding: '2px 8px 2px 8px', borderRadius: '5px' }}>#{index + 1}</figure>
+          </div>
+          <div className='media-content is-size-6-mobile is-size-7-tablet is-size-6-fullhd'>
+            {r.phone && <p><FontAwesomeIcon icon='phone' /> <a href={`tel:${r.phone}`} style={{ paddingLeft: '0.3vw' }}>{r.phone}</a></p>}
+            {r.email && <p><FontAwesomeIcon icon='at' /> <a href={`mailto:${r.email}`} style={{ paddingLeft: '0.3vw' }}>{r.email}</a></p>}
+            {r.city && <p><FontAwesomeIcon icon='globe' /> <span style={{ paddingLeft: '0.3vw' }}>{r.city}</span></p>}
+          </div>
         </div>
       )}
     </div>

@@ -90,3 +90,13 @@ mutation deleteLitter($id: ID!) {
   }
 }
 `
+
+export const TOGGLE_RESERVATION = gql`
+mutation toggleReservation($id: ID!) {
+  toggleReservation(
+    id: $id
+  ) {
+    id
+  }
+}
+`

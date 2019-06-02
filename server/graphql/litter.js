@@ -36,6 +36,9 @@ export const typeDefs = gql`
     ): Litter
     deleteLitter(
       id: ID!
+    ): Litter
+    toggleReservation(
+      id: ID!      
     ): Litter    
   }
   
@@ -123,6 +126,28 @@ export const resolvers = {
         return deletedLitter
       } else {
         throw new ForbiddenError('you are not the admin, or the breeder')
+      }
+    },
+    toggleReservation: async (root, args, context) => {
+      const currentUser = context.currentUser
+      if (!currentUser) {
+        throw new AuthenticationError('not authenticated')
+      }
+      const theLitter = await Litter.findById(args.id)
+      if (!theLitter) {
+        throw new UserInputError('cannot find the litter to add reservation to')
+      }
+
+      if (theLitter.reservations.includes(currentUser._id.toString())) {
+        const updatedLitter = await Litter.findByIdAndUpdate(args.id, {
+          reservations: theLitter.reservations.filter(r => r.toString() !== currentUser._id.toString())
+        }, { new: true })
+        return updatedLitter
+      } else {
+        const updatedLitter = await Litter.findByIdAndUpdate(args.id, {
+          reservations: theLitter.reservations.concat(currentUser._id.toString())
+        }, { new: true })
+        return updatedLitter
       }
     }
   },
