@@ -9,12 +9,13 @@ import ConfirmButton from './ConfirmButton'
 import { toast } from 'react-toastify'
 import * as Sentry from '@sentry/browser'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { UPDATE_LITTER, TOGGLE_RESERVATION } from '../graphql/litters'
+import { ALL_LITTERS, DELETE_LITTER, TOGGLE_RESERVATION } from '../graphql/litters'
 
-const Litter = ({ litters, user, dogs, deleteLitter, showAll, setShowAll }) => {
-  const [details, setDetails] = useState([])
+const LitterList = ({ litters, user, dogs }) => {
+  const [active, setActive] = useState('')
   const [cursor, setCursor] = useState(0)
   const [litterToEdit, setLitterToEdit] = useState(null)
+  const [showAll, setShowAll] = useState(false) // not persisted
 
   const toggleReservation = useMutation(TOGGLE_RESERVATION, {
     onError: (error) => Sentry.captureException(error),
@@ -23,10 +24,16 @@ const Litter = ({ litters, user, dogs, deleteLitter, showAll, setShowAll }) => {
     }
   })
 
-  const editLitter = useMutation(UPDATE_LITTER, {
+  const deleteLitter = useMutation(DELETE_LITTER, {
     onError: (error) => Sentry.captureException(error),
-    update: () => {
-      toast.info('A litter was updated.')
+    update: (store, response) => {
+      const dataInStore = store.readQuery({ query: ALL_LITTERS })
+      dataInStore.allLitters = dataInStore.allLitters.filter(litter => litter.id !== response.data.deleteLitter.id)
+      store.writeQuery({
+        query: ALL_LITTERS,
+        data: dataInStore
+      })
+      toast.info('Litter was removed.')
     }
   })
 
@@ -40,16 +47,6 @@ const Litter = ({ litters, user, dogs, deleteLitter, showAll, setShowAll }) => {
     await deleteLitter({
       variables: { id }
     })
-  }
-
-  // initially it was possible to open up multiple detail views
-  // To-Do: get rid of the array
-  const toggleDetails = (id) => {
-    if (details.includes(id)) {
-      setDetails([])
-    } else {
-      setDetails([id])
-    }
   }
 
   if (litters.loading) return <div className='container'>loading...</div>
@@ -82,7 +79,6 @@ const Litter = ({ litters, user, dogs, deleteLitter, showAll, setShowAll }) => {
               user={user}
               dogs={dogs}
               litter={litterToEdit}
-              editLitter={editLitter}
               setLitterToEdit={setLitterToEdit}
             />}
         </div>
@@ -101,8 +97,13 @@ const Litter = ({ litters, user, dogs, deleteLitter, showAll, setShowAll }) => {
         <article
           key={litter.id}
           className='container'
-          style={{ padding: '0.75rem', borderBottom: '1px solid', borderTop: '1px solid', borderImage: 'radial-gradient(rgba(0,0,0,0.7), rgba(255,255,255,0)) 1' }}>
-          <div className='columns is-centered is-mobile is-clickable' onClick={() => toggleDetails(litter.id)} style={{ padding: '1rem' }}>
+          style={{
+            padding: '0.75rem', borderBottom: '1px solid', borderTop: '1px solid',
+            borderImage: 'radial-gradient(rgba(0,0,0,0.7), rgba(255,255,255,0)) 1'
+          }}>
+          <div className='columns is-centered is-mobile is-clickable'
+            onClick={() => setActive(active === litter.id ? '' : litter.id)}
+            style={{ padding: '1rem' }}>
             <div className='column is-2-mobile is-2-tablet is-1-desktop'>
               <div style={{ maxWidth: '65px' }}>
                 <LitterProgressBar date={litter.duedate} />
@@ -120,7 +121,7 @@ const Litter = ({ litters, user, dogs, deleteLitter, showAll, setShowAll }) => {
                   <div>
                     <p className='heading is-size-7 is-size-6-fullhd'><FontAwesomeIcon icon='venus' /> Dam</p>
                     <p className='title is-size-6 is-size-5-fullhd'>{litter.dam ? litter.dam.breed : 'removed'}
-                      {litter.dam && details.includes(litter.id) &&
+                      {litter.dam && active === litter.id &&
                         <span className='is-size-7 is-size-6-fullhd'>
                           <br />{`"${litter.dam.name}"`}
                           <br />{`born ${new Intl.DateTimeFormat('en-US', { month: 'short', year: 'numeric' })
@@ -134,7 +135,7 @@ const Litter = ({ litters, user, dogs, deleteLitter, showAll, setShowAll }) => {
                   <div>
                     <p className='heading is-size-7 is-size-6-fullhd'><FontAwesomeIcon icon='mars' /> Sire</p>
                     <p className='title is-size-6 is-size-5-fullhd'>{litter.sire ? litter.sire.breed : 'removed'}
-                      {litter.sire && details.includes(litter.id) &&
+                      {litter.sire && active === litter.id &&
                         <span className='is-size-7 is-size-6-fullhd'>
                           <br />{`"${litter.sire.name}"`}
                           <br />{`born ${new Intl.DateTimeFormat('en-US', { month: 'short', year: 'numeric' })
@@ -152,7 +153,7 @@ const Litter = ({ litters, user, dogs, deleteLitter, showAll, setShowAll }) => {
                 </div>
               </div>
 
-              {details.includes(litter.id) &&
+              {active === litter.id &&
                 <div className='columns'>
                   <div className='column'>
                     <div>
@@ -224,4 +225,4 @@ const Litter = ({ litters, user, dogs, deleteLitter, showAll, setShowAll }) => {
   )
 }
 
-export default Litter
+export default LitterList

@@ -10,7 +10,7 @@ const PuppyList = ({ puppies }) => {
 
   return (
     <div style={divStyles}>
-      {puppies.map((isFemale, index) => isFemale
+      {puppies.sort().reverse().map((isFemale, index) => isFemale
         ? <FontAwesomeIcon
           key={index}
           icon='venus'

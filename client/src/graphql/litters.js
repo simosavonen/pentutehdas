@@ -56,11 +56,10 @@ mutation createLitter($duedate: String!, $dam: String, $sire: String, $price: In
     price: $price,
     puppies: $puppies    
   ) {
-    duedate
-    price    
-    id
+    ...LitterDetails
   }
 }
+${LITTER_DETAILS}
 `
 
 export const UPDATE_LITTER = gql`

@@ -78,7 +78,8 @@ export const resolvers = {
         })
       }
 
-      const populatedLitter = await Litter.findById(litter._id.toString()).populate(['dam', 'sire', 'breeder'])
+      const populatedLitter = await Litter.findById(litter._id.toString())
+        .populate(['dam', 'sire', 'breeder', 'reservations'])
       pubsub.publish('LITTER_ADDED', { litterAdded: populatedLitter })
       return populatedLitter
     },

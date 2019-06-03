@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from 'react'
+import { useMutation } from 'react-apollo-hooks'
 import { withRouter } from 'react-router-dom'
+import { toast } from 'react-toastify'
+import * as Sentry from '@sentry/browser'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import PuppyList from './PuppyList'
+import { ALL_LITTERS, CREATE_LITTER, UPDATE_LITTER } from '../graphql/litters'
 
 let LitterForm = (props) => {
-  const { dogs, user, litter, history, addLitter, editLitter, setLitterToEdit } = props
+  const { dogs, user, litter, setLitterToEdit } = props
 
   const [duedate, setDuedate] = useState(litter
     ? new Date(parseInt(litter.duedate, 10)).toISOString().substr(0, 10) : '')
@@ -20,12 +24,36 @@ let LitterForm = (props) => {
     setMyDogs(filtered)
   }, [dogs, user])
 
+
+  const addLitter = useMutation(CREATE_LITTER, {
+    onError: (error) => Sentry.captureException(error),
+    update: (store, response) => {
+      const addedLitter = response.data.addLitter
+      const dataInStore = store.readQuery({ query: ALL_LITTERS })
+      if (!dataInStore.allLitters.map(p => p.id).includes(addedLitter.id)) {
+        dataInStore.allLitters.push(addedLitter)
+        store.writeQuery({
+          query: ALL_LITTERS,
+          data: dataInStore
+        })
+        toast.info('You added a litter.')
+      }
+    }
+  })
+
+  const editLitter = useMutation(UPDATE_LITTER, {
+    onError: (error) => Sentry.captureException(error),
+    update: () => {
+      toast.info('A litter was updated.')
+    }
+  })
+
   const adjustPuppies = (event, value) => {
     event.preventDefault()
     if (value === null) {
       setPuppies([])
     } else {
-      setPuppies(puppies.concat(value).sort().reverse())
+      setPuppies(puppies.concat(value))
     }
   }
 
@@ -47,7 +75,7 @@ let LitterForm = (props) => {
       setLitterToEdit(null)
     }
 
-    history.push('/')
+    props.history.push('/')
   }
 
   const formStyles = {
@@ -239,7 +267,7 @@ let LitterForm = (props) => {
               </p>
               : <p className='control'>
                 <button className='button is-danger is-outlined'
-                  onClick={(event) => { event.preventDefault(); history.push('/') }}>
+                  onClick={(event) => { event.preventDefault(); props.history.push('/') }}>
                   cancel
                 </button>
               </p>

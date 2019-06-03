@@ -8,17 +8,12 @@ import 'react-toastify/dist/ReactToastify.min.css'
 
 import * as Sentry from '@sentry/browser'
 
-import Litter from './components/Litter'
-import Navigation from './components/Navigation'
-import LitterForm from './components/LitterForm'
-import LoginForm from './components/LoginForm'
-import Dogs from './components/Dogs'
-import UserForm from './components/UserForm'
-import Roles from './components/Roles'
-import Footer from './components/Footer'
-import ErrorHandler from './components/ErrorHandler'
+import {
+  LitterList, Navigation, LitterForm, LoginForm,
+  Dogs, UserForm, Roles, Footer, ErrorHandler
+} from './components'
 
-import { ALL_LITTERS, CREATE_LITTER, LITTER_ADDED, DELETE_LITTER } from './graphql/litters'
+import { ALL_LITTERS, LITTER_ADDED } from './graphql/litters'
 import { ALL_DOGS, CREATE_DOG, DELETE_DOG } from './graphql/dogs'
 import { LOGIN } from './graphql/login'
 import { USER, CREATE_USER, UPDATE_USER, USER_AVAILABLE } from './graphql/user'
@@ -26,7 +21,6 @@ import { USER, CREATE_USER, UPDATE_USER, USER_AVAILABLE } from './graphql/user'
 const App = () => {
   const [token, setToken] = useState(null)
   const [user, setUser] = useState(null)
-  const [showAll, setShowAll] = useState(false) // for filtering litters
 
   const client = useApolloClient()
 
@@ -76,12 +70,6 @@ const App = () => {
     }
   })
 
-  const addLitter = useMutation(CREATE_LITTER, {
-    onError: handleError,
-    refetchQueries: [{ query: ALL_LITTERS }]
-  })
-
-
 
   const deleteDog = useMutation(DELETE_DOG, {
     onError: handleError,
@@ -95,21 +83,6 @@ const App = () => {
       toast.info('Dog was removed.')
     }
   })
-
-  const deleteLitter = useMutation(DELETE_LITTER, {
-    onError: handleError,
-    update: (store, response) => {
-      const dataInStore = store.readQuery({ query: ALL_LITTERS })
-      dataInStore.allLitters = dataInStore.allLitters.filter(litter => litter.id !== response.data.deleteLitter.id)
-      store.writeQuery({
-        query: ALL_LITTERS,
-        data: dataInStore
-      })
-      toast.info('Litter was removed.')
-    }
-  })
-
-
 
   const handleLogout = () => {
     setToken(null)
@@ -146,13 +119,10 @@ const App = () => {
         <section className='section site-content'>
           <Route exact path='/' render={() =>
             <ErrorHandler>
-              <Litter
+              <LitterList
                 litters={allLitters}
                 dogs={allDogs}
                 user={user}
-                deleteLitter={deleteLitter}
-                showAll={showAll}
-                setShowAll={setShowAll}
               />
             </ErrorHandler>
           } />
@@ -169,7 +139,6 @@ const App = () => {
                   <LitterForm
                     user={user}
                     dogs={allDogs}
-                    addLitter={addLitter}
                   />
                 </div>
               </div>
