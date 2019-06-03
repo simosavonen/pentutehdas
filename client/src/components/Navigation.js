@@ -38,7 +38,12 @@ const Navigation = ({ user, logout }) => {
             }
             {user &&
               <Link to='/user' className='navbar-item'>
-                edit user
+                profile
+              </Link>
+            }
+            {user && user.role === 'admin' &&
+              <Link to='/roles' className='navbar-item'>
+                roles
               </Link>
             }
           </div>

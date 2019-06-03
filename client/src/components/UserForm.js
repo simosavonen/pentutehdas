@@ -34,7 +34,7 @@ let UserForm = (props) => {
     <div className='columns is-centered'>
       <div className='box column is-8-tablet is-7-desktop is-5-widescreen'>
         <form style={formStyles} onSubmit={submit}>
-          <h1 className='title'>Edit user</h1>
+          <h1 className='title'>Edit user profile</h1>
           <div className='field is-horizontal'>
             <div className='field-label is-normal'>
               <label className="label">username</label>

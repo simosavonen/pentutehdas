@@ -10,6 +10,9 @@ const User = require('./models/user')
 mongoose.set('useFindAndModify', false)
 mongoose.set('useCreateIndex', true)
 
+const Sentry = require('@sentry/node');
+Sentry.init({ dsn: 'https://614a80e14fd14c1c9e0b6e8621dddc31@sentry.io/1473320' });
+
 const MONGODB_URI = process.env.MONGODB_URI
 
 mongoose.connect(MONGODB_URI, { useNewUrlParser: true })
@@ -25,6 +28,12 @@ import { typeDefs, resolvers } from './graphql'
 const server = new ApolloServer({
   typeDefs,
   resolvers,
+  engine: {
+    rewriteError(err) {
+      Sentry.captureException(err)
+      return null
+    }
+  },
   context: async ({ req }) => {
     const auth = req ? req.headers.authorization : null
 

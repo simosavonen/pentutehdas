@@ -15,11 +15,11 @@
 
 .site-content {
   flex: 1;
+  min-height: 1500px;
   background-color: #F5F5F5;
   background-image: url(./images/snow_dog_factory.jpg);
   background-repeat: no-repeat;
   background-position: center bottom;
-  background-size: cover;
-  padding-bottom: 400px;
+  background-size: cover;  
 }
 

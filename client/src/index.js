@@ -9,6 +9,8 @@ import { InMemoryCache } from 'apollo-cache-inmemory'
 import { setContext } from 'apollo-link-context'
 import { BrowserRouter as Router } from 'react-router-dom'
 
+import * as Sentry from '@sentry/browser' // error monitoring service
+
 import { split } from 'apollo-link'
 import { WebSocketLink } from 'apollo-link-ws'
 import { getMainDefinition } from 'apollo-utilities'
@@ -17,6 +19,8 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { faMars, faVenus, faAt, faPhone, faGlobe, faCalendarAlt, faEuroSign, faPaw } from '@fortawesome/free-solid-svg-icons'
 import { fab, faGithub, faLinkedin, faGithubSquare } from '@fortawesome/free-brands-svg-icons'
 import './index.css'
+
+Sentry.init({ dsn: "https://614a80e14fd14c1c9e0b6e8621dddc31@sentry.io/1473320" });
 
 library.add(faMars, faVenus, faAt, faPhone, faGlobe, faCalendarAlt, faEuroSign, faPaw, fab, faGithub, faLinkedin, faGithubSquare)
 

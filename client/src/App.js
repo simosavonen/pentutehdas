@@ -12,6 +12,7 @@ import LitterForm from './components/LitterForm'
 import LoginForm from './components/LoginForm'
 import Dogs from './components/Dogs'
 import UserForm from './components/UserForm'
+import Roles from './components/Roles'
 import Footer from './components/Footer'
 import ErrorHandler from './components/ErrorHandler'
 
@@ -195,6 +196,10 @@ const App = () => {
             user
               ? <UserForm user={user} updateUser={updateUserMutation} />
               : <Redirect to='/' />} />
+          <Route exact path='/roles' render={() =>
+            user && user.role === 'admin'
+              ? <Roles />
+              : <Redirect to='/' />} />
         </section>
         <Footer />
 
@@ -206,7 +211,7 @@ const App = () => {
           const addedLitter = subscriptionData.data.litterAdded
           const dataInStore = client.readQuery({ query: ALL_LITTERS })
           if (!includedIn(dataInStore.allLitters, addedLitter)) {
-            dataInStore.allLitters.push(addedLitter)
+            dataInStore.allLitters.unshift(addedLitter) // to front page top
             client.writeQuery({
               query: ALL_LITTERS,
               data: dataInStore
@@ -218,7 +223,7 @@ const App = () => {
         {() => null}
       </Subscription>
 
-      <ToastContainer />
+      <ToastContainer pauseOnFocusLoss={false} />
 
     </div>
   )

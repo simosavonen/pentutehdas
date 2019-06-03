@@ -38,7 +38,7 @@ const LitterProgressBar = ({ date }) => {
         }
       }}
     >
-      <div className='has-text-centered' style={styles} title='Estimated due date or when the puppies were born'>
+      <div className='has-text-centered' style={styles} title={progress < 100 ? `Estimated due date` : `Puppies' birthday`}>
         {new Intl.DateTimeFormat('en-US', { month: 'short' }).format(dateObj)}<br />
         <strong>{dateObj.getDate()}</strong>
       </div>
