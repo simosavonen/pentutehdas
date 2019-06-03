@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
+import { withRouter } from 'react-router-dom'
 import Select from 'react-select'
 
-const DogForm = (props) => {
+let DogForm = (props) => {
   const [name, setName] = useState('')
   const [born, setBorn] = useState('')
   const [isFemale, setIsFemale] = useState(true)
@@ -128,10 +129,16 @@ const DogForm = (props) => {
           <div className='field is-horizontal'>
             <div className='field-label'></div>
             <div className='field-body'>
-              <div className='field'>
+              <div className='field is-grouped'>
                 <div className="control">
                   <button className='button is-success is-outlined' type='submit'>
                     add a dog
+                  </button>
+                </div>
+                <div className='control'>
+                  <button className='button is-danger is-outlined'
+                    onClick={(event) => { event.preventDefault(); props.history.push('/') }}>
+                    cancel
                   </button>
                 </div>
               </div>
@@ -143,4 +150,4 @@ const DogForm = (props) => {
   )
 }
 
-export default DogForm
+export default DogForm = withRouter(DogForm)

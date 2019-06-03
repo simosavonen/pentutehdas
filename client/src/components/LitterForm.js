@@ -14,8 +14,6 @@ let LitterForm = (props) => {
   const [puppies, setPuppies] = useState(litter ? litter.puppies : [])
   const [myDogs, setMyDogs] = useState(null)
 
-
-
   useEffect(() => {
     const filtered = dogs.data.allDogs.filter(dog =>
       dog.owner.username === user.username)
@@ -171,44 +169,56 @@ let LitterForm = (props) => {
         <div className='field-label is-normal'>
           <label className='label'>puppies</label>
         </div>
-        <div className='field-body'>
-          <div className='field is-grouped'>
-            <div className='control is-expanded'>
-              <div className='input'>
-                <PuppyList puppies={puppies} />
+        {(duedate !== '' && new Date(duedate) <= new Date())
+          ? <div className='field-body'>
+            <div className='field is-grouped'>
+              <div className='control is-expanded'>
+                <div className='input'>
+                  <PuppyList puppies={puppies} />
+                </div>
+                <input
+                  className='input is-small'
+                  type='hidden'
+                  value={puppies}
+                  onChange={({ target }) => setPuppies(target.value)}
+                  readOnly
+                />
+                <span className='help'>
+                  use the buttons to add a female <FontAwesomeIcon
+                    icon='venus' /> or male <FontAwesomeIcon icon='mars' /> puppy
+              </span>
               </div>
-              <input
-                className='input is-small'
-                type='hidden'
-                value={puppies}
-                onChange={({ target }) => setPuppies(target.value)}
-                readOnly
-              />
-              <span className='help'>
-                use the buttons to add a female <FontAwesomeIcon icon='venus'
-                /> or male <FontAwesomeIcon icon='mars' /> puppy</span>
+              <p className='control'>
+                <button className='button is-danger is-outlined is-medium' title='add female puppy'
+                  onClick={(event) => adjustPuppies(event, true)}>
+                  <FontAwesomeIcon icon='venus' />
+                </button>
+              </p>
+              <p className='control'>
+                <button className='button is-info is-outlined is-medium' title='add male puppy'
+                  onClick={(event) => adjustPuppies(event, false)}>
+                  <FontAwesomeIcon icon='mars' />
+                </button>
+              </p>
+              <p className='control'>
+                <button className='button is-outlined'
+                  onClick={(event) => adjustPuppies(event, null)}>
+                  Reset
+              </button>
+              </p>
             </div>
-            <p className='control'>
-              <button className='button is-danger is-outlined is-medium' title='add female puppy'
-                onClick={(event) => adjustPuppies(event, true)}>
-                <FontAwesomeIcon icon='venus' />
-              </button>
-            </p>
-            <p className='control'>
-              <button className='button is-info is-outlined is-medium' title='add male puppy'
-                onClick={(event) => adjustPuppies(event, false)}>
-                <FontAwesomeIcon icon='mars' />
-              </button>
-            </p>
-            <p className='control'>
-              <button className='button is-outlined'
-                onClick={(event) => adjustPuppies(event, null)}>
-                Reset
-              </button>
-            </p>
           </div>
-        </div>
+          : <div className='field-body'>
+            <div className='field'>
+              <p className='control'>
+                <input className='input is-static' readOnly
+                  defaultValue='To add puppies, set the date for today or in the past.' />
+              </p>
+            </div>
+          </div>
+        }
       </div>
+
 
       <div className='field is-horizontal'>
         <div className='field-label is-normal'>
@@ -220,10 +230,16 @@ let LitterForm = (props) => {
                 {litter ? 'save changes' : 'add a litter'}
               </button>
             </p>
-            {litter &&
+            {litter ?
               <p className='control'>
                 <button className='button is-danger is-outlined'
                   onClick={(event) => { event.preventDefault(); props.toggle(null) }}>
+                  cancel
+                </button>
+              </p>
+              : <p className='control'>
+                <button className='button is-danger is-outlined'
+                  onClick={(event) => { event.preventDefault(); history.push('/') }}>
                   cancel
                 </button>
               </p>
