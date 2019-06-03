@@ -7,7 +7,7 @@ export const typeDefs = gql`
     duedate: String!
     dam: Dog,
     sire: Dog,
-    puppies: [Boolean],
+    puppies: [Boolean],    
     reservations: [User],
     price: Int,
     breeder: User!
@@ -51,7 +51,6 @@ export const resolvers = {
   Query: {
     allLitters: () => Litter.find({})
       .populate(['dam', 'sire', 'breeder', 'reservations'])
-      .sort('-hasPuppies duedate')
   },
   Mutation: {
     addLitter: async (root, args, context) => {
@@ -67,7 +66,6 @@ export const resolvers = {
           dam: args.dam,
           sire: args.sire,
           puppies: args.puppies,
-          hasPuppies: args.puppies.length > 0,
           reservations: [],
           price: args.price,
           breeder: currentUser
@@ -100,7 +98,6 @@ export const resolvers = {
           duedate: args.duedate,
           sire: args.sire,
           puppies: args.puppies,
-          hasPuppies: args.puppies.length > 0,
           price: args.price
         }, { new: true })
         return updatedLitter

@@ -6,6 +6,8 @@ import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.min.css'
 
+import * as Sentry from '@sentry/browser'
+
 import Litter from './components/Litter'
 import Navigation from './components/Navigation'
 import LitterForm from './components/LitterForm'
@@ -38,7 +40,7 @@ const App = () => {
   }, [client, token])
 
   const handleError = (error) => {
-    console.log(error)
+    Sentry.captureException(error)
   }
 
   const includedIn = (set, object) =>
@@ -198,7 +200,7 @@ const App = () => {
               : <Redirect to='/' />} />
           <Route exact path='/roles' render={() =>
             user && user.role === 'admin'
-              ? <Roles />
+              ? <Roles user={user} />
               : <Redirect to='/' />} />
         </section>
         <Footer />
@@ -211,7 +213,8 @@ const App = () => {
           const addedLitter = subscriptionData.data.litterAdded
           const dataInStore = client.readQuery({ query: ALL_LITTERS })
           if (!includedIn(dataInStore.allLitters, addedLitter)) {
-            dataInStore.allLitters.unshift(addedLitter) // to front page top
+            dataInStore.allLitters.push(addedLitter)
+
             client.writeQuery({
               query: ALL_LITTERS,
               data: dataInStore

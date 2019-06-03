@@ -31,7 +31,7 @@ const server = new ApolloServer({
   engine: {
     rewriteError(err) {
       Sentry.captureException(err)
-      return null
+      return err
     }
   },
   context: async ({ req }) => {

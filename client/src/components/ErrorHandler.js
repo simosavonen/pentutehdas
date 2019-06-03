@@ -1,4 +1,5 @@
 import React from 'react'
+import * as Sentry from '@sentry/browser'
 
 class ErrorHandler extends React.Component {
   constructor(props) {
@@ -8,7 +9,7 @@ class ErrorHandler extends React.Component {
 
   componentDidCatch(error, info) {
     this.setState({ errorOccurred: true })
-    console.log(error, info)
+    Sentry.captureException(error, info)
   }
 
   render() {
