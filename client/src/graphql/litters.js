@@ -72,11 +72,10 @@ mutation updateLitter($id: ID!, $duedate: String!, $sire: String, $price: Int, $
     price: $price,
     puppies: $puppies    
   ) {
-    duedate
-    price    
-    id
+    ...LitterDetails
   }
 }
+${LITTER_DETAILS}
 `
 
 export const DELETE_LITTER = gql`

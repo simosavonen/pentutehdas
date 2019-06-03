@@ -7,9 +7,7 @@ import { ApolloProvider as ApolloHooksProvider } from 'react-apollo-hooks'
 import { createHttpLink } from 'apollo-link-http'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import { setContext } from 'apollo-link-context'
-import { BrowserRouter as Router } from 'react-router-dom'
 
-import * as Sentry from '@sentry/browser' // error monitoring service
 
 import { split } from 'apollo-link'
 import { WebSocketLink } from 'apollo-link-ws'
@@ -20,6 +18,8 @@ import { faMars, faVenus, faAt, faPhone, faGlobe, faCalendarAlt, faEuroSign, faP
 import { fab, faGithub, faLinkedin, faGithubSquare } from '@fortawesome/free-brands-svg-icons'
 import './index.css'
 
+// error monitoring service
+import * as Sentry from '@sentry/browser'
 Sentry.init({ dsn: "https://614a80e14fd14c1c9e0b6e8621dddc31@sentry.io/1473320" });
 
 library.add(faMars, faVenus, faAt, faPhone, faGlobe, faCalendarAlt, faEuroSign, faPaw, fab, faGithub, faLinkedin, faGithubSquare)
@@ -73,9 +73,7 @@ const client = new ApolloClient({
 ReactDOM.render(
   <ApolloProvider client={client}>
     <ApolloHooksProvider client={client}>
-      <Router>
-        <App />
-      </Router>
+      <App />
     </ApolloHooksProvider>
   </ApolloProvider>,
   document.getElementById('root')

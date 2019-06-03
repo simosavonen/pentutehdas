@@ -18,7 +18,7 @@ import Roles from './components/Roles'
 import Footer from './components/Footer'
 import ErrorHandler from './components/ErrorHandler'
 
-import { ALL_LITTERS, CREATE_LITTER, UPDATE_LITTER, LITTER_ADDED, DELETE_LITTER, TOGGLE_RESERVATION } from './graphql/litters'
+import { ALL_LITTERS, CREATE_LITTER, LITTER_ADDED, DELETE_LITTER } from './graphql/litters'
 import { ALL_DOGS, CREATE_DOG, DELETE_DOG } from './graphql/dogs'
 import { LOGIN } from './graphql/login'
 import { USER, CREATE_USER, UPDATE_USER, USER_AVAILABLE } from './graphql/user'
@@ -81,10 +81,7 @@ const App = () => {
     refetchQueries: [{ query: ALL_LITTERS }]
   })
 
-  const editLitter = useMutation(UPDATE_LITTER, {
-    onError: handleError,
-    refetchQueries: [{ query: ALL_LITTERS }]
-  })
+
 
   const deleteDog = useMutation(DELETE_DOG, {
     onError: handleError,
@@ -112,12 +109,7 @@ const App = () => {
     }
   })
 
-  const toggleReservation = useMutation(TOGGLE_RESERVATION, {
-    onError: handleError,
-    update: () => {
-      toast.info('Toggled puppy reservation.')
-    }
-  })
+
 
   const handleLogout = () => {
     setToken(null)
@@ -158,9 +150,7 @@ const App = () => {
                 litters={allLitters}
                 dogs={allDogs}
                 user={user}
-                editLitter={editLitter}
                 deleteLitter={deleteLitter}
-                toggleReservation={toggleReservation}
                 showAll={showAll}
                 setShowAll={setShowAll}
               />

@@ -1,41 +1,43 @@
 import React, { useState } from 'react'
+import { useMutation } from 'react-apollo-hooks'
 import LitterForm from './LitterForm'
 import PuppyList from './PuppyList'
 import Reservations from './Reservations'
 import LitterProgressBar from './LitterProgressBar'
 import Pagination from './Pagination'
 import ConfirmButton from './ConfirmButton'
+import { toast } from 'react-toastify'
+import * as Sentry from '@sentry/browser'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { UPDATE_LITTER, TOGGLE_RESERVATION } from '../graphql/litters'
 
-
-const Litter = ({ litters, user, dogs, editLitter, deleteLitter, toggleReservation, showAll, setShowAll }) => {
+const Litter = ({ litters, user, dogs, deleteLitter, showAll, setShowAll }) => {
   const [details, setDetails] = useState([])
   const [cursor, setCursor] = useState(0)
   const [litterToEdit, setLitterToEdit] = useState(null)
 
-  if (litters.loading) {
-    return (
-      <div className='container'>loading...</div>
-    )
-  }
+  const toggleReservation = useMutation(TOGGLE_RESERVATION, {
+    onError: (error) => Sentry.captureException(error),
+    update: () => {
+      toast.info('Toggled puppy reservation.')
+    }
+  })
 
-  if (litters.error) {
-    return (
-      <div className='container'>
-        <p>Error, loading litters failed.</p>
-        <p>{litters.error.message}</p>
-      </div>
-    )
-  }
+  const editLitter = useMutation(UPDATE_LITTER, {
+    onError: (error) => Sentry.captureException(error),
+    update: () => {
+      toast.info('A litter was updated.')
+    }
+  })
 
-  const handleDelete = async (id) => {
-    await deleteLitter({
+  const handleReservation = async (id) => {
+    await toggleReservation({
       variables: { id }
     })
   }
 
-  const handleReservation = async (id) => {
-    await toggleReservation({
+  const handleDelete = async (id) => {
+    await deleteLitter({
       variables: { id }
     })
   }
@@ -49,6 +51,9 @@ const Litter = ({ litters, user, dogs, editLitter, deleteLitter, toggleReservati
       setDetails([id])
     }
   }
+
+  if (litters.loading) return <div className='container'>loading...</div>
+  if (litters.error) return <div className='container'>Error, loading litters failed.</div>
 
   let filtered = litters.data.allLitters
   if (!showAll && litters.data.allLitters !== undefined) {

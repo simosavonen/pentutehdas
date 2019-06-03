@@ -100,6 +100,7 @@ export const resolvers = {
           puppies: args.puppies,
           price: args.price
         }, { new: true })
+          .populate(['dam', 'sire', 'breeder', 'reservations'])
         return updatedLitter
       } else {
         throw new ForbiddenError('you are not the admin, or the breeder')
