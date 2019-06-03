@@ -14,14 +14,18 @@ const Litter = ({ litters, user, dogs, editLitter, deleteLitter, toggleReservati
   const [litterToEdit, setLitterToEdit] = useState(null)
 
   if (litters.loading) {
-    return <div className='container'>loading...</div>
+    return (
+      <div className='container'>loading...</div>
+    )
   }
 
   if (litters.error) {
-    return <div className='container'>
-      Error, loading litters failed.
-      <p>{litters.error.message}</p>
-    </div>
+    return (
+      <div className='container'>
+        <p>Error, loading litters failed.</p>
+        <p>{litters.error.message}</p>
+      </div>
+    )
   }
 
   const handleDelete = async (id) => {
@@ -74,7 +78,7 @@ const Litter = ({ litters, user, dogs, editLitter, deleteLitter, toggleReservati
               dogs={dogs}
               litter={litterToEdit}
               editLitter={editLitter}
-              toggle={setLitterToEdit}
+              setLitterToEdit={setLitterToEdit}
             />}
         </div>
         <button className="modal-close is-large" aria-label="close" onClick={() => setLitterToEdit(null)}></button>

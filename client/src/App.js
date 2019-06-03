@@ -48,9 +48,9 @@ const App = () => {
 
   const allLitters = useQuery(ALL_LITTERS)
   const allDogs = useQuery(ALL_DOGS)
-  const userAvailableQuery = useMutation(USER_AVAILABLE)
-  const loginMutation = useMutation(LOGIN)
-  const addDogMutation = useMutation(CREATE_DOG, {
+  const userAvailable = useMutation(USER_AVAILABLE)
+  const login = useMutation(LOGIN)
+  const addDog = useMutation(CREATE_DOG, {
     onError: handleError,
     update: (store, response) => {
       const dataInStore = store.readQuery({ query: ALL_DOGS })
@@ -63,11 +63,11 @@ const App = () => {
     }
   })
 
-  const addUserMutation = useMutation(CREATE_USER, {
+  const addUser = useMutation(CREATE_USER, {
     onError: handleError
   })
 
-  const updateUserMutation = useMutation(UPDATE_USER, {
+  const updateUser = useMutation(UPDATE_USER, {
     onError: handleError,
     refetchQueries: [{ query: ALL_LITTERS }],
     update: (store, response) => {
@@ -76,17 +76,17 @@ const App = () => {
     }
   })
 
-  const addLitterMutation = useMutation(CREATE_LITTER, {
+  const addLitter = useMutation(CREATE_LITTER, {
     onError: handleError,
     refetchQueries: [{ query: ALL_LITTERS }]
   })
 
-  const editLitterMutation = useMutation(UPDATE_LITTER, {
+  const editLitter = useMutation(UPDATE_LITTER, {
     onError: handleError,
     refetchQueries: [{ query: ALL_LITTERS }]
   })
 
-  const deleteDogMutation = useMutation(DELETE_DOG, {
+  const deleteDog = useMutation(DELETE_DOG, {
     onError: handleError,
     update: (store, response) => {
       const dataInStore = store.readQuery({ query: ALL_DOGS })
@@ -99,7 +99,7 @@ const App = () => {
     }
   })
 
-  const deleteLitterMutation = useMutation(DELETE_LITTER, {
+  const deleteLitter = useMutation(DELETE_LITTER, {
     onError: handleError,
     update: (store, response) => {
       const dataInStore = store.readQuery({ query: ALL_LITTERS })
@@ -112,24 +112,23 @@ const App = () => {
     }
   })
 
-  const toggleReservationMutation = useMutation(TOGGLE_RESERVATION, {
+  const toggleReservation = useMutation(TOGGLE_RESERVATION, {
     onError: handleError,
-    refetchQueries: [{ query: ALL_LITTERS }],
     update: () => {
       toast.info('Toggled puppy reservation.')
     }
   })
 
-  const logout = () => {
+  const handleLogout = () => {
     setToken(null)
     localStorage.clear()
     client.resetStore()
     toast.info('Logout OK')
   }
 
-  const login = async (username, password) => {
+  const handleLogin = async (username, password) => {
     try {
-      const result = await loginMutation({
+      const result = await login({
         variables: { username, password }
       })
       const token = result.data.login.value
@@ -149,7 +148,7 @@ const App = () => {
       <Router>
         <Navigation
           user={user}
-          logout={logout}
+          logout={handleLogout}
         />
 
         <section className='section site-content'>
@@ -159,9 +158,9 @@ const App = () => {
                 litters={allLitters}
                 dogs={allDogs}
                 user={user}
-                editLitter={editLitterMutation}
-                deleteLitter={deleteLitterMutation}
-                toggleReservation={toggleReservationMutation}
+                editLitter={editLitter}
+                deleteLitter={deleteLitter}
+                toggleReservation={toggleReservation}
                 showAll={showAll}
                 setShowAll={setShowAll}
               />
@@ -169,9 +168,9 @@ const App = () => {
           } />
           <Route exact path='/login' render={() =>
             <LoginForm
-              login={login}
-              addUser={addUserMutation}
-              userAvailable={userAvailableQuery}
+              login={handleLogin}
+              addUser={addUser}
+              userAvailable={userAvailable}
             />} />
           <Route exact path='/litter' render={() =>
             user && ['breeder', 'admin'].includes(user.role)
@@ -180,7 +179,7 @@ const App = () => {
                   <LitterForm
                     user={user}
                     dogs={allDogs}
-                    addLitter={addLitterMutation}
+                    addLitter={addLitter}
                   />
                 </div>
               </div>
@@ -190,13 +189,13 @@ const App = () => {
               ? <Dogs
                 user={user}
                 dogs={allDogs}
-                addDog={addDogMutation}
-                deleteDog={deleteDogMutation}
+                addDog={addDog}
+                deleteDog={deleteDog}
               />
               : <Redirect to='/' />} />
           <Route exact path='/user' render={() =>
             user
-              ? <UserForm user={user} updateUser={updateUserMutation} />
+              ? <UserForm user={user} updateUser={updateUser} />
               : <Redirect to='/' />} />
           <Route exact path='/roles' render={() =>
             user && user.role === 'admin'

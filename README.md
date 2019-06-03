@@ -72,5 +72,5 @@ frontend url: https://pentutehdas.surge.sh
 | 31.5. | 6     | graphql fragments and LITTER_ADDED subscription, react-toast and subscription now adds litter to apollo cache, social links to footer, heroku free server slowness causing websocket errors |
 | 1.6.  | 11     | sort litters by puppies existing and puppy age, let users hide over 2 month old litters, newly added litters by user went to end of the list, remove litters with a button that asks to confirm, split typeDefs into separate files, split resolvers, error boundary |
 | 2.6.  | 7     | start using ESLint, making and deleting reservations is working and we are feature complete, reservations loaded on a need to know basis |
-| 3.6.  | 4     | start error handling redesign by implementing Sentry.io, prevent adding puppies before due date, add cancel buttons for mobile users, was sorting litters too early |
-| yht   | 124    | | 
+| 3.6.  | 6     | start error handling redesign by implementing Sentry.io, prevent adding puppies before due date, add cancel buttons for mobile users, was sorting litters too early, updating reservation cache done automatically by returning a fully populated litter object |
+| yht   | 126    | | 

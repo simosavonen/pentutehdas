@@ -131,17 +131,22 @@ export const resolvers = {
       if (!theLitter) {
         throw new UserInputError('cannot find the litter to add reservation to')
       }
-
-      if (theLitter.reservations.includes(currentUser._id.toString())) {
-        const updatedLitter = await Litter.findByIdAndUpdate(args.id, {
-          reservations: theLitter.reservations.filter(r => r.toString() !== currentUser._id.toString())
-        }, { new: true })
-        return updatedLitter
-      } else {
-        const updatedLitter = await Litter.findByIdAndUpdate(args.id, {
-          reservations: theLitter.reservations.concat(currentUser._id.toString())
-        }, { new: true })
-        return updatedLitter
+      try {
+        if (theLitter.reservations.includes(currentUser._id.toString())) {
+          const updatedLitter = await Litter.findByIdAndUpdate(args.id, {
+            reservations: theLitter.reservations.filter(r => r.toString() !== currentUser._id.toString())
+          }, { new: true })
+            .populate(['dam', 'sire', 'breeder', 'reservations'])
+          return updatedLitter
+        } else {
+          const updatedLitter = await Litter.findByIdAndUpdate(args.id, {
+            reservations: theLitter.reservations.concat(currentUser._id.toString())
+          }, { new: true })
+            .populate(['dam', 'sire', 'breeder', 'reservations'])
+          return updatedLitter
+        }
+      } catch (error) {
+        console.log(error)
       }
     }
   },

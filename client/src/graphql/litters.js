@@ -94,7 +94,8 @@ mutation toggleReservation($id: ID!) {
   toggleReservation(
     id: $id
   ) {
-    id
+    ...LitterDetails
   }
 }
+${LITTER_DETAILS}
 `

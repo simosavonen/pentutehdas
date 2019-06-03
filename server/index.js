@@ -11,7 +11,7 @@ mongoose.set('useFindAndModify', false)
 mongoose.set('useCreateIndex', true)
 
 const Sentry = require('@sentry/node');
-Sentry.init({ dsn: 'https://614a80e14fd14c1c9e0b6e8621dddc31@sentry.io/1473320' });
+Sentry.init({ dsn: process.env.SENTRY });
 
 const MONGODB_URI = process.env.MONGODB_URI
 
@@ -20,6 +20,7 @@ mongoose.connect(MONGODB_URI, { useNewUrlParser: true })
     console.log('connected to MongoDB')
   })
   .catch((error) => {
+    Sentry.captureException(error)
     console.log('error connecting to MongoDB:', error.message)
   })
 
@@ -28,11 +29,11 @@ import { typeDefs, resolvers } from './graphql'
 const server = new ApolloServer({
   typeDefs,
   resolvers,
+  formatError: error => {
+    Sentry.captureException(error)
+  },
   engine: {
-    rewriteError(err) {
-      Sentry.captureException(err)
-      return err
-    }
+    apiKey: process.env.ENGINE_API_KEY
   },
   context: async ({ req }) => {
     const auth = req ? req.headers.authorization : null

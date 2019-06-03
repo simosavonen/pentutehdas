@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import PuppyList from './PuppyList'
 
 let LitterForm = (props) => {
-  const { dogs, user, litter, history, addLitter, editLitter } = props
+  const { dogs, user, litter, history, addLitter, editLitter, setLitterToEdit } = props
 
   const [duedate, setDuedate] = useState(litter
     ? new Date(parseInt(litter.duedate, 10)).toISOString().substr(0, 10) : '')
@@ -44,7 +44,7 @@ let LitterForm = (props) => {
           id: litter.id, duedate, sire, price: parseInt(price, 10), puppies
         }
       })
-      props.toggle(null)
+      setLitterToEdit(null)
     }
 
     history.push('/')
@@ -233,7 +233,7 @@ let LitterForm = (props) => {
             {litter ?
               <p className='control'>
                 <button className='button is-danger is-outlined'
-                  onClick={(event) => { event.preventDefault(); props.toggle(null) }}>
+                  onClick={(event) => { event.preventDefault(); setLitterToEdit(null) }}>
                   cancel
                 </button>
               </p>
