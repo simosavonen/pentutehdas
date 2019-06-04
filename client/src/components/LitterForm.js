@@ -22,7 +22,9 @@ let LitterForm = (props) => {
   const { data, error, loading } = useQuery(ALL_DOGS)
 
   useEffect(() => {
-    setMyDogs(data.allDogs.filter(dog => dog.owner.username === user.username))
+    if (data.allDogs !== undefined) {
+      setMyDogs(data.allDogs.filter(dog => dog.owner.username === user.username))
+    }
   }, [data, user])
 
   const addLitter = useMutation(CREATE_LITTER, {
