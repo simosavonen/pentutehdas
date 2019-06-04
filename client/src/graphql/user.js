@@ -29,6 +29,15 @@ query users($ids: [String!]!){
 ${USER_DETAILS}
 `
 
+export const ALL_USERS = gql`
+{
+  allUsers {
+    ...UserDetails
+  }
+}
+${USER_DETAILS}
+`
+
 export const USER_AVAILABLE = gql`
 query userAvailable($username: String!) {
   userAvailable(
