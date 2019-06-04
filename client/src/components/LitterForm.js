@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react'
-import { useMutation } from 'react-apollo-hooks'
+import { useQuery, useMutation } from 'react-apollo-hooks'
 import { withRouter } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import * as Sentry from '@sentry/browser'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import PuppyList from './PuppyList'
 import { ALL_LITTERS, CREATE_LITTER, UPDATE_LITTER } from '../graphql/litters'
+import { ALL_DOGS } from '../graphql/dogs'
 
 let LitterForm = (props) => {
-  const { dogs, user, litter, setLitterToEdit } = props
+  const { user, litter, setLitterToEdit } = props
 
   const [duedate, setDuedate] = useState(litter
     ? new Date(parseInt(litter.duedate, 10)).toISOString().substr(0, 10) : '')
@@ -18,12 +19,13 @@ let LitterForm = (props) => {
   const [puppies, setPuppies] = useState(litter ? litter.puppies : [])
   const [myDogs, setMyDogs] = useState(null)
 
+  const dogs = useQuery(ALL_DOGS)
+
   useEffect(() => {
     const filtered = dogs.data.allDogs.filter(dog =>
       dog.owner.username === user.username)
     setMyDogs(filtered)
   }, [dogs, user])
-
 
   const addLitter = useMutation(CREATE_LITTER, {
     onError: (error) => Sentry.captureException(error),
@@ -82,15 +84,9 @@ let LitterForm = (props) => {
     padding: '2em'
   }
 
-  if (!myDogs) {
-    return (
-      <div className='columns is-centered'>
-        <div className='box column'>
-          dogs loading...
-        </div>
-      </div>
-    )
-  }
+  if (dogs.loading || !myDogs) return <div className='box'>dogs loading...</div>
+  if (dogs.error) return <div className='box'>Error loading dogs.</div>
+
   return (
     <form className='box' style={formStyles} onSubmit={submit}>
       <h1 className='title'>{litter ? 'Edit' : 'Add a'} litter</h1>

@@ -1,21 +1,18 @@
 import React, { useState } from 'react'
-import { useMutation } from 'react-apollo-hooks'
-import LitterForm from './LitterForm'
-import PuppyList from './PuppyList'
-import Reservations from './Reservations'
-import LitterProgressBar from './LitterProgressBar'
-import Pagination from './Pagination'
-import ConfirmButton from './ConfirmButton'
+import { useQuery, useMutation } from 'react-apollo-hooks'
+import { LitterForm, PuppyList, Reservations, LitterProgressBar, Pagination, ConfirmButton } from '../components'
 import { toast } from 'react-toastify'
 import * as Sentry from '@sentry/browser'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { ALL_LITTERS, DELETE_LITTER, TOGGLE_RESERVATION } from '../graphql/litters'
 
-const LitterList = ({ litters, user, dogs }) => {
+const LitterList = ({ user }) => {
   const [active, setActive] = useState('')
   const [cursor, setCursor] = useState(0)
   const [litterToEdit, setLitterToEdit] = useState(null)
   const [showAll, setShowAll] = useState(false) // not persisted
+
+  const litters = useQuery(ALL_LITTERS)
 
   const toggleReservation = useMutation(TOGGLE_RESERVATION, {
     onError: (error) => Sentry.captureException(error),
@@ -77,7 +74,6 @@ const LitterList = ({ litters, user, dogs }) => {
           {litterToEdit &&
             <LitterForm
               user={user}
-              dogs={dogs}
               litter={litterToEdit}
               setLitterToEdit={setLitterToEdit}
             />}

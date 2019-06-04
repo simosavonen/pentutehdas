@@ -1,7 +1,7 @@
 export { default as ConfirmButton } from './ConfirmButton'
 export { default as DogForm } from './DogForm'
 export { default as Dogs } from './Dogs'
-export { default as ErrorHandler } from './ErrorHandler'
+export { default as ErrorBoundary } from './ErrorBoundary'
 export { default as Footer } from './Footer'
 export { default as LitterForm } from './LitterForm'
 export { default as LitterList } from './LitterList'
