@@ -1,8 +1,10 @@
 import React from 'react'
-import { useQuery } from 'react-apollo-hooks'
+import { useQuery, useMutation } from 'react-apollo-hooks'
 import { ALL_LITTERS } from '../graphql/litters'
-import { ALL_USERS } from '../graphql/user'
+import { ALL_USERS, UPDATE_ROLE } from '../graphql/user'
 import { ALL_DOGS } from '../graphql/dogs'
+import { toast } from 'react-toastify'
+import * as Sentry from '@sentry/browser'
 
 const tableStyles = {
   backgroundColor: 'rgba(255, 255, 255, 0.3)'
@@ -35,8 +37,21 @@ const Roles = ({ user }) => {
   const litters = useQuery(ALL_LITTERS)
   const dogs = useQuery(ALL_DOGS)
 
-  const toggleBreederStatus = (user) => {
-    console.log('toggle toggle', user)
+  const updateRole = useMutation(UPDATE_ROLE, {
+    onError: (error) => Sentry.captureException(error),
+    update: () => {
+      toast.info('Role was updated')
+    }
+  })
+
+  const toggleBreederStatus = async (user) => {
+    if (user.role !== 'admin') {
+      await updateRole({
+        variables: { username: user.username }
+      })
+    } else {
+      toast.error('Cannot touch admins.')
+    }
   }
 
   if (!user || user.role !== 'admin') {

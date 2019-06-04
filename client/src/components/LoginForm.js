@@ -31,7 +31,7 @@ let LoginForm = ({ login, history }) => {
         toast.success('New user registered.')
       } catch (error) {
         Sentry.captureException(error)
-        toast.danger('Failed to create user.')
+        toast.error('Failed to create user.')
       }
     } else {
       if (await login(username, password)) {

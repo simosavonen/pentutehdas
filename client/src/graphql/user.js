@@ -86,3 +86,13 @@ mutation updateUser(
 ${USER_DETAILS}
 `
 
+export const UPDATE_ROLE = gql`
+mutation updateRole($username:String!) {
+  updateRole( 
+    username:$username   
+  ) {
+    ...UserDetails
+  }
+}
+${USER_DETAILS}
+`

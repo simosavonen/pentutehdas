@@ -73,5 +73,5 @@ frontend url: https://pentutehdas.surge.sh
 | 1.6.  | 11     | sort litters by puppies existing and puppy age, let users hide over 2 month old litters, newly added litters by user went to end of the list, remove litters with a button that asks to confirm, split typeDefs into separate files, split resolvers, error boundary |
 | 2.6.  | 7     | start using ESLint, making and deleting reservations is working and we are feature complete, reservations loaded on a need to know basis |
 | 3.6.  | 8     | start error handling redesign by implementing Sentry.io, prevent adding puppies before due date, add cancel buttons for mobile users, was sorting litters too early, updating reservation cache done automatically by returning a fully populated litter object, start clearing the bloated App.js |
-| 4.6.  | 10     | cleanup continues, App.js got slim but now LitterList is bloated, reduced the many passed props down to user and login, resetStore() caused litters.loading to stay true, user roles management page with statistics |
-| yht   | 138   | | 
+| 4.6.  | 12     | cleanup continues, App.js got slim but now LitterList is bloated, reduced the many passed props down to user and login, resetStore() caused litters.loading to stay true, user roles management page with statistics, updating roles working |
+| yht   | 140   | | 
