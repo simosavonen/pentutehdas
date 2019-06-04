@@ -50,19 +50,19 @@ const LitterList = ({ user }) => {
   if (litters.error) return <div className='container'>Error, loading litters failed.</div>
 
   let filtered = litters.data.allLitters
-  if (!showAll && litters.data.allLitters !== undefined) {
+  if (!showAll) {
     const timeStamp = +new Date()
     const sixtyDaysAgo = timeStamp - 1000 * 60 * 60 * 24 * 60
     filtered = litters.data.allLitters.filter(litter => litter.duedate > sixtyDaysAgo)
   }
 
   filtered.sort((a, b) => {
-    const compare_puppies = (a.puppies.length > 0) < (b.puppies.length > 0) ? 1
+    const comparePuppies = (a.puppies.length > 0) < (b.puppies.length > 0) ? 1
       : ((a.puppies.length > 0) > (b.puppies.length > 0) ? - 1 : 0)
 
-    const compare_duedates = a.duedate > b.duedate ? 1 : (a.duedate < b.duedate ? -1 : 0)
+    const compareDuedates = a.duedate > b.duedate ? 1 : (a.duedate < b.duedate ? -1 : 0)
 
-    return compare_puppies || compare_duedates
+    return comparePuppies || compareDuedates
   })
 
 

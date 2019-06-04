@@ -30,8 +30,10 @@ ${USER_DETAILS}
 `
 
 export const USER_AVAILABLE = gql`
-mutation userAvailable($username:String!) {
-  userAvailable(username:$username)  
+query userAvailable($username: String!) {
+  userAvailable(
+    username: $username
+  )  
 }
 `
 

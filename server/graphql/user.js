@@ -21,7 +21,8 @@ export const typeDefs = gql`
 
   extend type Query {    
     me(token: String): User
-    users(ids: [String!]!): [User]    
+    users(ids: [String!]!): [User] 
+    userAvailable(username: String!): Boolean   
   }
 
   extend type Mutation {
@@ -42,10 +43,7 @@ export const typeDefs = gql`
     login(
       username: String!
       password: String!
-    ): Token
-    userAvailable(
-      username: String!
-    ): Boolean
+    ): Token    
   }
 `
 
@@ -60,6 +58,10 @@ export const resolvers = {
         const result = await User.find({ '_id': { $in: args.ids } })
         return result
       }
+    },
+    userAvailable: async (root, args) => {
+      const taken = await User.findOne({ username: args.username })
+      return taken ? false : true
     }
   },
   Mutation: {
@@ -118,10 +120,6 @@ export const resolvers = {
       }
 
       return { value: jwt.sign(userForToken, process.env.JWT_SECRET) }
-    },
-    userAvailable: async (root, args) => {
-      const taken = await User.findOne({ username: args.username })
-      return taken ? false : true
     }
   }
 }

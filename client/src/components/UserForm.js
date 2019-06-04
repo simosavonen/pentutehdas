@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 import { withRouter } from 'react-router-dom'
 
-let UserForm = (props) => {
-  const [username, setUsername] = useState(props.user.username)
-  const [phone, setPhone] = useState(props.user.phone)
-  const [email, setEmail] = useState(props.user.email)
-  const [city, setCity] = useState(props.user.city)
+let UserForm = ({ user, updateUser, history }) => {
+  const [username, setUsername] = useState(user.username)
+  const [phone, setPhone] = useState(user.phone)
+  const [email, setEmail] = useState(user.email)
+  const [city, setCity] = useState(user.city)
 
   const formStyles = {
     padding: '1em'
@@ -13,23 +13,14 @@ let UserForm = (props) => {
 
   const submit = async (event) => {
     event.preventDefault()
-    try {
-      await props.updateUser({
-        variables: {
-          id: props.user.id, username, phone, email, city
-        }
-      })
-      props.history.push('/')
-    } catch (error) {
-      console.log(error)
-    }
+    await updateUser({
+      variables: {
+        id: user.id, username, phone, email, city
+      }
+    })
+    history.push('/')
   }
 
-  if (!props.user) {
-    return (
-      <div className='container'>loading...</div>
-    )
-  }
   return (
     <div className='columns is-centered'>
       <div className='box column is-8-tablet is-7-desktop is-5-widescreen'>
@@ -66,7 +57,7 @@ let UserForm = (props) => {
                     type="text"
                     placeholder="role"
                     readOnly
-                    defaultValue={props.user.role}
+                    defaultValue={user.role}
                   />
                 </p>
               </div>
@@ -142,18 +133,14 @@ let UserForm = (props) => {
                 <div className='control'>
                   <button
                     className='button is-danger is-outlined'
-                    onClick={(event) => { event.preventDefault(); props.history.push('/') }}>cancel</button>
+                    onClick={(event) => { event.preventDefault(); history.push('/') }}>cancel</button>
                 </div>
               </div>
             </div>
           </div>
-
         </form>
       </div>
     </div>
-
-
-
   )
 }
 

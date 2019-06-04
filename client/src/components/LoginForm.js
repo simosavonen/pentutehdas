@@ -1,61 +1,59 @@
 import React, { useState } from 'react'
 import { withRouter } from 'react-router-dom'
+import { useMutation, useApolloClient } from 'react-apollo-hooks'
+import { CREATE_USER, USER_AVAILABLE } from '../graphql/user'
+import * as Sentry from '@sentry/browser'
+import { toast } from 'react-toastify'
 
-let LoginForm = (props) => {
+let LoginForm = ({ login, history }) => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [phone, setPhone] = useState('')
   const [email, setEmail] = useState('')
   const [city, setCity] = useState('')
-  const [failed, setFailed] = useState(false)
   const [isNewUser, setIsNewUser] = useState(false)
-  const [notification, setNotification] = useState('')
   const [taken, setTaken] = useState(false)
+
+  const client = useApolloClient()
+  const addUser = useMutation(CREATE_USER)
 
   const submit = async (event) => {
     event.preventDefault()
 
     if (isNewUser) {
       try {
-        await props.addUser({
+        await addUser({
           variables: {
             username, password, phone, email, city
           }
         })
         setIsNewUser(false)
+        toast.success('New user registered.')
       } catch (error) {
-        console.log(error)
-        setNotification('Failed to create user.')
-        setFailed(true)
+        Sentry.captureException(error)
+        toast.danger('Failed to create user.')
       }
     } else {
-      const loginSuccess = await props.login(username, password)
-      if (loginSuccess) {
-        props.history.push('/')
-      } else {
-        setNotification('Login failed.')
-        setFailed(true)
+      if (await login(username, password)) {
+        history.push('/')
       }
     }
-
-    //setUsername('')
-    //setPassword('')
-    //setPhone('')
-    //setEmail('')
-    //setCity('')
   }
 
-  const checkAvailability = async () => {
-    const result = await props.userAvailable({
-      variables: { username }
+  const checkAvailability = () => {
+    client.query({
+      query: USER_AVAILABLE,
+      variables: {
+        username: username
+      },
+      fetchPolicy: 'network-only'
     })
-    setTaken(!result.data.userAvailable)
+      .then(({ data }) => { setTaken(!data.userAvailable) })
   }
 
   const toggleRegistering = (event) => {
     event.preventDefault()
     setIsNewUser(!isNewUser)
-    setFailed(false)
   }
 
   const formStyles = {
@@ -69,8 +67,6 @@ let LoginForm = (props) => {
           <h1 className='title'>
             {isNewUser ? 'Register new user' : 'Login'}
           </h1>
-          <div className={`notification is-danger ${!failed && 'is-hidden'}`}>{notification}</div>
-
           <div className='field'>
             <div className="control has-icons-left">
               <input

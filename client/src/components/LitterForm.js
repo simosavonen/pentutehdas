@@ -17,15 +17,13 @@ let LitterForm = (props) => {
   const [sire, setSire] = useState(litter ? litter.sire.id : '')
   const [price, setPrice] = useState(litter ? litter.price : 0)
   const [puppies, setPuppies] = useState(litter ? litter.puppies : [])
-  const [myDogs, setMyDogs] = useState(null)
+  const [myDogs, setMyDogs] = useState([])
 
-  const dogs = useQuery(ALL_DOGS)
+  const { data, error, loading } = useQuery(ALL_DOGS)
 
   useEffect(() => {
-    const filtered = dogs.data.allDogs.filter(dog =>
-      dog.owner.username === user.username)
-    setMyDogs(filtered)
-  }, [dogs, user])
+    setMyDogs(data.allDogs.filter(dog => dog.owner.username === user.username))
+  }, [data, user])
 
   const addLitter = useMutation(CREATE_LITTER, {
     onError: (error) => Sentry.captureException(error),
@@ -84,8 +82,9 @@ let LitterForm = (props) => {
     padding: '2em'
   }
 
-  if (dogs.loading || !myDogs) return <div className='box'>dogs loading...</div>
-  if (dogs.error) return <div className='box'>Error loading dogs.</div>
+  if (loading) return <div className='box'>dogs loading...</div>
+  if (error) return <div className='box'>Error loading dogs.</div>
+  if (myDogs.length < 2) return <div className='box'>You need to add the dogs first.</div>
 
   return (
     <form className='box' style={formStyles} onSubmit={submit}>

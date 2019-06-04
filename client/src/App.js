@@ -15,7 +15,7 @@ import {
 
 import { ALL_LITTERS, LITTER_ADDED } from './graphql/litters'
 import { LOGIN } from './graphql/login'
-import { USER, CREATE_USER, UPDATE_USER, USER_AVAILABLE } from './graphql/user'
+import { USER, UPDATE_USER } from './graphql/user'
 
 const App = () => {
   const [token, setToken] = useState(null)
@@ -29,24 +29,11 @@ const App = () => {
 
   useEffect(() => {
     client.query({ query: USER, fetchPolicy: 'network-only' })
-      .then(result => { setUser(result.data.me) })
+      .then(({ data }) => setUser(data.me))
   }, [client, token])
 
-  const handleError = (error) => {
-    Sentry.captureException(error)
-  }
-
-
-  const userAvailable = useMutation(USER_AVAILABLE)
-  const login = useMutation(LOGIN)
-
-
-  const addUser = useMutation(CREATE_USER, {
-    onError: handleError
-  })
-
   const updateUser = useMutation(UPDATE_USER, {
-    onError: handleError,
+    onError: (error) => Sentry.captureException(error),
     refetchQueries: [{ query: ALL_LITTERS }],
     update: (store, response) => {
       setUser(response.data.updateUser)
@@ -54,12 +41,14 @@ const App = () => {
     }
   })
 
+  const login = useMutation(LOGIN)
+
   const handleLogin = async (username, password) => {
     try {
-      const result = await login({
+      const { data } = await login({
         variables: { username, password }
       })
-      const token = result.data.login.value
+      const token = data.login.value
       setToken(token)
       localStorage.setItem('pentutehdas-user-token', token)
       toast.success('Successfully logged in!')
@@ -91,11 +80,8 @@ const App = () => {
               <LitterList user={user} />
             } />
             <Route exact path='/login' render={() =>
-              <LoginForm
-                login={handleLogin}
-                addUser={addUser}
-                userAvailable={userAvailable}
-              />} />
+              <LoginForm login={handleLogin} />
+            } />
             <Route exact path='/litter' render={() =>
               user && ['breeder', 'admin'].includes(user.role)
                 ? <div className='columns is-centered'>
@@ -116,7 +102,6 @@ const App = () => {
               user && user.role === 'admin'
                 ? <Roles user={user} />
                 : <Redirect to='/' />} />
-
           </ErrorBoundary>
         </section>
         <Footer />

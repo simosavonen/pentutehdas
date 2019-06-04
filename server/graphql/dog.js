@@ -12,7 +12,7 @@ export const typeDefs = gql`
   }
 
   extend type Query {
-    allDogs: [Dog!]!    
+    allDogs: [Dog!]!   
   }
 
   extend type Mutation {
