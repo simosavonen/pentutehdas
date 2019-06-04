@@ -22,7 +22,8 @@ export const typeDefs = gql`
   extend type Query {    
     me(token: String): User
     users(ids: [String!]!): [User] 
-    userAvailable(username: String!): Boolean   
+    userAvailable(username: String!): Boolean
+    allUsers: [User!]!   
   }
 
   extend type Mutation {
@@ -57,6 +58,15 @@ export const resolvers = {
       if (currentUser && ['admin', 'breeder'].includes(currentUser.role)) {
         const result = await User.find({ '_id': { $in: args.ids } })
         return result
+      }
+    },
+    allUsers: async (root, args, context) => {
+      const currentUser = context.currentUser
+      if (currentUser && currentUser.role === 'admin') {
+        const result = await User.find({})
+        return result
+      } else {
+        throw new AuthenticationError('you are not an admin')
       }
     },
     userAvailable: async (root, args) => {

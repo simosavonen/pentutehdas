@@ -26,7 +26,7 @@ const Roles = ({ user }) => (
       if (loading) return 'Loading users...'
       if (error) return 'Error! Failed to load users.'
       return (
-        <div className='container'>Roles</div>
+        <div className='container'>{JSON.stringify(data)}</div>
       )
     }}
   </Query>

@@ -28,7 +28,7 @@ const App = () => {
   }, [])
 
   useEffect(() => {
-    client.query({ query: USER, fetchPolicy: 'network-only' })
+    client.query({ query: USER, fetchPolicy: 'no-cache' })
       .then(({ data }) => setUser(data.me))
   }, [client, token])
 
@@ -62,8 +62,8 @@ const App = () => {
   const handleLogout = () => {
     setToken(null)
     localStorage.clear()
-    client.resetStore()
     toast.info('Logout OK')
+    client.resetStore()
   }
 
   return (

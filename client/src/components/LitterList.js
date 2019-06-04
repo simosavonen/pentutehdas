@@ -12,7 +12,7 @@ const LitterList = ({ user }) => {
   const [litterToEdit, setLitterToEdit] = useState(null)
   const [showAll, setShowAll] = useState(false) // not persisted
 
-  const litters = useQuery(ALL_LITTERS)
+  const { data, loading, error } = useQuery(ALL_LITTERS, { notifyOnNetworkStatusChange: true })
 
   const toggleReservation = useMutation(TOGGLE_RESERVATION, {
     onError: (error) => Sentry.captureException(error),
@@ -46,14 +46,14 @@ const LitterList = ({ user }) => {
     })
   }
 
-  if (litters.loading) return <div className='container'>loading...</div>
-  if (litters.error) return <div className='container'>Error, loading litters failed.</div>
+  if (loading) return <div className='container'>loading...</div>
+  if (error) return <div className='container'>Error, loading litters failed.</div>
 
-  let filtered = litters.data.allLitters
+  let filtered = data.allLitters
   if (!showAll) {
     const timeStamp = +new Date()
     const sixtyDaysAgo = timeStamp - 1000 * 60 * 60 * 24 * 60
-    filtered = litters.data.allLitters.filter(litter => litter.duedate > sixtyDaysAgo)
+    filtered = data.allLitters.filter(litter => litter.duedate > sixtyDaysAgo)
   }
 
   filtered.sort((a, b) => {
