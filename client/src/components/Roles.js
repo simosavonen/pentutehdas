@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Redirect } from 'react-router-dom'
 import { useQuery, useMutation } from 'react-apollo-hooks'
 import { ALL_LITTERS } from '../graphql/litters'
 import { ALL_USERS, UPDATE_ROLE } from '../graphql/user'
@@ -50,9 +51,8 @@ const Roles = ({ user }) => {
     }
   }
 
-  if (!user || user.role !== 'admin') {
-    return <div className='container'>Only admins can change user roles.</div>
-  }
+  if (!user || user.role !== 'admin') return <Redirect to='/' />
+
   if (users.loading || litters.loading || dogs.loading)
     return <div className='container'>Loading...</div>
   if (users.error || litters.error || dogs.error)

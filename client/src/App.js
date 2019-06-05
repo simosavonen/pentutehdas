@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useMutation, useApolloClient } from 'react-apollo-hooks'
 import { Subscription } from 'react-apollo'
-import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom'
+import { BrowserRouter as Router, Route } from 'react-router-dom'
 
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.min.css'
@@ -90,51 +90,21 @@ const App = () => {
             <Route
               exact
               path='/litter'
-              render={() =>
-                user && ['breeder', 'admin'].includes(user.role) ? (
-                  <div className='columns is-centered'>
-                    <div className='column is-full-mobile is-two-thirds-tablet is-half-desktop'>
-                      <LitterForm user={user} />
-                    </div>
+              render={() => (
+                <div className='columns is-centered'>
+                  <div className='column is-full-mobile is-two-thirds-tablet is-half-desktop'>
+                    <LitterForm user={user} />
                   </div>
-                ) : (
-                  <Redirect to='/' />
-                )
-              }
+                </div>
+              )}
             />
-            <Route
-              exact
-              path='/dog'
-              render={() =>
-                user && ['breeder', 'admin'].includes(user.role) ? (
-                  <Dogs user={user} />
-                ) : (
-                  <Redirect to='/' />
-                )
-              }
-            />
+            <Route exact path='/dog' render={() => <Dogs user={user} />} />
             <Route
               exact
               path='/user'
-              render={() =>
-                user ? (
-                  <UserForm user={user} updateUser={updateUser} />
-                ) : (
-                  <Redirect to='/' />
-                )
-              }
+              render={() => <UserForm user={user} updateUser={updateUser} />}
             />
-            <Route
-              exact
-              path='/roles'
-              render={() =>
-                user && user.role === 'admin' ? (
-                  <Roles user={user} />
-                ) : (
-                  <Redirect to='/' />
-                )
-              }
-            />
+            <Route exact path='/roles' render={() => <Roles user={user} />} />
           </ErrorBoundary>
         </section>
         <Footer />

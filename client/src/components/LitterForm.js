@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useQuery, useMutation } from 'react-apollo-hooks'
-import { withRouter } from 'react-router-dom'
+import { withRouter, Redirect } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import * as Sentry from '@sentry/browser'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -96,6 +96,9 @@ let LitterForm = props => {
   const formStyles = {
     padding: '2em',
   }
+
+  if (!user || !['breeder', 'admin'].includes(user.role))
+    return <Redirect to='/' />
 
   if (loading) return <div className='box'>dogs loading...</div>
   if (error) return <div className='box'>Error loading dogs.</div>

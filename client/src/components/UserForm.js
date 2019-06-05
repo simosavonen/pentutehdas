@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { withRouter } from 'react-router-dom'
+import { withRouter, Redirect } from 'react-router-dom'
 
 let UserForm = ({ user, updateUser, history }) => {
   const [username, setUsername] = useState(user.username)
@@ -24,6 +24,8 @@ let UserForm = ({ user, updateUser, history }) => {
     })
     history.push('/')
   }
+
+  if (!user) return <Redirect to='/' />
 
   return (
     <div className='columns is-centered'>

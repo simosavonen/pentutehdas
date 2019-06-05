@@ -5,6 +5,7 @@ import { useQuery, useMutation } from 'react-apollo-hooks'
 import { ALL_DOGS, DELETE_DOG } from '../graphql/dogs'
 import * as Sentry from '@sentry/browser'
 import { toast } from 'react-toastify'
+import { Redirect } from 'react-router-dom'
 
 const Dogs = ({ user }) => {
   const dogs = useQuery(ALL_DOGS)
@@ -33,6 +34,9 @@ const Dogs = ({ user }) => {
   const tableStyles = {
     backgroundColor: 'rgba(255, 255, 255, 0.3)',
   }
+
+  if (!user || !['breeder', 'admin'].includes(user.role))
+    return <Redirect to='/' />
 
   if (dogs.loading) return <div className='container'>Loading dogs...</div>
   if (dogs.error) return <div className='container'>Error loading dogs.</div>
