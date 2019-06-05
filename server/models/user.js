@@ -5,25 +5,25 @@ const schema = new mongoose.Schema({
     type: String,
     required: true,
     unique: true,
-    minlength: 3
+    minlength: 3,
   },
   passwordHash: {
-    type: String
+    type: String,
   },
   role: {
     type: String,
     default: 'user',
-    enum: ['user', 'breeder', 'admin']
+    enum: ['user', 'breeder', 'admin'],
   },
   phone: {
-    type: String
+    type: String,
   },
   email: {
-    type: String
+    type: String,
   },
   city: {
-    type: String
-  }
+    type: String,
+  },
 })
 
 module.exports = mongoose.model('User', schema)

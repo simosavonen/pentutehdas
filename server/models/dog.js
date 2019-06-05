@@ -3,22 +3,22 @@ const mongoose = require('mongoose')
 const schema = new mongoose.Schema({
   name: {
     type: String,
-    required: true
+    required: true,
   },
   born: {
-    type: Date
+    type: Date,
   },
   isFemale: {
     type: Boolean,
-    required: true
+    required: true,
   },
   breed: {
-    type: String
+    type: String,
   },
   owner: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User'
-  }
+    ref: 'User',
+  },
 })
 
 module.exports = mongoose.model('Dog', schema)

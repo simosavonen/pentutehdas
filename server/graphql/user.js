@@ -3,7 +3,6 @@ const User = require('../models/user')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
-
 export const typeDefs = gql`
   type User {
     username: String!
@@ -19,11 +18,11 @@ export const typeDefs = gql`
     value: String!
   }
 
-  extend type Query {    
+  extend type Query {
     me(token: String): User
-    users(ids: [String!]!): [User] 
+    users(ids: [String!]!): [User]
     userAvailable(username: String!): Boolean
-    allUsers: [User!]!   
+    allUsers: [User!]!
   }
 
   extend type Mutation {
@@ -35,19 +34,14 @@ export const typeDefs = gql`
       city: String
     ): User
     updateUser(
-      username: String!      
+      username: String!
       phone: String
       email: String
       city: String
       id: ID!
     ): User
-    updateRole(
-      username: String!
-    ): User
-    login(
-      username: String!
-      password: String!
-    ): Token    
+    updateRole(username: String!): User
+    login(username: String!, password: String!): Token
   }
 `
 
@@ -59,7 +53,7 @@ export const resolvers = {
     users: async (root, args, context) => {
       const currentUser = context.currentUser
       if (currentUser && ['admin', 'breeder'].includes(currentUser.role)) {
-        const result = await User.find({ '_id': { $in: args.ids } })
+        const result = await User.find({ _id: { $in: args.ids } })
         return result
       }
     },
@@ -75,7 +69,7 @@ export const resolvers = {
     userAvailable: async (root, args) => {
       const taken = await User.findOne({ username: args.username })
       return taken ? false : true
-    }
+    },
   },
   Mutation: {
     createUser: async (root, args) => {
@@ -88,15 +82,14 @@ export const resolvers = {
         role: 'user',
         phone: args.phone,
         email: args.email,
-        city: args.city
+        city: args.city,
       })
 
-      return user.save()
-        .catch(error => {
-          throw new UserInputError(error.message, {
-            invalidArgs: args,
-          })
+      return user.save().catch(error => {
+        throw new UserInputError(error.message, {
+          invalidArgs: args,
         })
+      })
     },
     updateUser: async (root, args, context) => {
       const currentUser = context.currentUser
@@ -107,12 +100,16 @@ export const resolvers = {
         throw new AuthenticationError('not authenticated')
       }
 
-      const updatedUser = await User.findByIdAndUpdate(currentUser._id, {
-        username: args.username,
-        phone: args.phone,
-        email: args.email,
-        city: args.city
-      }, { new: true })
+      const updatedUser = await User.findByIdAndUpdate(
+        currentUser._id,
+        {
+          username: args.username,
+          phone: args.phone,
+          email: args.email,
+          city: args.city,
+        },
+        { new: true }
+      )
 
       return updatedUser
     },
@@ -129,17 +126,22 @@ export const resolvers = {
         throw new UserInputError('cannot touch admins')
       }
       const newRole = userToUpdate.role === 'user' ? 'breeder' : 'user'
-      const updatedUser = await User.findByIdAndUpdate(userToUpdate._id, {
-        role: newRole
-      }, { new: true })
+      const updatedUser = await User.findByIdAndUpdate(
+        userToUpdate._id,
+        {
+          role: newRole,
+        },
+        { new: true }
+      )
       return updatedUser
     },
     login: async (root, args) => {
       const user = await User.findOne({ username: args.username })
 
-      const passwordCorrect = user === null
-        ? false
-        : await bcrypt.compare(args.password, user.passwordHash)
+      const passwordCorrect =
+        user === null
+          ? false
+          : await bcrypt.compare(args.password, user.passwordHash)
 
       if (!(user && passwordCorrect)) {
         throw new UserInputError('wrong credentials')
@@ -151,6 +153,6 @@ export const resolvers = {
       }
 
       return { value: jwt.sign(userForToken, process.env.JWT_SECRET) }
-    }
-  }
+    },
+  },
 }

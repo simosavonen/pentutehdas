@@ -7,32 +7,30 @@ const schema = new mongoose.Schema({
   },
   dam: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Dog'
+    ref: 'Dog',
   },
   sire: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Dog'
+    ref: 'Dog',
   },
-  puppies: [
-    { type: Boolean }
-  ],
+  puppies: [{ type: Boolean }],
   hasPuppies: {
     type: Boolean,
-    default: false
+    default: false,
   },
   reservations: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'User'
-    }
+      ref: 'User',
+    },
   ],
   price: {
-    type: Number
+    type: Number,
   },
   breeder: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User'
-  }
+    ref: 'User',
+  },
 })
 
 module.exports = mongoose.model('Litter', schema)
