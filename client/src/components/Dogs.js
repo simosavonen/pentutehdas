@@ -7,30 +7,31 @@ import * as Sentry from '@sentry/browser'
 import { toast } from 'react-toastify'
 
 const Dogs = ({ user }) => {
-
   const dogs = useQuery(ALL_DOGS)
 
   const deleteDog = useMutation(DELETE_DOG, {
-    onError: (error) => Sentry.captureException(error),
+    onError: error => Sentry.captureException(error),
     update: (store, response) => {
       const dataInStore = store.readQuery({ query: ALL_DOGS })
-      dataInStore.allDogs = dataInStore.allDogs.filter(dog => dog.id !== response.data.deleteDog.id)
+      dataInStore.allDogs = dataInStore.allDogs.filter(
+        dog => dog.id !== response.data.deleteDog.id
+      )
       store.writeQuery({
         query: ALL_DOGS,
-        data: dataInStore
+        data: dataInStore,
       })
       toast.info('Dog was removed.')
-    }
+    },
   })
 
-  const handleDelete = async (id) => {
+  const handleDelete = async id => {
     await deleteDog({
-      variables: { id }
+      variables: { id },
     })
   }
 
   const tableStyles = {
-    backgroundColor: 'rgba(255, 255, 255, 0.3)'
+    backgroundColor: 'rgba(255, 255, 255, 0.3)',
   }
 
   if (dogs.loading) return <div className='container'>Loading dogs...</div>
@@ -49,40 +50,45 @@ const Dogs = ({ user }) => {
                 <th className='has-text-centered'>Gender</th>
                 <th className='has-text-centered'>Born</th>
                 <th className='has-text-centered'>Owner</th>
-                <th></th>
+                <th />
               </tr>
             </thead>
             <tbody>
-              {dogs.data.allDogs.map(dog =>
-                (user.role === 'admin' || user.username === dog.owner.username) &&
-                <tr key={dog.id}>
-                  <td>{dog.name}</td>
-                  <td>{dog.breed}</td>
-                  <td className='has-text-centered'>{dog.isFemale ? 'female' : 'male'}</td>
-                  <td className='has-text-centered'>
-                    <Moment format="MMM YY">
-                      {new Date(parseInt(dog.born, 10))}
-                    </Moment>
-                  </td>
-                  <td className='has-text-centered'>
-                    {dog.owner.username}
-                  </td>
-                  <td>
-                    <button
-                      className='button is-outlined is-danger is-small is-rounded'
-                      onClick={() => handleDelete(dog.id)}
-                    >remove</button>
-                  </td>
-                </tr>
+              {dogs.data.allDogs.map(
+                dog =>
+                  (user.role === 'admin' ||
+                    user.username === dog.owner.username) && (
+                    <tr key={dog.id}>
+                      <td>{dog.name}</td>
+                      <td>{dog.breed}</td>
+                      <td className='has-text-centered'>
+                        {dog.isFemale ? 'female' : 'male'}
+                      </td>
+                      <td className='has-text-centered'>
+                        <Moment format='MMM YY'>
+                          {new Date(parseInt(dog.born, 10))}
+                        </Moment>
+                      </td>
+                      <td className='has-text-centered'>
+                        {dog.owner.username}
+                      </td>
+                      <td>
+                        <button
+                          className='button is-outlined is-danger is-small is-rounded'
+                          onClick={() => handleDelete(dog.id)}
+                        >
+                          remove
+                        </button>
+                      </td>
+                    </tr>
+                  )
               )}
             </tbody>
           </table>
         </div>
       </div>
-
     </>
   )
 }
 
 export default Dogs
-

@@ -74,5 +74,5 @@ frontend url: https://pentutehdas.surge.sh
 | 2.6.  | 7     | start using ESLint, making and deleting reservations is working and we are feature complete, reservations loaded on a need to know basis |
 | 3.6.  | 8     | start error handling redesign by implementing Sentry.io, prevent adding puppies before due date, add cancel buttons for mobile users, was sorting litters too early, updating reservation cache done automatically by returning a fully populated litter object, start clearing the bloated App.js |
 | 4.6.  | 12     | cleanup continues, App.js got slim but now LitterList is bloated, reduced the many passed props down to user and login, resetStore() caused litters.loading to stay true, user roles management page with statistics, updating roles working |
-| 5.6.  | 2     | Pagination component is now reusable |
-| yht   | 142   | | 
+| 5.6.  | 4     | Pagination component is now reusable, start using Prettier, Pagination uses divs for layout |
+| yht   | 144   | | 

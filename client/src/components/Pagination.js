@@ -1,20 +1,23 @@
 import React from 'react'
 
 const Pagination = ({ data, cursor, setCursor, chunkSize, message }) => {
-
   const cursors = []
   for (let i = 0; i < data.length; i += chunkSize) {
     cursors.push(i)
   }
 
-  const paginate = (direction) => {
+  const paginate = direction => {
     const current = cursors.indexOf(cursor)
     switch (direction) {
       case -1:
-        current === 0 ? setCursor(cursors[cursors.length - 1]) : setCursor(cursors[current - 1])
+        current === 0
+          ? setCursor(cursors[cursors.length - 1])
+          : setCursor(cursors[current - 1])
         return
       case 1:
-        current === cursors.length - 1 ? setCursor(cursors[0]) : setCursor(cursors[current + 1])
+        current === cursors.length - 1
+          ? setCursor(cursors[0])
+          : setCursor(cursors[current + 1])
         return
       default:
         return
@@ -22,22 +25,38 @@ const Pagination = ({ data, cursor, setCursor, chunkSize, message }) => {
   }
 
   return (
-    <table className='table is-fullwidth'
-      style={{ backgroundColor: 'rgba(255, 255, 255, 0)', marginTop: '1em', marginBottom: '1em' }}>
-      <tbody>
-        <tr>
-          <td style={{ width: '100%' }}>{message}</td>
-          <td className='is-clickable' onClick={() => paginate(-1)}>&#171;</td>
-          {cursors.map((i, index) =>
-            <td key={i}
-              className={`is-clickable ${cursor === i && 'has-text-info is-bold'}`}
-              style={{ width: '50px', textAlign: 'center' }}
-              onClick={() => setCursor(i)}>{index + 1}</td>
-          )}
-          <td className='is-clickable' onClick={() => paginate(1)}>&#187;</td>
-        </tr>
-      </tbody>
-    </table>
+    <div className='level is-mobile' style={{ margin: '1em' }}>
+      <div className='level-left'>
+        <div className='level-item'>{message}</div>
+      </div>
+      <div className='level-right'>
+        <div
+          className='level-item is-clickable is-marginless'
+          onClick={() => paginate(-1)}
+          style={{ width: '25px' }}
+        >
+          &#171;
+        </div>
+        {cursors.map((i, index) => (
+          <div
+            key={i}
+            className={`level-item is-clickable is-marginless ${cursor === i &&
+              'has-text-info is-bold'}`}
+            style={{ width: '25px' }}
+            onClick={() => setCursor(i)}
+          >
+            {index + 1}
+          </div>
+        ))}
+        <div
+          className='level-item is-clickable is-marginless'
+          onClick={() => paginate(1)}
+          style={{ width: '25px' }}
+        >
+          &#187;
+        </div>
+      </div>
+    </div>
   )
 }
 

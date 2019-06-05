@@ -13,9 +13,11 @@ class ErrorBoundary extends React.Component {
   }
 
   render() {
-    return this.state.errorOccurred
-      ? <div className='container'>Error, server is not responding...</div>
-      : this.props.children
+    return this.state.errorOccurred ? (
+      <div className='container'>Error, server is not responding...</div>
+    ) : (
+      this.props.children
+    )
   }
 }
 

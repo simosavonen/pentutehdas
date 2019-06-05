@@ -8,11 +8,14 @@ import PuppyList from './PuppyList'
 import { ALL_LITTERS, CREATE_LITTER, UPDATE_LITTER } from '../graphql/litters'
 import { ALL_DOGS } from '../graphql/dogs'
 
-let LitterForm = (props) => {
+let LitterForm = props => {
   const { user, litter, setLitterToEdit } = props
 
-  const [duedate, setDuedate] = useState(litter
-    ? new Date(parseInt(litter.duedate, 10)).toISOString().substr(0, 10) : '')
+  const [duedate, setDuedate] = useState(
+    litter
+      ? new Date(parseInt(litter.duedate, 10)).toISOString().substr(0, 10)
+      : ''
+  )
   const [dam, setDam] = useState(litter ? litter.dam.id : '')
   const [sire, setSire] = useState(litter ? litter.sire.id : '')
   const [price, setPrice] = useState(litter ? litter.price : 0)
@@ -23,12 +26,14 @@ let LitterForm = (props) => {
 
   useEffect(() => {
     if (data.allDogs !== undefined) {
-      setMyDogs(data.allDogs.filter(dog => dog.owner.username === user.username))
+      setMyDogs(
+        data.allDogs.filter(dog => dog.owner.username === user.username)
+      )
     }
   }, [data, user])
 
   const addLitter = useMutation(CREATE_LITTER, {
-    onError: (error) => Sentry.captureException(error),
+    onError: error => Sentry.captureException(error),
     update: (store, response) => {
       const addedLitter = response.data.addLitter
       const dataInStore = store.readQuery({ query: ALL_LITTERS })
@@ -36,18 +41,18 @@ let LitterForm = (props) => {
         dataInStore.allLitters.push(addedLitter)
         store.writeQuery({
           query: ALL_LITTERS,
-          data: dataInStore
+          data: dataInStore,
         })
         toast.info('You added a litter.')
       }
-    }
+    },
   })
 
   const editLitter = useMutation(UPDATE_LITTER, {
-    onError: (error) => Sentry.captureException(error),
+    onError: error => Sentry.captureException(error),
     update: () => {
       toast.info('A litter was updated.')
-    }
+    },
   })
 
   const adjustPuppies = (event, value) => {
@@ -59,20 +64,28 @@ let LitterForm = (props) => {
     }
   }
 
-  const submit = async (event) => {
+  const submit = async event => {
     event.preventDefault()
 
     if (!litter) {
       await addLitter({
         variables: {
-          duedate, dam, sire, price: parseInt(price, 10), puppies
-        }
+          duedate,
+          dam,
+          sire,
+          price: parseInt(price, 10),
+          puppies,
+        },
       })
     } else {
       await editLitter({
         variables: {
-          id: litter.id, duedate, sire, price: parseInt(price, 10), puppies
-        }
+          id: litter.id,
+          duedate,
+          sire,
+          price: parseInt(price, 10),
+          puppies,
+        },
       })
       setLitterToEdit(null)
     }
@@ -81,12 +94,13 @@ let LitterForm = (props) => {
   }
 
   const formStyles = {
-    padding: '2em'
+    padding: '2em',
   }
 
   if (loading) return <div className='box'>dogs loading...</div>
   if (error) return <div className='box'>Error loading dogs.</div>
-  if (myDogs.length < 2) return <div className='box'>You need to add the dogs first.</div>
+  if (myDogs.length < 2)
+    return <div className='box'>You need to add the dogs first.</div>
 
   return (
     <form className='box' style={formStyles} onSubmit={submit}>
@@ -109,31 +123,48 @@ let LitterForm = (props) => {
               <span className='icon is-left'>
                 <FontAwesomeIcon icon='calendar-alt' />
               </span>
-              <span className='help'>the date when the puppies were born, or are due</span>
+              <span className='help'>
+                the date when the puppies were born, or are due
+              </span>
             </p>
           </div>
         </div>
       </div>
-      {!litter
-        ? <div className='field is-horizontal'>
+      {!litter ? (
+        <div className='field is-horizontal'>
           <div className='field-label is-normal'>
-            <label className='label'>dam <i className='fas fa-venus'></i></label>
+            <label className='label'>
+              dam <i className='fas fa-venus' />
+            </label>
           </div>
           <div className='field-body'>
             <div className='select'>
-              <select value={dam} required onChange={({ target }) => setDam(target.value)}>
-                <option value='' disabled hidden>Choose dam</option>
-                {myDogs.map(dog =>
-                  dog.isFemale && <option key={dog.id} value={dog.id}>
-                    {dog.name}, {dog.breed}</option>
+              <select
+                value={dam}
+                required
+                onChange={({ target }) => setDam(target.value)}
+              >
+                <option value='' disabled hidden>
+                  Choose dam
+                </option>
+                {myDogs.map(
+                  dog =>
+                    dog.isFemale && (
+                      <option key={dog.id} value={dog.id}>
+                        {dog.name}, {dog.breed}
+                      </option>
+                    )
                 )}
               </select>
             </div>
           </div>
         </div>
-        : <div className='field is-horizontal'>
+      ) : (
+        <div className='field is-horizontal'>
           <div className='field-label is-normal'>
-            <label className='label'>dam <FontAwesomeIcon icon='venus' /></label>
+            <label className='label'>
+              dam <FontAwesomeIcon icon='venus' />
+            </label>
           </div>
           <div className='field-body'>
             <input
@@ -143,21 +174,31 @@ let LitterForm = (props) => {
             />
           </div>
         </div>
-      }
-
-
+      )}
 
       <div className='field is-horizontal'>
         <div className='field-label is-normal'>
-          <label className='label'>sire <FontAwesomeIcon icon='mars' /></label>
+          <label className='label'>
+            sire <FontAwesomeIcon icon='mars' />
+          </label>
         </div>
         <div className='field-body'>
           <div className='select'>
-            <select value={sire} required onChange={({ target }) => setSire(target.value)}>
-              <option value='' disabled hidden>Choose sire</option>
-              {myDogs.map(dog =>
-                !dog.isFemale && <option key={dog.id} value={dog.id}>
-                  {dog.name}, {dog.breed}</option>
+            <select
+              value={sire}
+              required
+              onChange={({ target }) => setSire(target.value)}
+            >
+              <option value='' disabled hidden>
+                Choose sire
+              </option>
+              {myDogs.map(
+                dog =>
+                  !dog.isFemale && (
+                    <option key={dog.id} value={dog.id}>
+                      {dog.name}, {dog.breed}
+                    </option>
+                  )
               )}
             </select>
           </div>
@@ -194,8 +235,8 @@ let LitterForm = (props) => {
         <div className='field-label is-normal'>
           <label className='label'>puppies</label>
         </div>
-        {(duedate !== '' && new Date(duedate) <= new Date())
-          ? <div className='field-body'>
+        {duedate !== '' && new Date(duedate) <= new Date() ? (
+          <div className='field-body'>
             <div className='field is-grouped'>
               <div className='control is-expanded'>
                 <div className='input'>
@@ -209,45 +250,56 @@ let LitterForm = (props) => {
                   readOnly
                 />
                 <span className='help'>
-                  use the buttons to add a female <FontAwesomeIcon
-                    icon='venus' /> or male <FontAwesomeIcon icon='mars' /> puppy
-              </span>
+                  use the buttons to add a female{' '}
+                  <FontAwesomeIcon icon='venus' /> or male{' '}
+                  <FontAwesomeIcon icon='mars' /> puppy
+                </span>
               </div>
               <p className='control'>
-                <button className='button is-danger is-outlined is-medium' title='add female puppy'
-                  onClick={(event) => adjustPuppies(event, true)}>
+                <button
+                  className='button is-danger is-outlined is-medium'
+                  title='add female puppy'
+                  onClick={event => adjustPuppies(event, true)}
+                >
                   <FontAwesomeIcon icon='venus' />
                 </button>
               </p>
               <p className='control'>
-                <button className='button is-info is-outlined is-medium' title='add male puppy'
-                  onClick={(event) => adjustPuppies(event, false)}>
+                <button
+                  className='button is-info is-outlined is-medium'
+                  title='add male puppy'
+                  onClick={event => adjustPuppies(event, false)}
+                >
                   <FontAwesomeIcon icon='mars' />
                 </button>
               </p>
               <p className='control'>
-                <button className='button is-outlined'
-                  onClick={(event) => adjustPuppies(event, null)}>
+                <button
+                  className='button is-outlined'
+                  onClick={event => adjustPuppies(event, null)}
+                >
                   Reset
-              </button>
+                </button>
               </p>
             </div>
           </div>
-          : <div className='field-body'>
+        ) : (
+          <div className='field-body'>
             <div className='field'>
               <p className='control'>
-                <input className='input is-static' readOnly
-                  defaultValue='To add puppies, set the date for today or in the past.' />
+                <input
+                  className='input is-static'
+                  readOnly
+                  defaultValue='To add puppies, set the date for today or in the past.'
+                />
               </p>
             </div>
           </div>
-        }
+        )}
       </div>
 
-
       <div className='field is-horizontal'>
-        <div className='field-label is-normal'>
-        </div>
+        <div className='field-label is-normal' />
         <div className='field-body'>
           <div className='field is-grouped'>
             <p className='control'>
@@ -255,26 +307,36 @@ let LitterForm = (props) => {
                 {litter ? 'save changes' : 'add a litter'}
               </button>
             </p>
-            {litter ?
+            {litter ? (
               <p className='control'>
-                <button className='button is-danger is-outlined'
-                  onClick={(event) => { event.preventDefault(); setLitterToEdit(null) }}>
+                <button
+                  className='button is-danger is-outlined'
+                  onClick={event => {
+                    event.preventDefault()
+                    setLitterToEdit(null)
+                  }}
+                >
                   cancel
                 </button>
               </p>
-              : <p className='control'>
-                <button className='button is-danger is-outlined'
-                  onClick={(event) => { event.preventDefault(); props.history.push('/') }}>
+            ) : (
+              <p className='control'>
+                <button
+                  className='button is-danger is-outlined'
+                  onClick={event => {
+                    event.preventDefault()
+                    props.history.push('/')
+                  }}
+                >
                   cancel
                 </button>
               </p>
-            }
+            )}
           </div>
         </div>
       </div>
-
     </form>
   )
 }
 
-export default LitterForm = withRouter(LitterForm)
+export default (LitterForm = withRouter(LitterForm))

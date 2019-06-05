@@ -1,8 +1,8 @@
 import { gql } from 'apollo-boost'
 
 const LITTER_DETAILS = gql`
-fragment LitterDetails on Litter {
-  duedate
+  fragment LitterDetails on Litter {
+    duedate
     dam {
       name
       breed
@@ -18,7 +18,7 @@ fragment LitterDetails on Litter {
     puppies
     reservations {
       username
-      id      
+      id
     }
     price
     breeder {
@@ -26,74 +26,82 @@ fragment LitterDetails on Litter {
       city
     }
     id
-}
+  }
 `
 
 export const ALL_LITTERS = gql`
-{
-  allLitters {
-    ...LitterDetails
+  {
+    allLitters {
+      ...LitterDetails
+    }
   }
-}
-${LITTER_DETAILS}
+  ${LITTER_DETAILS}
 `
 
 export const LITTER_ADDED = gql`
-subscription {
-  litterAdded {
-    ...LitterDetails
+  subscription {
+    litterAdded {
+      ...LitterDetails
+    }
   }
-}
-${LITTER_DETAILS}
+  ${LITTER_DETAILS}
 `
 
 export const CREATE_LITTER = gql`
-mutation createLitter($duedate: String!, $dam: String, $sire: String, $price: Int, $puppies: [Boolean]) {
-  addLitter(
-    duedate: $duedate,
-    dam: $dam,
-    sire: $sire,
-    price: $price,
-    puppies: $puppies    
+  mutation createLitter(
+    $duedate: String!
+    $dam: String
+    $sire: String
+    $price: Int
+    $puppies: [Boolean]
   ) {
-    ...LitterDetails
+    addLitter(
+      duedate: $duedate
+      dam: $dam
+      sire: $sire
+      price: $price
+      puppies: $puppies
+    ) {
+      ...LitterDetails
+    }
   }
-}
-${LITTER_DETAILS}
+  ${LITTER_DETAILS}
 `
 
 export const UPDATE_LITTER = gql`
-mutation updateLitter($id: ID!, $duedate: String!, $sire: String, $price: Int, $puppies: [Boolean]) {
-  updateLitter(
-    id: $id,
-    duedate: $duedate,
-    sire: $sire,
-    price: $price,
-    puppies: $puppies    
+  mutation updateLitter(
+    $id: ID!
+    $duedate: String!
+    $sire: String
+    $price: Int
+    $puppies: [Boolean]
   ) {
-    ...LitterDetails
+    updateLitter(
+      id: $id
+      duedate: $duedate
+      sire: $sire
+      price: $price
+      puppies: $puppies
+    ) {
+      ...LitterDetails
+    }
   }
-}
-${LITTER_DETAILS}
+  ${LITTER_DETAILS}
 `
 
 export const DELETE_LITTER = gql`
-mutation deleteLitter($id: ID!) {
-  deleteLitter(
-    id: $id
-  ) {
-    id
+  mutation deleteLitter($id: ID!) {
+    deleteLitter(id: $id) {
+      id
+    }
   }
-}
 `
 
 export const TOGGLE_RESERVATION = gql`
-mutation toggleReservation($id: ID!) {
-  toggleReservation(
-    id: $id
-  ) {
-    ...LitterDetails
+  mutation toggleReservation($id: ID!) {
+    toggleReservation(id: $id) {
+      ...LitterDetails
+    }
   }
-}
-${LITTER_DETAILS}
+  ${LITTER_DETAILS}
 `

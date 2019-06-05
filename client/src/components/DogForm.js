@@ -6,41 +6,45 @@ import { ALL_DOGS, CREATE_DOG } from '../graphql/dogs'
 import * as Sentry from '@sentry/browser'
 import { toast } from 'react-toastify'
 
-let DogForm = (props) => {
+let DogForm = props => {
   const [name, setName] = useState('')
   const [born, setBorn] = useState('')
   const [isFemale, setIsFemale] = useState(true)
   const [breed, setBreed] = useState('')
   const [options, setOptions] = useState([])
 
-
   useEffect(() => {
     const { english } = require('./Breeds.json')
-    setOptions(english.map(b => {
-      return { value: b, label: b }
-    }))
+    setOptions(
+      english.map(b => {
+        return { value: b, label: b }
+      })
+    )
   }, [])
 
   const addDog = useMutation(CREATE_DOG, {
-    onError: (error) => Sentry.captureException(error),
+    onError: error => Sentry.captureException(error),
     update: (store, response) => {
       const dataInStore = store.readQuery({ query: ALL_DOGS })
       dataInStore.allDogs.push(response.data.addDog)
       store.writeQuery({
         query: ALL_DOGS,
-        data: dataInStore
+        data: dataInStore,
       })
       toast.info('Dog was added.')
-    }
+    },
   })
 
-  const submit = async (event) => {
+  const submit = async event => {
     event.preventDefault()
 
     await addDog({
       variables: {
-        name, born, isFemale, breed: breed.value
-      }
+        name,
+        born,
+        isFemale,
+        breed: breed.value,
+      },
     })
 
     setName('')
@@ -49,7 +53,7 @@ let DogForm = (props) => {
   }
 
   const formStyles = {
-    padding: '1em'
+    padding: '1em',
   }
 
   return (
@@ -79,7 +83,6 @@ let DogForm = (props) => {
             </div>
           </div>
 
-
           <div className='field is-horizontal'>
             <div className='field-label is-normal'>
               <label className='label'>breed</label>
@@ -88,7 +91,7 @@ let DogForm = (props) => {
               <div className='field'>
                 <Select
                   value={breed}
-                  onChange={(selected) => setBreed(selected)}
+                  onChange={selected => setBreed(selected)}
                   options={options}
                   placeholder='Start typing to see a filtered list of breeds'
                 />
@@ -128,7 +131,9 @@ let DogForm = (props) => {
                       name='isFemale'
                       checked={isFemale}
                       value='true'
-                      onChange={() => setIsFemale(true)} /> female
+                      onChange={() => setIsFemale(true)}
+                    />{' '}
+                    female
                   </label>
                   <label className='radio'>
                     <input
@@ -136,7 +141,9 @@ let DogForm = (props) => {
                       name='isFemale'
                       checked={!isFemale}
                       value='false'
-                      onChange={() => setIsFemale(false)} /> male
+                      onChange={() => setIsFemale(false)}
+                    />{' '}
+                    male
                   </label>
                 </div>
               </div>
@@ -144,17 +151,25 @@ let DogForm = (props) => {
           </div>
 
           <div className='field is-horizontal'>
-            <div className='field-label'></div>
+            <div className='field-label' />
             <div className='field-body'>
               <div className='field is-grouped'>
-                <div className="control">
-                  <button className='button is-success is-outlined' type='submit'>
+                <div className='control'>
+                  <button
+                    className='button is-success is-outlined'
+                    type='submit'
+                  >
                     add a dog
                   </button>
                 </div>
                 <div className='control'>
-                  <button className='button is-danger is-outlined'
-                    onClick={(event) => { event.preventDefault(); props.history.push('/') }}>
+                  <button
+                    className='button is-danger is-outlined'
+                    onClick={event => {
+                      event.preventDefault()
+                      props.history.push('/')
+                    }}
+                  >
                     cancel
                   </button>
                 </div>
@@ -167,4 +182,4 @@ let DogForm = (props) => {
   )
 }
 
-export default DogForm = withRouter(DogForm)
+export default (DogForm = withRouter(DogForm))

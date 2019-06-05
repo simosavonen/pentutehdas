@@ -10,8 +10,8 @@ const User = require('./models/user')
 mongoose.set('useFindAndModify', false)
 mongoose.set('useCreateIndex', true)
 
-const Sentry = require('@sentry/node');
-Sentry.init({ dsn: process.env.SENTRY });
+const Sentry = require('@sentry/node')
+Sentry.init({ dsn: process.env.SENTRY })
 
 const MONGODB_URI = process.env.MONGODB_URI
 

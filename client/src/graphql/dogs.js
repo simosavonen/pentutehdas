@@ -1,8 +1,8 @@
 import { gql } from 'apollo-boost'
 
 const DOG_DETAILS = gql`
-fragment DogDetails on Dog {
-  name
+  fragment DogDetails on Dog {
+    name
     born
     isFemale
     breed
@@ -10,39 +10,36 @@ fragment DogDetails on Dog {
       username
     }
     id
-}
+  }
 `
 
 export const ALL_DOGS = gql`
-{
-  allDogs {
-    ...DogDetails
+  {
+    allDogs {
+      ...DogDetails
+    }
   }
-}
-${DOG_DETAILS}
+  ${DOG_DETAILS}
 `
 
 export const CREATE_DOG = gql`
-mutation createDog($name: String!, $born: String, $isFemale: Boolean!, $breed: String) {
-  addDog(
-    name: $name,
-    born: $born,
-    isFemale: $isFemale,
-    breed: $breed
+  mutation createDog(
+    $name: String!
+    $born: String
+    $isFemale: Boolean!
+    $breed: String
   ) {
-    ...DogDetails
+    addDog(name: $name, born: $born, isFemale: $isFemale, breed: $breed) {
+      ...DogDetails
+    }
   }
-}
-${DOG_DETAILS}
+  ${DOG_DETAILS}
 `
 
 export const DELETE_DOG = gql`
-mutation deleteDog($id: ID!) {
-  deleteDog(
-    id: $id
-  ) {
-    id
+  mutation deleteDog($id: ID!) {
+    deleteDog(id: $id) {
+      id
+    }
   }
-}
 `
-

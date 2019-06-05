@@ -8,15 +8,19 @@ let UserForm = ({ user, updateUser, history }) => {
   const [city, setCity] = useState(user.city)
 
   const formStyles = {
-    padding: '1em'
+    padding: '1em',
   }
 
-  const submit = async (event) => {
+  const submit = async event => {
     event.preventDefault()
     await updateUser({
       variables: {
-        id: user.id, username, phone, email, city
-      }
+        id: user.id,
+        username,
+        phone,
+        email,
+        city,
+      },
     })
     history.push('/')
   }
@@ -28,15 +32,15 @@ let UserForm = ({ user, updateUser, history }) => {
           <h1 className='title'>Edit user profile</h1>
           <div className='field is-horizontal'>
             <div className='field-label is-normal'>
-              <label className="label">username</label>
+              <label className='label'>username</label>
             </div>
-            <div className="field-body">
+            <div className='field-body'>
               <div className='field'>
                 <p className='control'>
                   <input
-                    className="input"
-                    type="text"
-                    placeholder="username"
+                    className='input'
+                    type='text'
+                    placeholder='username'
                     value={username}
                     onChange={({ target }) => setUsername(target.value)}
                   />
@@ -47,15 +51,15 @@ let UserForm = ({ user, updateUser, history }) => {
 
           <div className='field is-horizontal'>
             <div className='field-label is-normal'>
-              <label className="label">user role</label>
+              <label className='label'>user role</label>
             </div>
-            <div className="field-body">
+            <div className='field-body'>
               <div className='field'>
                 <p className='control'>
                   <input
-                    className="input is-static"
-                    type="text"
-                    placeholder="role"
+                    className='input is-static'
+                    type='text'
+                    placeholder='role'
                     readOnly
                     defaultValue={user.role}
                   />
@@ -66,15 +70,15 @@ let UserForm = ({ user, updateUser, history }) => {
 
           <div className='field is-horizontal'>
             <div className='field-label is-normal'>
-              <label className="label">phone</label>
+              <label className='label'>phone</label>
             </div>
-            <div className="field-body">
+            <div className='field-body'>
               <div className='field'>
                 <p className='control'>
                   <input
-                    className="input"
-                    type="text"
-                    placeholder="phone"
+                    className='input'
+                    type='text'
+                    placeholder='phone'
                     value={phone}
                     onChange={({ target }) => setPhone(target.value)}
                   />
@@ -85,15 +89,15 @@ let UserForm = ({ user, updateUser, history }) => {
 
           <div className='field is-horizontal'>
             <div className='field-label is-normal'>
-              <label className="label">email</label>
+              <label className='label'>email</label>
             </div>
-            <div className="field-body">
+            <div className='field-body'>
               <div className='field'>
                 <p className='control'>
                   <input
-                    className="input"
-                    type="email"
-                    placeholder="email"
+                    className='input'
+                    type='email'
+                    placeholder='email'
                     value={email}
                     onChange={({ target }) => setEmail(target.value)}
                   />
@@ -104,15 +108,15 @@ let UserForm = ({ user, updateUser, history }) => {
 
           <div className='field is-horizontal'>
             <div className='field-label is-normal'>
-              <label className="label">city</label>
+              <label className='label'>city</label>
             </div>
-            <div className="field-body">
+            <div className='field-body'>
               <div className='field'>
                 <p className='control'>
                   <input
-                    className="input"
-                    type="text"
-                    placeholder="city"
+                    className='input'
+                    type='text'
+                    placeholder='city'
                     value={city}
                     onChange={({ target }) => setCity(target.value)}
                   />
@@ -123,17 +127,25 @@ let UserForm = ({ user, updateUser, history }) => {
 
           <div className='field is-horizontal'>
             <div className='field-label is-normal'>
-              <label className="label"></label>
+              <label className='label' />
             </div>
-            <div className="field-body">
+            <div className='field-body'>
               <div className='field is-grouped'>
                 <div className='control'>
-                  <button className='button is-info is-outlined' type='submit'>save</button>
+                  <button className='button is-info is-outlined' type='submit'>
+                    save
+                  </button>
                 </div>
                 <div className='control'>
                   <button
                     className='button is-danger is-outlined'
-                    onClick={(event) => { event.preventDefault(); history.push('/') }}>cancel</button>
+                    onClick={event => {
+                      event.preventDefault()
+                      history.push('/')
+                    }}
+                  >
+                    cancel
+                  </button>
                 </div>
               </div>
             </div>
@@ -144,4 +156,4 @@ let UserForm = ({ user, updateUser, history }) => {
   )
 }
 
-export default UserForm = withRouter(UserForm)
+export default (UserForm = withRouter(UserForm))
