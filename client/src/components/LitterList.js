@@ -46,6 +46,7 @@ const LitterList = ({ user }) => {
     })
   }
 
+
   if (loading) return <div className='container'>loading...</div>
   if (error) return <div className='container'>Error, loading litters failed.</div>
 
@@ -64,6 +65,8 @@ const LitterList = ({ user }) => {
 
     return comparePuppies || compareDuedates
   })
+
+  const puppies = filtered.reduce((sum, litter) => sum + litter.puppies.length, 0)
 
 
   return (
@@ -84,7 +87,13 @@ const LitterList = ({ user }) => {
       <div className='container'>
         <div className='columns is-centered'>
           <div className='column is-12-mobile is-11-tablet is-10-desktop is-9-widescreen is-8-fullhd'>
-            <Pagination data={filtered} cursor={cursor} setCursor={setCursor} />
+            <Pagination
+              data={filtered}
+              cursor={cursor}
+              setCursor={setCursor}
+              chunkSize={5}
+              message={`Showing ${puppies} puppies and ${filtered.length} litters.`}
+            />
           </div>
         </div>
       </div>
@@ -205,7 +214,13 @@ const LitterList = ({ user }) => {
       <div className='container'>
         <div className='columns is-centered'>
           <div className='column is-12-mobile is-11-tablet is-10-desktop is-9-widescreen is-8-fullhd'>
-            <Pagination data={filtered} cursor={cursor} setCursor={setCursor} />
+            <Pagination
+              data={filtered}
+              cursor={cursor}
+              setCursor={setCursor}
+              chunkSize={5}
+              message={`Showing ${puppies} puppies and ${filtered.length} litters.`}
+            />
 
             <div style={{ paddingLeft: '1em' }}>
               <label className='checkbox' title='Include over two month old litters?'>

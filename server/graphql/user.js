@@ -128,12 +128,10 @@ export const resolvers = {
       if (userToUpdate.role === 'admin') {
         throw new UserInputError('cannot touch admins')
       }
-      console.log('userToUpdate', userToUpdate)
       const newRole = userToUpdate.role === 'user' ? 'breeder' : 'user'
       const updatedUser = await User.findByIdAndUpdate(userToUpdate._id, {
         role: newRole
       }, { new: true })
-      console.log('updatedUser', updatedUser)
       return updatedUser
     },
     login: async (root, args) => {

@@ -1,14 +1,12 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useQuery, useMutation } from 'react-apollo-hooks'
 import { ALL_LITTERS } from '../graphql/litters'
 import { ALL_USERS, UPDATE_ROLE } from '../graphql/user'
 import { ALL_DOGS } from '../graphql/dogs'
 import { toast } from 'react-toastify'
 import * as Sentry from '@sentry/browser'
-
-const tableStyles = {
-  backgroundColor: 'rgba(255, 255, 255, 0.3)'
-}
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Pagination } from '../components'
 
 const countLitters = (litterArray, breeder) => {
   return litterArray
@@ -31,7 +29,13 @@ const countReservations = (litterArray, user) => {
     .length
 }
 
+const tableStyles = {
+  backgroundColor: 'rgba(255, 255, 255, 0.1)'
+}
+
+
 const Roles = ({ user }) => {
+  const [cursor, setCursor] = useState(0)
 
   const users = useQuery(ALL_USERS)
   const litters = useQuery(ALL_LITTERS)
@@ -43,6 +47,8 @@ const Roles = ({ user }) => {
       toast.info('Role was updated')
     }
   })
+
+
 
   const toggleBreederStatus = async (user) => {
     if (user.role !== 'admin') {
@@ -65,14 +71,14 @@ const Roles = ({ user }) => {
   return (
     <div className='columns is-centered'>
       <div className='column is-12-mobile is-11-tablet is-9-desktop is-8-widescreen is-7-fullhd'>
-        <h1 className='title'>User role management</h1>
+        <h1 className='title is-size-4-mobile is-size-3'>User role management</h1>
         <table className='table is-fullwidth is-size-7-mobile is-size-6-tablet is-size-5-widescreen' style={tableStyles}>
           <thead>
             <tr>
               <th>username</th>
               <th>city</th>
-              <th>phone</th>
-              <th>email</th>
+              <th className='has-text-centered' title='phone'><FontAwesomeIcon icon='phone' /></th>
+              <th className='has-text-centered' title='email'><FontAwesomeIcon icon='at' /></th>
               <th className='has-text-centered'>role</th>
               <th className='has-text-centered' title='Litters'>L</th>
               <th className='has-text-centered' title='Dogs'>D</th>
@@ -81,13 +87,26 @@ const Roles = ({ user }) => {
           </thead>
           <tbody>
             {users.data.allUsers
-              .sort((a, b) => a.role > b.role ? 1 : (a.role < b.role ? -1 : 0))
+              .sort((a, b) => {
+                const compare_role = a.role > b.role ? 1 : (a.role < b.role ? -1 : 0)
+                const compare_username = a.username.localeCompare(b.username)
+                return compare_role || compare_username
+              })
+              .slice(cursor, cursor + 10)
               .map(user =>
                 <tr key={user.id}>
                   <td>{user.username}</td>
                   <td>{user.city}</td>
-                  <td>{user.phone}</td>
-                  <td><a href={`mailto:${user.email}`} title={user.email}>email</a></td>
+                  <td className='has-text-centered'>
+                    <a href={`tel:${user.phone}`} title={user.phone}>
+                      <FontAwesomeIcon icon='phone' />
+                    </a>
+                  </td>
+                  <td className='has-text-centered'>
+                    <a href={`mailto:${user.email}`} title={user.email}>
+                      <FontAwesomeIcon icon='at' />
+                    </a>
+                  </td>
                   <td className={'has-text-centered'}>
                     <button
                       className={`button is-small is-outlined
@@ -100,13 +119,28 @@ const Roles = ({ user }) => {
                       {user.role}
                     </button>
                   </td>
-                  <td className='has-text-centered'>{countLitters(litters.data.allLitters, user)}</td>
-                  <td className='has-text-centered'>{countDogs(dogs.data.allDogs, user)}</td>
-                  <td className='has-text-centered'>{countReservations(litters.data.allLitters, user)}</td>
+                  <td className='has-text-centered' title='Litters'>
+                    {countLitters(litters.data.allLitters, user)}
+                  </td>
+                  <td className='has-text-centered' title='Dogs'>
+                    {countDogs(dogs.data.allDogs, user)}
+                  </td>
+                  <td className='has-text-centered' title='Reservations'>
+                    {countReservations(litters.data.allLitters, user)}
+                  </td>
                 </tr>
               )}
           </tbody>
         </table>
+
+        <Pagination
+          data={users.data.allUsers}
+          cursor={cursor}
+          setCursor={setCursor}
+          chunkSize={10}
+          message=''
+        />
+
       </div>
     </div>
   )
