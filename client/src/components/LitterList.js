@@ -65,6 +65,9 @@ const LitterList = ({ user }) => {
   if (error)
     return <div className='container'>Error, loading litters failed.</div>
 
+  if (data.allLitters.length === 0)
+    return <div className='container'>Start by adding dogs and litters.</div>
+
   let filtered = data.allLitters
   if (!showAll) {
     const timeStamp = +new Date()
@@ -113,7 +116,7 @@ const LitterList = ({ user }) => {
 
       <div className='container'>
         <div className='columns is-centered'>
-          <div className='column is-12-mobile is-11-tablet is-10-desktop is-9-widescreen is-8-fullhd'>
+          <div className='column is-12-mobile is-11-tablet is-10-desktop is-9-widescreen'>
             <Pagination
               data={filtered}
               cursor={cursor}
@@ -268,6 +271,8 @@ const LitterList = ({ user }) => {
                           <ConfirmButton
                             action={handleDelete}
                             payload={litter.id}
+                            message='remove litter'
+                            classNames='button is-outlined is-danger'
                           />
                         </div>
                       )}
@@ -295,7 +300,7 @@ const LitterList = ({ user }) => {
 
       <div className='container'>
         <div className='columns is-centered'>
-          <div className='column is-12-mobile is-11-tablet is-10-desktop is-9-widescreen is-8-fullhd'>
+          <div className='column is-12-mobile is-11-tablet is-10-desktop is-9-widescreen'>
             <Pagination
               data={filtered}
               cursor={cursor}

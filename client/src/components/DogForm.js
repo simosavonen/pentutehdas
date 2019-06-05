@@ -57,7 +57,7 @@ let DogForm = props => {
   }
 
   return (
-    <div className='columns is-centered'>
+    <div className='section columns is-centered'>
       <div className='box column is-12-tablet is-9-desktop is-8-widescreen is-7-fullhd'>
         <form style={formStyles} onSubmit={submit}>
           <h1 className='title'>Add a dog</h1>

@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 
-const ConfirmButton = ({ action, payload }) => {
+const ConfirmButton = ({ action, payload, message, classNames }) => {
   const [confirming, setConfirming] = useState(false)
 
   return (
     <button
-      className='button is-outlined is-danger'
+      className={classNames}
       onClick={event => {
         event.stopPropagation()
         if (!confirming) {
@@ -15,7 +15,7 @@ const ConfirmButton = ({ action, payload }) => {
         }
       }}
     >
-      {confirming ? 'please confirm' : 'remove'}
+      {confirming ? 'please confirm' : message}
     </button>
   )
 }

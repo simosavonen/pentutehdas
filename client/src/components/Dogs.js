@@ -6,6 +6,7 @@ import { ALL_DOGS, DELETE_DOG } from '../graphql/dogs'
 import * as Sentry from '@sentry/browser'
 import { toast } from 'react-toastify'
 import { Redirect } from 'react-router-dom'
+import { ConfirmButton } from '../components'
 
 const Dogs = ({ user }) => {
   const dogs = useQuery(ALL_DOGS)
@@ -54,7 +55,7 @@ const Dogs = ({ user }) => {
                 <th className='has-text-centered'>Gender</th>
                 <th className='has-text-centered'>Born</th>
                 <th className='has-text-centered'>Owner</th>
-                <th />
+                <th style={{ width: '130px' }} />
               </tr>
             </thead>
             <tbody>
@@ -77,12 +78,12 @@ const Dogs = ({ user }) => {
                         {dog.owner.username}
                       </td>
                       <td>
-                        <button
-                          className='button is-outlined is-danger is-small is-rounded'
-                          onClick={() => handleDelete(dog.id)}
-                        >
-                          remove
-                        </button>
+                        <ConfirmButton
+                          action={handleDelete}
+                          payload={dog.id}
+                          message='remove dog'
+                          classNames='button is-outlined is-danger is-small'
+                        />
                       </td>
                     </tr>
                   )

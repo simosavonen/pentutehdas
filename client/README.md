@@ -1,3 +1,3 @@
 # pentutehdas react.js client
 
-running at http://pentutehdas.surge.sh
+running at https://pentutehdas.surge.sh

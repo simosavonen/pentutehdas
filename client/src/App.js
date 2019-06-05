@@ -91,7 +91,7 @@ const App = () => {
               exact
               path='/litter'
               render={() => (
-                <div className='columns is-centered'>
+                <div className='section columns is-centered'>
                   <div className='column is-full-mobile is-two-thirds-tablet is-half-desktop'>
                     <LitterForm user={user} />
                   </div>
@@ -128,7 +128,7 @@ const App = () => {
         {() => null}
       </Subscription>
 
-      <ToastContainer pauseOnFocusLoss={false} />
+      <ToastContainer pauseOnFocusLoss={false} position='bottom-right' />
     </div>
   )
 }

@@ -59,7 +59,7 @@ const Roles = ({ user }) => {
     return <div className='container'>Error! Failed to load data.</div>
 
   return (
-    <div className='columns is-centered'>
+    <div className='section columns is-centered'>
       <div className='column is-12-mobile is-11-tablet is-9-desktop is-8-widescreen is-7-fullhd'>
         <h1 className='title is-size-4-mobile is-size-3'>
           User role management

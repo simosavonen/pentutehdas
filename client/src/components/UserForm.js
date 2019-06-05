@@ -28,7 +28,7 @@ let UserForm = ({ user, updateUser, history }) => {
   if (!user) return <Redirect to='/' />
 
   return (
-    <div className='columns is-centered'>
+    <div className='section columns is-centered'>
       <div className='box column is-8-tablet is-7-desktop is-5-widescreen'>
         <form style={formStyles} onSubmit={submit}>
           <h1 className='title'>Edit user profile</h1>
