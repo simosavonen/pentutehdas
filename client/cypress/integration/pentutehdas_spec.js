@@ -23,85 +23,162 @@ describe('Pentutehdas ', function() {
       cy.get('#email').type('breeder@test.com')
       cy.get('#city').type('Cypress Village')
       cy.get('#register').click()
-      cy.wait(1000)
     })
 
     it('can log in as the new user', function() {
       cy.get('#login').click()
-      cy.wait(1000)
     })
 
     it('navigation menu shows new buttons', function() {
       cy.contains('profile')
     })
-
-    after(function() {
-      cy.contains('Logout').click()
-    })
   })
 
   describe('when logged in as admin', function() {
-    beforeEach(() => {
-      cy.restoreLocalStorage()
-    })
-
-    afterEach(() => {
-      cy.saveLocalStorage()
+    beforeEach(function() {
+      if (this.token) {
+        localStorage.setItem('pentutehdas-user-token', this.token)
+      }
     })
 
     before(function() {
+      cy.contains('Logout').click()
+      this.token = null
       cy.contains('Login / Register').click()
-      cy.wait(1000)
       cy.get('#username').type('admin')
-      cy.wait(1000)
       cy.get('#password').type('ananas')
-      cy.wait(1000)
       cy.get('#login').click()
-      cy.wait(1000)
-    })
-
-    it('navigation menu shows admin tools', function() {
-      cy.contains('roles')
+      cy.contains('roles').then(function() {
+        cy.wrap(localStorage.getItem('pentutehdas-user-token')).as('token')
+      })
     })
 
     it('can promote a user to breeder role', function() {
       cy.contains('roles').click()
-      cy.wait(1000)
-      cy.get('button')
+      cy.get('.button')
         .contains('user')
         .click()
-    })
-
-    after(function() {
-      cy.wait(1000)
-      cy.contains('Logout').click()
     })
   })
 
   describe('when logged in as breeder', function() {
-    beforeEach(() => {
-      cy.restoreLocalStorage()
-    })
-
-    afterEach(() => {
-      cy.saveLocalStorage()
+    beforeEach(function() {
+      if (this.token) {
+        localStorage.setItem('pentutehdas-user-token', this.token)
+      }
     })
 
     before(function() {
+      cy.contains('Logout').click()
+      this.token = null
       cy.contains('Login / Register').click()
       cy.get('#username').type('breeder')
       cy.get('#password').type('ananas')
       cy.get('#login').click()
-      cy.wait(1000)
+      cy.contains('add a litter').then(function() {
+        cy.wrap(localStorage.getItem('pentutehdas-user-token')).as('token')
+      })
     })
 
-    it('navigation menu shows tools for adding dogs and litters', function() {
-      cy.contains('add a litter')
-      cy.contains('my dogs')
+    it('can add dogs', function() {
+      cy.contains('my dogs').click()
+      cy.get('#name').type('Milja')
+      cy.get('#breed')
+        .click()
+        .find('input')
+        .type('Finnish', { force: true })
+        .get('#breed')
+        .find('.dogbreeds__menu')
+        .should('contain', 'Finnish Hound')
+        .contains('Finnish Hound')
+        .click()
+      cy.get('#born').type('2017-05-03')
+      cy.get('button')
+        .contains('add a dog')
+        .click()
+      cy.contains('Milja')
+
+      cy.get('#name').type('Rufus')
+      cy.get('#breed')
+        .click()
+        .find('input')
+        .type('German', { force: true })
+        .get('#breed')
+        .find('.dogbreeds__menu')
+        .should('contain', 'German Shepherd Dog')
+        .contains('German Shepherd Dog')
+        .click()
+      cy.get('#born').type('2016-07-02')
+      cy.get('#male').click()
+      cy.get('button')
+        .contains('add a dog')
+        .click()
+      cy.contains('Rufus')
     })
 
-    after(function() {
+    it('can add a litter', function() {
+      cy.contains('add a litter').click()
+      cy.get('#duedate').type(new Date().toISOString().substring(0, 10))
+      cy.get('#dam').select('Milja, Finnish Hound')
+      cy.get('#sire').select('Rufus, German Shepherd Dog')
+      cy.get('#price').type('1200')
+      cy.get('#addOrSave').click()
+    })
+
+    it('can edit the litter', function() {
+      cy.contains('Location').click()
+      cy.contains('edit the litter').click()
+      cy.get('#female').click()
+      cy.get('#male').click()
+      cy.get('#addOrSave').click()
+    })
+  })
+
+  describe('when logged in as a different user', function() {
+    beforeEach(function() {
+      if (this.token) {
+        localStorage.setItem('pentutehdas-user-token', this.token)
+      }
+    })
+
+    before(function() {
       cy.contains('Logout').click()
+      this.token = null
+      cy.contains('Login / Register').click()
+      cy.get('#username').type('admin')
+      cy.get('#password').type('ananas')
+      cy.get('#login').click()
+      cy.contains('add a litter').then(function() {
+        cy.wrap(localStorage.getItem('pentutehdas-user-token')).as('token')
+      })
+    })
+
+    it('can make a puppy reservation', function() {
+      cy.contains('Location').click()
+      cy.contains('reserve a puppy').click()
+      cy.contains('admin@test.com')
+    })
+
+    it('can edit user profile', function() {
+      cy.contains('profile').click()
+      cy.get('#city')
+        .clear()
+        .type('Kaarina')
+      cy.get('#save').click()
+      cy.contains('Location').click()
+      cy.contains('Kaarina')
+    })
+  })
+
+  describe('Mobile resolutions', function() {
+    beforeEach(function() {
+      cy.viewport('iphone-6+')
+    })
+
+    it('hamburger menu appears', function() {
+      cy.get('.burger').should('be.visible')
+      cy.get('.burger').click()
+      cy.contains('home')
     })
   })
 })

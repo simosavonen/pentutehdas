@@ -117,6 +117,7 @@ let LitterForm = props => {
           <div className='field'>
             <p className='control has-icons-left'>
               <input
+                id='duedate'
                 className='input'
                 type='date'
                 value={duedate}
@@ -143,6 +144,7 @@ let LitterForm = props => {
           <div className='field-body'>
             <div className='select'>
               <select
+                id='dam'
                 value={dam}
                 required
                 onChange={({ target }) => setDam(target.value)}
@@ -188,6 +190,7 @@ let LitterForm = props => {
         <div className='field-body'>
           <div className='select'>
             <select
+              id='sire'
               value={sire}
               required
               onChange={({ target }) => setSire(target.value)}
@@ -216,6 +219,7 @@ let LitterForm = props => {
           <div className='field'>
             <p className='control has-icons-right'>
               <input
+                id='price'
                 className='input'
                 type='number'
                 value={price}
@@ -260,6 +264,7 @@ let LitterForm = props => {
               </div>
               <p className='control'>
                 <button
+                  id='female'
                   className='button is-danger is-outlined is-medium'
                   title='add female puppy'
                   onClick={event => adjustPuppies(event, true)}
@@ -269,6 +274,7 @@ let LitterForm = props => {
               </p>
               <p className='control'>
                 <button
+                  id='male'
                   className='button is-info is-outlined is-medium'
                   title='add male puppy'
                   onClick={event => adjustPuppies(event, false)}
@@ -306,7 +312,11 @@ let LitterForm = props => {
         <div className='field-body'>
           <div className='field is-grouped'>
             <p className='control'>
-              <button className='button is-success is-outlined' type='submit'>
+              <button
+                id='addOrSave'
+                className='button is-success is-outlined'
+                type='submit'
+              >
                 {litter ? 'save changes' : 'add a litter'}
               </button>
             </p>

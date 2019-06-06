@@ -63,7 +63,6 @@ export const resolvers = {
         const result = await User.find({})
         return result
       } else {
-        console.log('currentUser', currentUser)
         throw new AuthenticationError('you are not an admin')
       }
     },

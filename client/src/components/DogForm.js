@@ -69,6 +69,7 @@ let DogForm = props => {
               <div className='field'>
                 <p className='control'>
                   <input
+                    id='name'
                     className='input'
                     type='text'
                     placeholder='dog name'
@@ -90,6 +91,8 @@ let DogForm = props => {
             <div className='field-body'>
               <div className='field'>
                 <Select
+                  id='breed'
+                  classNamePrefix='dogbreeds'
                   value={breed}
                   onChange={selected => setBreed(selected)}
                   options={options}
@@ -107,6 +110,7 @@ let DogForm = props => {
               <div className='field'>
                 <p className='control'>
                   <input
+                    id='born'
                     className='input'
                     type='date'
                     value={born}
@@ -127,6 +131,7 @@ let DogForm = props => {
                 <div className='control'>
                   <label className='radio'>
                     <input
+                      id='female'
                       type='radio'
                       name='isFemale'
                       checked={isFemale}
@@ -137,6 +142,7 @@ let DogForm = props => {
                   </label>
                   <label className='radio'>
                     <input
+                      id='male'
                       type='radio'
                       name='isFemale'
                       checked={!isFemale}

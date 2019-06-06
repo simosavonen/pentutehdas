@@ -116,6 +116,7 @@ let UserForm = ({ user, updateUser, history }) => {
               <div className='field'>
                 <p className='control'>
                   <input
+                    id='city'
                     className='input'
                     type='text'
                     placeholder='city'
@@ -134,7 +135,11 @@ let UserForm = ({ user, updateUser, history }) => {
             <div className='field-body'>
               <div className='field is-grouped'>
                 <div className='control'>
-                  <button className='button is-info is-outlined' type='submit'>
+                  <button
+                    id='save'
+                    className='button is-info is-outlined'
+                    type='submit'
+                  >
                     save
                   </button>
                 </div>
