@@ -51,7 +51,7 @@ let LoginForm = ({ login, history }) => {
         variables: {
           username: username,
         },
-        fetchPolicy: 'network-only',
+        fetchPolicy: 'no-cache',
       })
       .then(({ data }) => {
         setTaken(!data.userAvailable)
@@ -75,6 +75,7 @@ let LoginForm = ({ login, history }) => {
           <div className='field'>
             <div className='control has-icons-left'>
               <input
+                id='username'
                 className='input'
                 type='text'
                 placeholder='username'
@@ -99,6 +100,7 @@ let LoginForm = ({ login, history }) => {
           <div className='field'>
             <div className='control has-icons-left'>
               <input
+                id='password'
                 className='input'
                 type='password'
                 placeholder='password'
@@ -119,6 +121,7 @@ let LoginForm = ({ login, history }) => {
               <div className='field'>
                 <div className='control has-icons-left'>
                   <input
+                    id='phone'
                     className='input'
                     type='text'
                     placeholder='phone'
@@ -135,6 +138,7 @@ let LoginForm = ({ login, history }) => {
               <div className='field'>
                 <div className='control has-icons-left'>
                   <input
+                    id='email'
                     className='input'
                     type='text'
                     placeholder='email'
@@ -151,6 +155,7 @@ let LoginForm = ({ login, history }) => {
               <div className='field'>
                 <div className='control has-icons-left'>
                   <input
+                    id='city'
                     className='input'
                     type='text'
                     placeholder='city'
@@ -169,6 +174,7 @@ let LoginForm = ({ login, history }) => {
               <div className='field is-grouped'>
                 <div className='control'>
                   <button
+                    id='register'
                     className='button is-success is-outlined'
                     type='submit'
                   >
@@ -188,7 +194,11 @@ let LoginForm = ({ login, history }) => {
           ) : (
             <div className='field is-grouped'>
               <div className='control'>
-                <button className='button is-success is-outlined' type='submit'>
+                <button
+                  id='login'
+                  className='button is-success is-outlined'
+                  type='submit'
+                >
                   login
                 </button>
               </div>

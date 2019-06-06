@@ -77,5 +77,5 @@ frontend url: https://pentutehdas.surge.sh
 | 3.6.  |  8   | start error handling redesign by implementing Sentry.io, prevent adding puppies before due date, add cancel buttons for mobile users, was sorting litters too early, updating reservation cache done automatically by returning a fully populated litter object, start clearing the bloated App.js |
 | 4.6.  |  12  | cleanup continues, App.js got slim but now LitterList is bloated, reduced the many passed props down to user and login, resetStore() caused litters.loading to stay true, user roles management page with statistics, updating roles working |
 | 5.6.  |  9   | Pagination component is now reusable, start using Prettier, Pagination uses divs for layout, Prettier made Router look messy, do the redirecting inside the components, ConfirmButton made reusable, install Cypress |
-| 6.6.  |  2   | Cypress resets database beforeEach test |
-|  yht  | 151  |   |
+| 6.6.  |  6   | Cypress resets database beforeEach test, Cypress kept clearing localStorage after each tests |
+|  yht  | 155  |   |

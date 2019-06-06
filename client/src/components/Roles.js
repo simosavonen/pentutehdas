@@ -55,7 +55,7 @@ const Roles = ({ user }) => {
 
   if (users.loading || litters.loading || dogs.loading)
     return <div className='container'>Loading...</div>
-  if (users.error || litters.error || dogs.error)
+  if (users.error)
     return <div className='container'>Error! Failed to load data.</div>
 
   return (
