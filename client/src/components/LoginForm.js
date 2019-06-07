@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
 import { withRouter } from 'react-router-dom'
 import { useMutation, useApolloClient } from 'react-apollo-hooks'
-import { CREATE_USER, USER_AVAILABLE } from '../graphql/user'
+import { USER, CREATE_USER, USER_AVAILABLE } from '../graphql/user'
+import { LOGIN } from '../graphql/login'
 import * as Sentry from '@sentry/browser'
 import { toast } from 'react-toastify'
 
-let LoginForm = ({ login, history }) => {
+let LoginForm = props => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [phone, setPhone] = useState('')
@@ -16,6 +17,21 @@ let LoginForm = ({ login, history }) => {
 
   const client = useApolloClient()
   const addUser = useMutation(CREATE_USER)
+  const login = useMutation(LOGIN)
+
+  const handleLogin = async (username, password) => {
+    try {
+      const token = await login({
+        variables: { username, password },
+      })
+      localStorage.setItem('pentutehdas-user-token', token.data.login.value)
+      client.query({ query: USER, fetchPolicy: 'network-only' })
+      toast.success('Succesfully logged in')
+      props.history.push('/')
+    } catch (error) {
+      toast.error('Login failed!')
+    }
+  }
 
   const submit = async event => {
     event.preventDefault()
@@ -38,9 +54,7 @@ let LoginForm = ({ login, history }) => {
         toast.error('Failed to create user.')
       }
     } else {
-      if (await login(username, password)) {
-        history.push('/')
-      }
+      handleLogin(username, password)
     }
   }
 

@@ -1,11 +1,25 @@
 import React, { useState } from 'react'
 import { withRouter, Redirect } from 'react-router-dom'
+import { useQuery, useMutation } from 'react-apollo-hooks'
+import { toast } from 'react-toastify'
 
-let UserForm = ({ user, updateUser, history }) => {
-  const [username, setUsername] = useState(user.username)
-  const [phone, setPhone] = useState(user.phone)
-  const [email, setEmail] = useState(user.email)
-  const [city, setCity] = useState(user.city)
+import { ALL_LITTERS } from '../graphql/litters'
+import { USER, UPDATE_USER } from '../graphql/user'
+
+let UserForm = props => {
+  const { data } = useQuery(USER)
+
+  const [username, setUsername] = useState(data.me.username)
+  const [phone, setPhone] = useState(data.me.phone)
+  const [email, setEmail] = useState(data.me.email)
+  const [city, setCity] = useState(data.me.city)
+
+  const updateUser = useMutation(UPDATE_USER, {
+    refetchQueries: [{ query: ALL_LITTERS }],
+    update: () => {
+      toast.info('User was updated.')
+    },
+  })
 
   const formStyles = {
     padding: '1em',
@@ -15,17 +29,17 @@ let UserForm = ({ user, updateUser, history }) => {
     event.preventDefault()
     await updateUser({
       variables: {
-        id: user.id,
+        id: data.me.id,
         username,
         phone,
         email,
         city,
       },
     })
-    history.push('/')
+    props.history.push('/')
   }
 
-  if (!user) return <Redirect to='/' />
+  if (!data.me) return <Redirect to='/' />
 
   return (
     <div className='section columns is-centered'>
@@ -63,7 +77,7 @@ let UserForm = ({ user, updateUser, history }) => {
                     type='text'
                     placeholder='role'
                     readOnly
-                    defaultValue={user.role}
+                    defaultValue={data.me.role}
                   />
                 </p>
               </div>
@@ -148,7 +162,7 @@ let UserForm = ({ user, updateUser, history }) => {
                     className='button is-danger is-outlined'
                     onClick={event => {
                       event.preventDefault()
-                      history.push('/')
+                      props.history.push('/')
                     }}
                   >
                     cancel

@@ -1,9 +1,13 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { useQuery } from 'react-apollo-hooks'
+import { USER } from '../graphql/user'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-const Navigation = ({ user, logout }) => {
+const Navigation = ({ logout }) => {
   const [burgerOpen, setBurgerOpen] = useState(false)
+
+  const user = useQuery(USER)
 
   return (
     <nav className='navbar is-dark' role='navigation'>
@@ -34,7 +38,7 @@ const Navigation = ({ user, logout }) => {
             <Link to='/' className='navbar-item'>
               home
             </Link>
-            {user && ['breeder', 'admin'].includes(user.role) && (
+            {user.data.me && ['breeder', 'admin'].includes(user.data.me.role) && (
               <React.Fragment>
                 <Link to='/litter' className='navbar-item'>
                   add a litter
@@ -44,23 +48,23 @@ const Navigation = ({ user, logout }) => {
                 </Link>
               </React.Fragment>
             )}
-            {user && (
+            {user.data.me && (
               <Link to='/user' className='navbar-item'>
                 profile
               </Link>
             )}
-            {user && user.role === 'admin' && (
+            {user.data.me && user.data.me.role === 'admin' && (
               <Link to='/roles' className='navbar-item'>
                 roles
               </Link>
             )}
           </div>
           <div className='navbar-end'>
-            {user ? (
+            {user.data.me ? (
               <>
                 {' '}
                 <p className='navbar-item has-text-grey-light'>
-                  Logged in as {user.username}
+                  Logged in as {user.data.me.username}
                 </p>{' '}
                 <Link to='/' className='navbar-item' onClick={() => logout()}>
                   Logout

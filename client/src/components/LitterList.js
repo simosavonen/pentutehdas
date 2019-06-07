@@ -9,12 +9,15 @@ import {
 } from '../components'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { ALL_LITTERS } from '../graphql/litters'
+import { USER } from '../graphql/user'
 
-const LitterList = ({ user }) => {
+const LitterList = () => {
   const [active, setActive] = useState('')
   const [cursor, setCursor] = useState(0)
   const [litterToEdit, setLitterToEdit] = useState(null)
   const [showAll, setShowAll] = useState(false) // not persisted
+
+  const user = useQuery(USER)
 
   const { data, loading, error } = useQuery(ALL_LITTERS, {
     notifyOnNetworkStatusChange: true,
@@ -60,7 +63,7 @@ const LitterList = ({ user }) => {
         <div className='modal-content'>
           {litterToEdit && (
             <LitterForm
-              user={user}
+              user={user.data.me}
               litter={litterToEdit}
               setLitterToEdit={setLitterToEdit}
             />
@@ -179,7 +182,7 @@ const LitterList = ({ user }) => {
 
               {active === litter.id && (
                 <LitterDetails
-                  user={user}
+                  user={user.data.me}
                   litter={litter}
                   setLitterToEdit={setLitterToEdit}
                 />
