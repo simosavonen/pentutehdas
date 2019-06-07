@@ -6,7 +6,7 @@ import { ALL_DOGS, DELETE_DOG } from '../graphql/dogs'
 import { USER } from '../graphql/user'
 import { toast } from 'react-toastify'
 import { Redirect } from 'react-router-dom'
-import { ConfirmButton } from '../components'
+import { ConfirmButton, Loading } from '../components'
 
 const Dogs = () => {
   const dogs = useQuery(ALL_DOGS)
@@ -39,7 +39,7 @@ const Dogs = () => {
   if (!user.data.me || !['breeder', 'admin'].includes(user.data.me.role))
     return <Redirect to='/' />
 
-  if (dogs.loading) return <div className='container'>Loading dogs...</div>
+  if (dogs.loading) return <Loading />
   if (dogs.error) return <div className='container'>Error loading dogs.</div>
 
   return (

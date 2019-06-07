@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useQuery } from 'react-apollo-hooks'
-import { LitterForm, Litter, Pagination } from '..'
+import { LitterForm, Litter, Pagination, Loading } from '..'
 
 import { ALL_LITTERS } from '../../graphql/litters'
 
@@ -13,7 +13,7 @@ const LitterList = () => {
     notifyOnNetworkStatusChange: true,
   })
 
-  if (loading) return <div className='container'>loading...</div>
+  if (loading) return <Loading />
   if (error)
     return <div className='container'>Error, loading litters failed.</div>
 

@@ -7,7 +7,7 @@ import { ALL_DOGS } from '../graphql/dogs'
 import { toast } from 'react-toastify'
 import * as Sentry from '@sentry/browser'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Pagination } from '../components'
+import { Pagination, Loading } from '../components'
 
 const countLitters = (litterArray, breeder) => {
   return litterArray.filter(l => l.breeder.username === breeder.username).length
@@ -54,8 +54,7 @@ const Roles = () => {
 
   if (!user.data.me || user.data.me.role !== 'admin') return <Redirect to='/' />
 
-  if (users.loading || litters.loading || dogs.loading)
-    return <div className='container'>Loading...</div>
+  if (users.loading || litters.loading || dogs.loading) return <Loading />
   if (users.error)
     return <div className='container'>Error! Failed to load data.</div>
 

@@ -3,7 +3,7 @@ import { useQuery, useMutation } from 'react-apollo-hooks'
 import { withRouter, Redirect } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import PuppyList from './PuppyList'
+import { PuppyList, Loading } from '..'
 import {
   ALL_LITTERS,
   CREATE_LITTER,
@@ -101,7 +101,7 @@ let LitterForm = ({ litter, setLitterToEdit, history }) => {
   if (!user.data.me || !['breeder', 'admin'].includes(user.data.me.role))
     return <Redirect to='/' />
 
-  if (loading) return <div className='box'>dogs loading...</div>
+  if (loading) return <Loading />
   if (error) return <div className='box'>Error loading dogs.</div>
   if (myDogs.length < 2)
     return <div className='box'>You need to add the dogs first.</div>
@@ -297,11 +297,7 @@ let LitterForm = ({ litter, setLitterToEdit, history }) => {
           <div className='field-body'>
             <div className='field'>
               <p className='control'>
-                <input
-                  className='input is-static'
-                  readOnly
-                  defaultValue='To add puppies, set the date for today or in the past.'
-                />
+                To add puppies, set the date for today or in the past.
               </p>
             </div>
           </div>
