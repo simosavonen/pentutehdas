@@ -1,21 +1,14 @@
 import React, { useState } from 'react'
-import { useQuery, useMutation } from 'react-apollo-hooks'
+import { useQuery } from 'react-apollo-hooks'
 import {
   LitterForm,
   PuppyList,
-  Reservations,
   LitterProgressBar,
+  LitterDetails,
   Pagination,
-  ConfirmButton,
 } from '../components'
-import { toast } from 'react-toastify'
-import * as Sentry from '@sentry/browser'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-  ALL_LITTERS,
-  DELETE_LITTER,
-  TOGGLE_RESERVATION,
-} from '../graphql/litters'
+import { ALL_LITTERS } from '../graphql/litters'
 
 const LitterList = ({ user }) => {
   const [active, setActive] = useState('')
@@ -27,40 +20,6 @@ const LitterList = ({ user }) => {
     notifyOnNetworkStatusChange: true,
   })
 
-  const toggleReservation = useMutation(TOGGLE_RESERVATION, {
-    onError: error => Sentry.captureException(error),
-    update: () => {
-      toast.info('Toggled puppy reservation.')
-    },
-  })
-
-  const deleteLitter = useMutation(DELETE_LITTER, {
-    onError: error => Sentry.captureException(error),
-    update: (store, response) => {
-      const dataInStore = store.readQuery({ query: ALL_LITTERS })
-      dataInStore.allLitters = dataInStore.allLitters.filter(
-        litter => litter.id !== response.data.deleteLitter.id
-      )
-      store.writeQuery({
-        query: ALL_LITTERS,
-        data: dataInStore,
-      })
-      toast.info('Litter was removed.')
-    },
-  })
-
-  const handleReservation = async id => {
-    await toggleReservation({
-      variables: { id },
-    })
-  }
-
-  const handleDelete = async id => {
-    await deleteLitter({
-      variables: { id },
-    })
-  }
-
   if (loading) return <div className='container'>loading...</div>
   if (error)
     return <div className='container'>Error, loading litters failed.</div>
@@ -70,9 +29,9 @@ const LitterList = ({ user }) => {
 
   let filtered = data.allLitters
   if (!showAll) {
-    const timeStamp = +new Date()
-    const sixtyDaysAgo = timeStamp - 1000 * 60 * 60 * 24 * 60
-    filtered = data.allLitters.filter(litter => litter.duedate > sixtyDaysAgo)
+    const today = new Date()
+    const sixtyDaysAgo = today.setMonth(today.getMonth() - 2)
+    filtered = data.allLitters.filter(litter => litter.duedate > +sixtyDaysAgo)
   }
 
   filtered.sort((a, b) => {
@@ -219,71 +178,11 @@ const LitterList = ({ user }) => {
               </div>
 
               {active === litter.id && (
-                <div className='columns'>
-                  <div className='column'>
-                    <div>
-                      <p className='heading is-size-7 is-size-6-fullhd'>
-                        {litter.reservations.length} Reservation
-                        {litter.reservations.length !== 1 && 's'}
-                      </p>
-                      {user &&
-                        (litter.breeder.username === user.username ||
-                          user.role === 'admin') &&
-                        litter.reservations.length > 0 && (
-                          <Reservations
-                            reservations={litter.reservations.map(r => r.id)}
-                          />
-                        )}
-                    </div>
-                  </div>
-                  <div className='column'>
-                    <div>
-                      <p className='heading is-size-7 is-size-6-fullhd'>
-                        Actions
-                      </p>
-
-                      {user && litter.breeder.username !== user.username && (
-                        <button
-                          className='button is-info is-outlined'
-                          onClick={event => {
-                            event.stopPropagation()
-                            handleReservation(litter.id)
-                          }}
-                        >
-                          {litter.reservations
-                            .map(user => user.username)
-                            .includes(user.username)
-                            ? 'cancel reservation'
-                            : 'reserve a puppy'}
-                        </button>
-                      )}
-                      {user && litter.breeder.username === user.username && (
-                        <div className='buttons'>
-                          <button
-                            className='button is-info is-outlined'
-                            onClick={event => {
-                              event.stopPropagation()
-                              setLitterToEdit(litter)
-                            }}
-                          >
-                            edit the litter
-                          </button>
-                          <ConfirmButton
-                            action={handleDelete}
-                            payload={litter.id}
-                            message='remove litter'
-                            classNames='button is-outlined is-danger'
-                          />
-                        </div>
-                      )}
-                      {!user && (
-                        <p className='title is-size-7 is-size-6-fullhd'>
-                          Login to reserve a puppy
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                </div>
+                <LitterDetails
+                  user={user}
+                  litter={litter}
+                  setLitterToEdit={setLitterToEdit}
+                />
               )}
             </div>
             <div className='column is-2-mobile is-2-tablet is-1-desktop'>
