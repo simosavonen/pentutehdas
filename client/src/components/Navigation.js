@@ -1,13 +1,20 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { useQuery } from 'react-apollo-hooks'
+import { useQuery, useApolloClient } from 'react-apollo-hooks'
 import { USER } from '../graphql/user'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { toast } from 'react-toastify'
 
-const Navigation = ({ logout }) => {
+const Navigation = () => {
   const [burgerOpen, setBurgerOpen] = useState(false)
-
+  const client = useApolloClient()
   const user = useQuery(USER)
+
+  const handleLogout = () => {
+    localStorage.clear()
+    client.resetStore()
+    toast.info('Logout OK')
+  }
 
   return (
     <nav className='navbar is-dark' role='navigation'>
@@ -35,9 +42,6 @@ const Navigation = ({ logout }) => {
         </div>
         <div className={`navbar-menu ${burgerOpen && 'is-active'}`}>
           <div className='navbar-start'>
-            <Link to='/' className='navbar-item'>
-              home
-            </Link>
             {user.data.me && ['breeder', 'admin'].includes(user.data.me.role) && (
               <React.Fragment>
                 <Link to='/litter' className='navbar-item'>
@@ -66,7 +70,11 @@ const Navigation = ({ logout }) => {
                 <p className='navbar-item has-text-grey-light'>
                   Logged in as {user.data.me.username}
                 </p>{' '}
-                <Link to='/' className='navbar-item' onClick={() => logout()}>
+                <Link
+                  to='/'
+                  className='navbar-item'
+                  onClick={() => handleLogout()}
+                >
                   Logout
                 </Link>
               </>

@@ -43,7 +43,7 @@ backend url: https://pentutehdas.herokuapp.com
 
 frontend url: https://pentutehdas.surge.sh
 
-### Valmiit toiminnot, Front / Back
+### Completed functionality, Front / Back
 
 | Feature     | Create | Read | Update | Delete |
 | :---------- | :----: | :--: | :----: | :----: |
@@ -52,10 +52,10 @@ frontend url: https://pentutehdas.surge.sh
 | User        |  F, B  | F, B |  F, B  |        |
 | Reservation |  F, B  | F, B |  F, B  |  F, B  |
 
-### työaikakirjanpito
+### time records
 
 <!-- prettier-ignore -->
-| päivä | aika | mitä tein  |
+| date  | hours | time was spent on  |
 | :---: | :--: | ------- |
 | 9.5.  |  6   | react frontend aloitus, graphql backend aloitus |
 | 10.5. |  4   | react apollo client, bulma table, timeformat with moment  |
@@ -78,5 +78,5 @@ frontend url: https://pentutehdas.surge.sh
 | 4.6.  |  12  | cleanup continues, App.js got slim but now LitterList is bloated, reduced the many passed props down to user and login, resetStore() caused litters.loading to stay true, user roles management page with statistics, updating roles working |
 | 5.6.  |  9   | Pagination component is now reusable, start using Prettier, Pagination uses divs for layout, Prettier made Router look messy, do the redirecting inside the components, ConfirmButton made reusable, install Cypress |
 | 6.6.  |  9   | Cypress resets database beforeEach test, Cypress kept clearing localStorage after each tests, Cypress tests cover most functionality |
-| 7.6.  |  7   | learning about Heroku Scheduler scripts, db-clean-up.js removes over 6 month old litters, separate LitterDetails as a component, move handling user state inside apollo cache and avoid passing it as a prop |
-|  yht  | 165  |   |
+| 7.6.  |  9   | learning about Heroku Scheduler scripts, db-clean-up.js removes over 6 month old litters, separate LitterDetails as a component, move handling user state inside apollo cache and avoid passing it as a prop, app refactoring complete |
+|  total  | 167  |   |

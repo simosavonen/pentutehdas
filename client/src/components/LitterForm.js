@@ -2,15 +2,13 @@ import React, { useState, useEffect } from 'react'
 import { useQuery, useMutation } from 'react-apollo-hooks'
 import { withRouter, Redirect } from 'react-router-dom'
 import { toast } from 'react-toastify'
-import * as Sentry from '@sentry/browser'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import PuppyList from './PuppyList'
 import { ALL_LITTERS, CREATE_LITTER, UPDATE_LITTER } from '../graphql/litters'
 import { ALL_DOGS } from '../graphql/dogs'
+import { USER } from '../graphql/user'
 
-let LitterForm = props => {
-  const { user, litter, setLitterToEdit } = props
-
+let LitterForm = ({ litter, setLitterToEdit, history }) => {
   const [duedate, setDuedate] = useState(
     litter
       ? new Date(parseInt(litter.duedate, 10)).toISOString().substr(0, 10)
@@ -22,18 +20,18 @@ let LitterForm = props => {
   const [puppies, setPuppies] = useState(litter ? litter.puppies : [])
   const [myDogs, setMyDogs] = useState([])
 
+  const user = useQuery(USER)
   const { data, error, loading } = useQuery(ALL_DOGS)
 
   useEffect(() => {
-    if (data.allDogs !== undefined) {
+    if (data.allDogs !== undefined && user.data.me !== undefined) {
       setMyDogs(
-        data.allDogs.filter(dog => dog.owner.username === user.username)
+        data.allDogs.filter(dog => dog.owner.username === user.data.me.username)
       )
     }
   }, [data, user])
 
   const addLitter = useMutation(CREATE_LITTER, {
-    onError: error => Sentry.captureException(error),
     update: (store, response) => {
       const addedLitter = response.data.addLitter
       const dataInStore = store.readQuery({ query: ALL_LITTERS })
@@ -49,7 +47,6 @@ let LitterForm = props => {
   })
 
   const editLitter = useMutation(UPDATE_LITTER, {
-    onError: error => Sentry.captureException(error),
     update: () => {
       toast.info('A litter was updated.')
     },
@@ -90,14 +87,14 @@ let LitterForm = props => {
       setLitterToEdit(null)
     }
 
-    props.history.push('/')
+    history.push('/')
   }
 
   const formStyles = {
     padding: '2em',
   }
 
-  if (!user || !['breeder', 'admin'].includes(user.role))
+  if (!user.data.me || !['breeder', 'admin'].includes(user.data.me.role))
     return <Redirect to='/' />
 
   if (loading) return <div className='box'>dogs loading...</div>
@@ -338,7 +335,7 @@ let LitterForm = props => {
                   className='button is-danger is-outlined'
                   onClick={event => {
                     event.preventDefault()
-                    props.history.push('/')
+                    history.push('/')
                   }}
                 >
                   cancel

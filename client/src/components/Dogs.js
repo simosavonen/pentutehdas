@@ -3,16 +3,16 @@ import DogForm from './DogForm'
 import Moment from 'react-moment'
 import { useQuery, useMutation } from 'react-apollo-hooks'
 import { ALL_DOGS, DELETE_DOG } from '../graphql/dogs'
-import * as Sentry from '@sentry/browser'
+import { USER } from '../graphql/user'
 import { toast } from 'react-toastify'
 import { Redirect } from 'react-router-dom'
 import { ConfirmButton } from '../components'
 
-const Dogs = ({ user }) => {
+const Dogs = () => {
   const dogs = useQuery(ALL_DOGS)
+  const user = useQuery(USER)
 
   const deleteDog = useMutation(DELETE_DOG, {
-    onError: error => Sentry.captureException(error),
     update: (store, response) => {
       const dataInStore = store.readQuery({ query: ALL_DOGS })
       dataInStore.allDogs = dataInStore.allDogs.filter(
@@ -36,7 +36,7 @@ const Dogs = ({ user }) => {
     backgroundColor: 'rgba(255, 255, 255, 0.3)',
   }
 
-  if (!user || !['breeder', 'admin'].includes(user.role))
+  if (!user.data.me || !['breeder', 'admin'].includes(user.data.me.role))
     return <Redirect to='/' />
 
   if (dogs.loading) return <div className='container'>Loading dogs...</div>
@@ -44,8 +44,8 @@ const Dogs = ({ user }) => {
 
   return (
     <>
-      <DogForm user={user} />
-      <div className='columns is-centered'>
+      <DogForm />
+      <div className='section columns is-centered'>
         <div className='column is-12-tablet is-11-desktop is-10-widescreen is-9-fullhd'>
           <table className='table is-fullwidth is-striped' style={tableStyles}>
             <thead>
@@ -61,8 +61,8 @@ const Dogs = ({ user }) => {
             <tbody>
               {dogs.data.allDogs.map(
                 dog =>
-                  (user.role === 'admin' ||
-                    user.username === dog.owner.username) && (
+                  (user.data.me.role === 'admin' ||
+                    user.data.me.username === dog.owner.username) && (
                     <tr key={dog.id}>
                       <td>{dog.name}</td>
                       <td>{dog.breed}</td>

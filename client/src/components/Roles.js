@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Redirect } from 'react-router-dom'
 import { useQuery, useMutation } from 'react-apollo-hooks'
 import { ALL_LITTERS } from '../graphql/litters'
-import { ALL_USERS, UPDATE_ROLE } from '../graphql/user'
+import { USER, ALL_USERS, UPDATE_ROLE } from '../graphql/user'
 import { ALL_DOGS } from '../graphql/dogs'
 import { toast } from 'react-toastify'
 import * as Sentry from '@sentry/browser'
@@ -27,9 +27,10 @@ const tableStyles = {
   backgroundColor: 'rgba(255, 255, 255, 0.1)',
 }
 
-const Roles = ({ user }) => {
+const Roles = () => {
   const [cursor, setCursor] = useState(0)
 
+  const user = useQuery(USER)
   const users = useQuery(ALL_USERS)
   const litters = useQuery(ALL_LITTERS)
   const dogs = useQuery(ALL_DOGS)
@@ -51,7 +52,7 @@ const Roles = ({ user }) => {
     }
   }
 
-  if (!user || user.role !== 'admin') return <Redirect to='/' />
+  if (!user.data.me || user.data.me.role !== 'admin') return <Redirect to='/' />
 
   if (users.loading || litters.loading || dogs.loading)
     return <div className='container'>Loading...</div>

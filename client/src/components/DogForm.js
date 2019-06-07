@@ -3,7 +3,6 @@ import { withRouter } from 'react-router-dom'
 import { useMutation } from 'react-apollo-hooks'
 import Select from 'react-select'
 import { ALL_DOGS, CREATE_DOG } from '../graphql/dogs'
-import * as Sentry from '@sentry/browser'
 import { toast } from 'react-toastify'
 
 let DogForm = props => {
@@ -23,7 +22,6 @@ let DogForm = props => {
   }, [])
 
   const addDog = useMutation(CREATE_DOG, {
-    onError: error => Sentry.captureException(error),
     update: (store, response) => {
       const dataInStore = store.readQuery({ query: ALL_DOGS })
       dataInStore.allDogs.push(response.data.addDog)

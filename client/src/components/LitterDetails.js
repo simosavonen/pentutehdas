@@ -1,5 +1,5 @@
 import React from 'react'
-import { useMutation } from 'react-apollo-hooks'
+import { useQuery, useMutation } from 'react-apollo-hooks'
 import { Reservations, ConfirmButton } from '../components'
 import { toast } from 'react-toastify'
 import * as Sentry from '@sentry/browser'
@@ -8,8 +8,11 @@ import {
   DELETE_LITTER,
   TOGGLE_RESERVATION,
 } from '../graphql/litters'
+import { USER } from '../graphql/user'
 
-const LitterDetails = ({ user, litter, setLitterToEdit }) => {
+const LitterDetails = ({ litter, setLitterToEdit }) => {
+  const user = useQuery(USER)
+
   const toggleReservation = useMutation(TOGGLE_RESERVATION, {
     onError: error => Sentry.captureException(error),
     update: () => {
@@ -52,9 +55,9 @@ const LitterDetails = ({ user, litter, setLitterToEdit }) => {
             {litter.reservations.length} Reservation
             {litter.reservations.length !== 1 && 's'}
           </p>
-          {user &&
-            (litter.breeder.username === user.username ||
-              user.role === 'admin') &&
+          {user.data.me &&
+            (litter.breeder.username === user.data.me.username ||
+              user.data.me.role === 'admin') &&
             litter.reservations.length > 0 && (
               <Reservations reservations={litter.reservations.map(r => r.id)} />
             )}
@@ -64,7 +67,7 @@ const LitterDetails = ({ user, litter, setLitterToEdit }) => {
         <div>
           <p className='heading is-size-7 is-size-6-fullhd'>Actions</p>
 
-          {user && litter.breeder.username !== user.username && (
+          {user.data.me && litter.breeder.username !== user.data.me.username && (
             <button
               className='button is-info is-outlined'
               onClick={event => {
@@ -73,13 +76,13 @@ const LitterDetails = ({ user, litter, setLitterToEdit }) => {
               }}
             >
               {litter.reservations
-                .map(user => user.username)
-                .includes(user.username)
+                .map(reservation => reservation.username)
+                .includes(user.data.me.username)
                 ? 'cancel reservation'
                 : 'reserve a puppy'}
             </button>
           )}
-          {user && litter.breeder.username === user.username && (
+          {user.data.me && litter.breeder.username === user.data.me.username && (
             <div className='buttons'>
               <button
                 className='button is-info is-outlined'
@@ -98,7 +101,7 @@ const LitterDetails = ({ user, litter, setLitterToEdit }) => {
               />
             </div>
           )}
-          {!user && (
+          {!user.data.me && (
             <p className='title is-size-7 is-size-6-fullhd'>
               Login to reserve a puppy
             </p>
