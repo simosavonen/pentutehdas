@@ -1,61 +1,57 @@
 # pentutehdas
 
-Full Stack harjoitustyö.
+Full Stack exercise project for University of Helsinki course
+https://courses.helsinki.fi/en/aytkt21010/129098202
 
-### Arkkitehtuuri
+An fancy single page app for an imaginary puppy farm.
 
-- back-end on Node.js Apollo GraphQL API, suoritetaan herokussa
-- front-end on React sovellus, sijoitetaan surge.sh palveluun
-- tietokantana MongoDB atlaksessa
+## Demo
 
-Apollon välimuistissa lista koirista ja pesueista.
-Yksittäiset komponentit käyttävät **useState()** tilan ylläpitämiseen.
-Tarvittaessa otetaan Context API avuksi, mikäli propseja välitetään liian monen komponentin kautta.
+- running at: https://pentutehdas.surge.sh
+- to test all functionality:
+  - login as 'breeder' pw: ananas
+    - add a couple dogs
+    - add a litter with an estimated due date
+    - edit the litter, mark how many puppies were born
+  - login as 'user' pw: ananas, or register as a new user
+    - make a puppy reservation
+  - login as 'admin' pw: ananas
+    - review all the litters and see the reservations
+    - check user roles and statistics, promote a user
 
-Käyttäjiä on kolmea tyyppiä
+### Tech stack
 
-- **user** saa tehdä (rajallisen määrän) varauksia pennuista ja päivittää omat yhteystietonsa.
-- **breeder** voi luoda/poistaa omia koiriaan ja pesueitaan, voi muokata pesueen tietoja.
-- **admin** voi ylentää käyttäjän luokkaan breeder, voi poistaa kenen tahansa koiran tai pesueen.
+- back-end is a Node.js Apollo GraphQL API, running at Heroku.com
+- front-end made with React
+- MongoDB running in atlas
 
-Testaamiseen tunnus / salasana
-
-- user / ananas
-- breeder / ananas
-- admin / ananas
-
-Harkitaan mahdollisuutta varata pentuja ilman kirjautumista. Miten estetään häiriköivä käyttäjä?
-
-Pesue voidaan luoda ennen synnytystä, jolloin sitä muokataan myöhemmin ja merkitään pentujen sukupuoli ja lukumäärä. Kun pentu on löytänyt uuden kodin, sen voi poistaa pesueesta.
-
-Varaus on pelkkä yhteystieto tai käyttäjätunnus. Kasvattaja ottaa yhteyttä varaajaan ja sopii yksityiskohdista: haluaako varaaja nartun tai urospennun, minkä Prisman parkkipaikalle pentu toimitetaan?
-
-Koiraroduista näytetään yleisiä tietoja esim. wikipediasta. Mietitään mahdollisuutta lisätä kuva omasta koirasta, tai sivu voisi hakea verkosta kuvan koirarodusta.
+App state is stored in the Apollo Client cache. Forms rely on useState().
+Very few props are passed around, currentUser is read from Apollo cache for example.
+The app doesn't use Redux or the Context API for this reason.
 
 ### Front-end component hierarchy tree
 
-App
-
-- Navigation
-- Footer
-- Routes
-  - ErrorBoundary
-    - LoginForm
-    - UserForm
-    - LitterForm
-      - PuppyList
-    - Roles
-      - Pagination
-    - Dogs
-      - DogForm
-      - ConfirmButton
-    - LitterList
-      - Pagination
-      - Litter
-        - LitterProgressBar
-        - LitterDetails
-          - Reservations
-          - ConfirmButton
+- App
+  - Navigation
+  - Footer
+  - Routes
+    - ErrorBoundary
+      - LoginForm
+      - UserForm
+      - LitterForm
+        - PuppyList
+      - Roles
+        - Pagination
+      - Dogs
+        - DogForm
+        - ConfirmButton
+      - LitterList
+        - Pagination
+        - Litter
+          - LitterProgressBar
+          - LitterDetails
+            - Reservations
+            - ConfirmButton
 
 ### Completed functionality, Front / Back
 
@@ -103,5 +99,5 @@ App
 | 4.6.  |  12   | cleanup continues, App.js got slim but now LitterList is bloated, reduced the many passed props down to user and login, resetStore() caused litters.loading to stay true, user roles management page with statistics, updating roles working |
 | 5.6.  |  9    | Pagination component is now reusable, start using Prettier, Pagination uses divs for layout, Prettier made Router look messy, do the redirecting inside the components, ConfirmButton made reusable, install Cypress |
 | 6.6.  |  9    | Cypress resets database beforeEach test, Cypress kept clearing localStorage after each tests, Cypress tests cover most functionality |
-| 7.6.  |  10    | learning about Heroku Scheduler scripts, db-clean-up.js removes over 6 month old litters, separate LitterDetails as a component, move handling user state inside apollo cache and avoid passing it as a prop, app refactoring complete, Litter components into a subfolder, Loading animation of a running dog |
-| total | 168   |   |
+| 7.6.  |  11    | learning about Heroku Scheduler scripts, db-clean-up.js removes over 6 month old litters, separate LitterDetails as a component, move handling user state inside apollo cache and avoid passing it as a prop, app refactoring complete, Litter components into a subfolder, Loading animation of a running dog, Bug fix, translate readme.md |
+| total | 169   |   |
