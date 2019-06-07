@@ -1,6 +1,6 @@
 import React from 'react'
 import { Query } from 'react-apollo'
-import { USERS } from '../graphql/user'
+import { USERS } from '../../graphql/user'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const Reservations = ({ reservations }) => (

@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { useQuery } from 'react-apollo-hooks'
-import { LitterForm, Litter, Pagination } from '../components'
+import { LitterForm, Litter, Pagination } from '..'
 
-import { ALL_LITTERS } from '../graphql/litters'
+import { ALL_LITTERS } from '../../graphql/litters'
 
 const LitterList = () => {
   const [cursor, setCursor] = useState(0)

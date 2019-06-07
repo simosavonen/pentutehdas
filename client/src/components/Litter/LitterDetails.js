@@ -1,14 +1,14 @@
 import React from 'react'
 import { useQuery, useMutation } from 'react-apollo-hooks'
-import { Reservations, ConfirmButton } from '../components'
+import { Reservations, ConfirmButton } from '..'
 import { toast } from 'react-toastify'
 import * as Sentry from '@sentry/browser'
 import {
   ALL_LITTERS,
   DELETE_LITTER,
   TOGGLE_RESERVATION,
-} from '../graphql/litters'
-import { USER } from '../graphql/user'
+} from '../../graphql/litters'
+import { USER } from '../../graphql/user'
 
 const LitterDetails = ({ litter, setLitterToEdit }) => {
   const user = useQuery(USER)

@@ -4,9 +4,13 @@ import { withRouter, Redirect } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import PuppyList from './PuppyList'
-import { ALL_LITTERS, CREATE_LITTER, UPDATE_LITTER } from '../graphql/litters'
-import { ALL_DOGS } from '../graphql/dogs'
-import { USER } from '../graphql/user'
+import {
+  ALL_LITTERS,
+  CREATE_LITTER,
+  UPDATE_LITTER,
+} from '../../graphql/litters'
+import { ALL_DOGS } from '../../graphql/dogs'
+import { USER } from '../../graphql/user'
 
 let LitterForm = ({ litter, setLitterToEdit, history }) => {
   const [duedate, setDuedate] = useState(
