@@ -43,7 +43,7 @@ export const resolvers = {
           born: args.born,
           isFemale: args.isFemale,
           breed: args.breed,
-          owner: currentUser, // pelkkä ObjectID viittaus
+          owner: currentUser,
         })
         await dog.save()
       } catch (error) {
@@ -51,7 +51,7 @@ export const resolvers = {
           invalidArgs: args,
         })
       }
-      return dog.populate('owner') // tarvitaan populate
+      return dog.populate('owner')
     },
     deleteDog: async (root, args, context) => {
       const currentUser = context.currentUser
