@@ -1,17 +1,19 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { withRouter, Redirect } from 'react-router-dom'
-import { useQuery, useMutation } from 'react-apollo-hooks'
+import { useMutation } from 'react-apollo-hooks'
 import { toast } from 'react-toastify'
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { ALL_LITTERS } from '../graphql/litters'
-import { USER, UPDATE_USER } from '../graphql/user'
+import { UPDATE_USER } from '../graphql/user'
+import { UserContext } from '../components'
 
 let UserForm = props => {
-  const { data } = useQuery(USER)
+  const userContext = useContext(UserContext)
+  const { user } = userContext
 
-  const [phone, setPhone] = useState(data.me.phone)
-  const [email, setEmail] = useState(data.me.email)
-  const [city, setCity] = useState(data.me.city)
+  const [phone, setPhone] = useState(user.phone)
+  const [email, setEmail] = useState(user.email)
+  const [city, setCity] = useState(user.city)
 
   const updateUser = useMutation(UPDATE_USER, {
     refetchQueries: [{ query: ALL_LITTERS }],
@@ -28,8 +30,8 @@ let UserForm = props => {
     event.preventDefault()
     await updateUser({
       variables: {
-        id: data.me.id,
-        username: data.me.username,
+        id: user.id,
+        username: user.username,
         phone,
         email,
         city,
@@ -38,13 +40,14 @@ let UserForm = props => {
     props.history.push('/')
   }
 
-  if (!data.me) return <Redirect to='/' />
+  if (!user) return <Redirect to='/' />
 
   return (
     <div className='section columns is-centered'>
-      <div className='box column is-8-tablet is-7-desktop is-5-widescreen'>
+      <div className='box column is-12-tablet is-9-desktop is-8-widescreen is-7-fullhd'>
         <form style={formStyles} onSubmit={submit}>
           <h1 className='title'>Edit user profile</h1>
+
           <div className='field is-horizontal'>
             <div className='field-label is-normal'>
               <label className='label'>username</label>
@@ -54,10 +57,10 @@ let UserForm = props => {
                 <p className='control'>
                   <input
                     className='input is-static'
-                    readOnly
                     type='text'
                     placeholder='username'
-                    defaultValue={data.me.username}
+                    readOnly
+                    defaultValue={user.username}
                   />
                 </p>
               </div>
@@ -76,7 +79,7 @@ let UserForm = props => {
                     type='text'
                     placeholder='role'
                     readOnly
-                    defaultValue={data.me.role}
+                    defaultValue={user.role}
                   />
                 </p>
               </div>
@@ -89,7 +92,7 @@ let UserForm = props => {
             </div>
             <div className='field-body'>
               <div className='field'>
-                <p className='control'>
+                <p className='control has-icons-left'>
                   <input
                     className='input'
                     type='text'
@@ -97,6 +100,9 @@ let UserForm = props => {
                     value={phone}
                     onChange={({ target }) => setPhone(target.value)}
                   />
+                  <span className='icon is-left'>
+                    <FontAwesomeIcon icon='phone' />
+                  </span>
                 </p>
               </div>
             </div>
@@ -108,7 +114,7 @@ let UserForm = props => {
             </div>
             <div className='field-body'>
               <div className='field'>
-                <p className='control'>
+                <p className='control has-icons-left'>
                   <input
                     className='input'
                     type='email'
@@ -116,6 +122,9 @@ let UserForm = props => {
                     value={email}
                     onChange={({ target }) => setEmail(target.value)}
                   />
+                  <span className='icon is-left'>
+                    <FontAwesomeIcon icon='at' />
+                  </span>
                 </p>
               </div>
             </div>
@@ -127,7 +136,7 @@ let UserForm = props => {
             </div>
             <div className='field-body'>
               <div className='field'>
-                <p className='control'>
+                <p className='control has-icons-left'>
                   <input
                     id='city'
                     className='input'
@@ -136,6 +145,9 @@ let UserForm = props => {
                     value={city}
                     onChange={({ target }) => setCity(target.value)}
                   />
+                  <span className='icon is-left'>
+                    <FontAwesomeIcon icon='globe' />
+                  </span>
                 </p>
               </div>
             </div>

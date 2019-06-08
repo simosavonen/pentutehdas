@@ -1,16 +1,15 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { useQuery, useMutation } from 'react-apollo-hooks'
 import { withRouter, Redirect } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { PuppyList, Loading } from '..'
+import { PuppyList, Loading, UserContext } from '..'
 import {
   ALL_LITTERS,
   CREATE_LITTER,
   UPDATE_LITTER,
 } from '../../graphql/litters'
 import { ALL_DOGS } from '../../graphql/dogs'
-import { USER } from '../../graphql/user'
 
 let LitterForm = ({ litter, setLitterToEdit, history }) => {
   const [duedate, setDuedate] = useState(
@@ -24,13 +23,14 @@ let LitterForm = ({ litter, setLitterToEdit, history }) => {
   const [puppies, setPuppies] = useState(litter ? litter.puppies : [])
   const [myDogs, setMyDogs] = useState([])
 
-  const user = useQuery(USER)
+  const userContext = useContext(UserContext)
+  const { user } = userContext
   const { data, error, loading } = useQuery(ALL_DOGS)
 
   useEffect(() => {
-    if (data.allDogs !== undefined && user.data.me !== undefined) {
+    if (user && data.allDogs !== undefined) {
       setMyDogs(
-        data.allDogs.filter(dog => dog.owner.username === user.data.me.username)
+        data.allDogs.filter(dog => dog.owner.username === user.username)
       )
     }
   }, [data, user])
@@ -98,7 +98,7 @@ let LitterForm = ({ litter, setLitterToEdit, history }) => {
     padding: '2em',
   }
 
-  if (!user.data.me || !['breeder', 'admin'].includes(user.data.me.role))
+  if (!user || !['breeder', 'admin'].includes(user.role))
     return <Redirect to='/' />
 
   if (loading) return <Loading />
@@ -139,7 +139,7 @@ let LitterForm = ({ litter, setLitterToEdit, history }) => {
         <div className='field is-horizontal'>
           <div className='field-label is-normal'>
             <label className='label'>
-              dam <i className='fas fa-venus' />
+              dam <FontAwesomeIcon icon='venus' />
             </label>
           </div>
           <div className='field-body'>

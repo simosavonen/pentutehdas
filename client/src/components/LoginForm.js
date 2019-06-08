@@ -1,10 +1,12 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { withRouter } from 'react-router-dom'
 import { useMutation, useApolloClient } from 'react-apollo-hooks'
 import { USER, CREATE_USER, USER_AVAILABLE } from '../graphql/user'
 import { LOGIN } from '../graphql/login'
 import * as Sentry from '@sentry/browser'
 import { toast } from 'react-toastify'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { UserContext } from '../components'
 
 let LoginForm = props => {
   const [username, setUsername] = useState('')
@@ -16,6 +18,9 @@ let LoginForm = props => {
   const [isNewUser, setIsNewUser] = useState(false)
   const [taken, setTaken] = useState(false)
 
+  const userContext = useContext(UserContext)
+  const { setUser } = userContext
+
   const client = useApolloClient()
   const addUser = useMutation(CREATE_USER)
   const login = useMutation(LOGIN)
@@ -26,7 +31,11 @@ let LoginForm = props => {
         variables: { username, password },
       })
       localStorage.setItem('pentutehdas-user-token', token.data.login.value)
-      client.query({ query: USER, fetchPolicy: 'network-only' })
+      const { data } = await client.query({
+        query: USER,
+        fetchPolicy: 'no-cache',
+      })
+      setUser(data.me)
       toast.success('Succesfully logged in')
       props.history.push('/')
     } catch (error) {
@@ -116,7 +125,7 @@ let LoginForm = props => {
                 title='Alphanumeric characters, length between 3 and 16.'
               />
               <span className='icon is-left'>
-                <i className='fas fa-user' />
+                <FontAwesomeIcon icon='user' />
               </span>
             </div>
             {isNewUser && taken ? (
@@ -140,7 +149,7 @@ let LoginForm = props => {
                 title='Password length between 6 and 30 characters.'
               />
               <span className='icon is-left'>
-                <i className='fas fa-lock' />
+                <FontAwesomeIcon icon='lock' />
               </span>
             </div>
             <p className='help'>password, should be unique</p>
@@ -158,7 +167,7 @@ let LoginForm = props => {
                     onChange={({ target }) => setPhone(target.value)}
                   />
                   <span className='icon is-left'>
-                    <i className='fas fa-phone' />
+                    <FontAwesomeIcon icon='phone' />
                   </span>
                 </div>
                 <p className='help'>phone number, prepaid is fine</p>
@@ -175,7 +184,7 @@ let LoginForm = props => {
                     onChange={({ target }) => setEmail(target.value)}
                   />
                   <span className='icon is-left'>
-                    <i className='fas fa-at' />
+                    <FontAwesomeIcon icon='at' />
                   </span>
                 </div>
                 <p className='help'>email address, can be left blank</p>
@@ -192,7 +201,7 @@ let LoginForm = props => {
                     onChange={({ target }) => setCity(target.value)}
                   />
                   <span className='icon is-left'>
-                    <i className='fas fa-globe' />
+                    <FontAwesomeIcon icon='globe' />
                   </span>
                 </div>
                 <p className='help'>
@@ -220,10 +229,10 @@ let LoginForm = props => {
                 </div>
               </div>
 
-              <label style={specialStyles} for='address' />
+              <label style={specialStyles} htmlFor='address' />
               <input
                 style={specialStyles}
-                autocomplete='off'
+                autoComplete='off'
                 type='text'
                 id='address'
                 name='address'

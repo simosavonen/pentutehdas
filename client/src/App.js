@@ -6,7 +6,7 @@ import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.min.css'
 import 'bulma/css/bulma.min.css'
 
-import { Navigation, Footer, Routes } from './components'
+import { Navigation, Footer, Routes, UserContextProvider } from './components'
 import { ALL_LITTERS, LITTER_ADDED } from './graphql/litters'
 
 const App = () => {
@@ -15,9 +15,11 @@ const App = () => {
   return (
     <div className='site'>
       <Router>
-        <Navigation />
-        <Routes />
-        <Footer />
+        <UserContextProvider>
+          <Navigation />
+          <Routes />
+          <Footer />
+        </UserContextProvider>
       </Router>
 
       <Subscription

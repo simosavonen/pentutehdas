@@ -1,16 +1,16 @@
-import React from 'react'
-import { useQuery, useMutation } from 'react-apollo-hooks'
-import { Reservations, ConfirmButton } from '..'
+import React, { useContext } from 'react'
+import { useMutation } from 'react-apollo-hooks'
+import { Reservations, ConfirmButton, UserContext } from '..'
 import { toast } from 'react-toastify'
 import {
   ALL_LITTERS,
   DELETE_LITTER,
   TOGGLE_RESERVATION,
 } from '../../graphql/litters'
-import { USER } from '../../graphql/user'
 
 const LitterDetails = ({ litter, setLitterToEdit }) => {
-  const { data: user, loading, error } = useQuery(USER)
+  const userContext = useContext(UserContext)
+  const { user } = userContext
 
   const toggleReservation = useMutation(TOGGLE_RESERVATION, {
     update: () => {
@@ -44,9 +44,6 @@ const LitterDetails = ({ litter, setLitterToEdit }) => {
     })
   }
 
-  if (loading) return <div>Loading details...</div>
-  if (error) return <div>Error! Failed to load details.</div>
-
   return (
     <div className='columns'>
       <div className='column'>
@@ -56,11 +53,11 @@ const LitterDetails = ({ litter, setLitterToEdit }) => {
             {litter.reservations.length !== 1 && 's'}
           </p>
 
-          {user.me &&
+          {user &&
             litter.reservations
               .map(reservation => reservation.username)
-              .includes(user.me.username) &&
-            user.me.role !== 'admin' && (
+              .includes(user.username) &&
+            user.role !== 'admin' && (
               <p className='is-size-7 is-size-6-fullhd'>
                 You've reserved a puppy.
                 <br />
@@ -68,9 +65,9 @@ const LitterDetails = ({ litter, setLitterToEdit }) => {
               </p>
             )}
 
-          {user.me &&
-            (litter.breeder.username === user.me.username ||
-              user.me.role === 'admin') &&
+          {user &&
+            (litter.breeder.username === user.username ||
+              user.role === 'admin') &&
             litter.reservations.length > 0 && (
               <Reservations reservations={litter.reservations.map(r => r.id)} />
             )}
@@ -80,7 +77,7 @@ const LitterDetails = ({ litter, setLitterToEdit }) => {
         <div>
           <p className='heading is-size-7 is-size-6-fullhd'>Actions</p>
 
-          {user.me && litter.breeder.username !== user.me.username && (
+          {user && litter.breeder.username !== user.username && (
             <button
               className='button is-info is-outlined'
               onClick={event => {
@@ -90,12 +87,12 @@ const LitterDetails = ({ litter, setLitterToEdit }) => {
             >
               {litter.reservations
                 .map(reservation => reservation.username)
-                .includes(user.me.username)
+                .includes(user.username)
                 ? 'cancel reservation'
                 : 'reserve a puppy'}
             </button>
           )}
-          {user.me && litter.breeder.username === user.me.username && (
+          {user && litter.breeder.username === user.username && (
             <div className='buttons'>
               <button
                 className='button is-info is-outlined'
@@ -114,7 +111,7 @@ const LitterDetails = ({ litter, setLitterToEdit }) => {
               />
             </div>
           )}
-          {!user.me && (
+          {!user && (
             <p className='title is-size-7 is-size-6-fullhd'>
               Login to reserve a puppy
             </p>

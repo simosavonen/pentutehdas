@@ -14,6 +14,7 @@ import { getMainDefinition } from 'apollo-utilities'
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import {
+  fas,
   faMars,
   faVenus,
   faAt,
@@ -22,6 +23,8 @@ import {
   faCalendarAlt,
   faEuroSign,
   faPaw,
+  faUser,
+  faLock,
 } from '@fortawesome/free-solid-svg-icons'
 import {
   fab,
@@ -38,6 +41,7 @@ Sentry.init({
 })
 
 library.add(
+  fas,
   faMars,
   faVenus,
   faAt,
@@ -46,6 +50,8 @@ library.add(
   faCalendarAlt,
   faEuroSign,
   faPaw,
+  faUser,
+  faLock,
   fab,
   faGithub,
   faLinkedin,

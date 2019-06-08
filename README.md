@@ -27,8 +27,7 @@ To test all functionality:
 - MongoDB running in atlas
 
 App state is stored in the Apollo Client cache. Form fields rely on useState().
-Very few props are passed around, for example currentUser is read from the Apollo cache.
-The app doesn't use Redux or the Context API for this reason.
+Current logged in user state is provided to child components via the Context API.
 
 ### React client component diagram
 
@@ -81,5 +80,5 @@ The app doesn't use Redux or the Context API for this reason.
 | 5.6.  |  9    | Pagination component is now reusable, start using Prettier, Pagination uses divs for layout, Prettier made Router look messy, do the redirecting inside the components, ConfirmButton made reusable, install Cypress |
 | 6.6.  |  9    | Cypress resets database beforeEach test, Cypress kept clearing localStorage after each tests, Cypress tests cover most functionality |
 | 7.6.  |  11    | learning about Heroku Scheduler scripts, db-clean-up.js removes over 6 month old litters, separate LitterDetails as a component, move handling user state inside apollo cache and avoid passing it as a prop, app refactoring complete, Litter components into a subfolder, Loading animation of a running dog, Bug fix, translate readme.md |
-| 8.6.  |  6    | component diagram, png looked blurry, basic honeypot for spambots, show users advice about a reservation, prevent username changing, import Bulma instead of loading CSS from CDN |
-| total | 175   |   |
+| 8.6.  |  9    | component diagram, png looked blurry, basic honeypot for spambots, show users advice about a reservation, prevent username changing, import Bulma instead of loading CSS from CDN, Apollo cache was causing issues when logging out and setting fetchPolicy to 'no-cache' caused every component to query the backend for current logged in user, so Context API to the rescue |
+| total | 178   |   |

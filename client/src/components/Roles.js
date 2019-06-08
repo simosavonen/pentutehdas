@@ -1,13 +1,13 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { Redirect } from 'react-router-dom'
 import { useQuery, useMutation } from 'react-apollo-hooks'
 import { ALL_LITTERS } from '../graphql/litters'
-import { USER, ALL_USERS, UPDATE_ROLE } from '../graphql/user'
+import { ALL_USERS, UPDATE_ROLE } from '../graphql/user'
 import { ALL_DOGS } from '../graphql/dogs'
 import { toast } from 'react-toastify'
 import * as Sentry from '@sentry/browser'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Pagination, Loading } from '../components'
+import { Pagination, Loading, UserContext } from '../components'
 
 const countLitters = (litterArray, breeder) => {
   return litterArray.filter(l => l.breeder.username === breeder.username).length
@@ -30,7 +30,9 @@ const tableStyles = {
 const Roles = () => {
   const [cursor, setCursor] = useState(0)
 
-  const user = useQuery(USER)
+  const userContext = useContext(UserContext)
+  const { user } = userContext
+
   const users = useQuery(ALL_USERS)
   const litters = useQuery(ALL_LITTERS)
   const dogs = useQuery(ALL_DOGS)
@@ -42,20 +44,20 @@ const Roles = () => {
     },
   })
 
-  const toggleBreederStatus = async user => {
-    if (user.role !== 'admin') {
+  const toggleBreederStatus = async breeder => {
+    if (breeder.role !== 'admin') {
       await updateRole({
-        variables: { username: user.username },
+        variables: { username: breeder.username },
       })
     } else {
       toast.error('Cannot touch admins.')
     }
   }
 
-  if (!user.data.me || user.data.me.role !== 'admin') return <Redirect to='/' />
+  if (!user || user.role !== 'admin') return <Redirect to='/' />
 
   if (users.loading || litters.loading || dogs.loading) return <Loading />
-  if (users.error)
+  if (users.error || litters.error || dogs.error)
     return <div className='container'>Error! Failed to load data.</div>
 
   return (

@@ -17,3 +17,8 @@ export { default as Roles } from './Roles'
 export { default as Routes } from './Routes'
 export { default as UserForm } from './UserForm'
 export { default as Loading } from './Loading'
+export {
+  Context as UserContext,
+  Provider as UserContextProvider,
+  Consumer as UserContextConsumer,
+} from './UserContext'

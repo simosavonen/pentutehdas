@@ -1,16 +1,19 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { Link } from 'react-router-dom'
-import { useQuery, useApolloClient } from 'react-apollo-hooks'
-import { USER } from '../graphql/user'
+import { useApolloClient } from 'react-apollo-hooks'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { toast } from 'react-toastify'
+import { UserContext } from '../components'
 
 const Navigation = () => {
+  const userContext = useContext(UserContext)
+  const { user, setUser } = userContext
+
   const [burgerOpen, setBurgerOpen] = useState(false)
   const client = useApolloClient()
-  const user = useQuery(USER)
 
   const handleLogout = () => {
+    setUser(null)
     localStorage.clear()
     client.resetStore()
     toast.info('Logout OK')
@@ -42,7 +45,7 @@ const Navigation = () => {
         </div>
         <div className={`navbar-menu ${burgerOpen && 'is-active'}`}>
           <div className='navbar-start'>
-            {user.data.me && ['breeder', 'admin'].includes(user.data.me.role) && (
+            {user && ['breeder', 'admin'].includes(user.role) && (
               <React.Fragment>
                 <Link to='/litter' className='navbar-item'>
                   add a litter
@@ -52,23 +55,23 @@ const Navigation = () => {
                 </Link>
               </React.Fragment>
             )}
-            {user.data.me && (
+            {user && (
               <Link to='/user' className='navbar-item'>
                 profile
               </Link>
             )}
-            {user.data.me && user.data.me.role === 'admin' && (
+            {user && user.role === 'admin' && (
               <Link to='/roles' className='navbar-item'>
                 roles
               </Link>
             )}
           </div>
           <div className='navbar-end'>
-            {user.data.me ? (
+            {user ? (
               <>
                 {' '}
                 <p className='navbar-item has-text-grey-light'>
-                  Logged in as {user.data.me.username}
+                  Logged in as {user.username}
                 </p>{' '}
                 <Link
                   to='/'

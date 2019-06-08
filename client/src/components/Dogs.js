@@ -1,16 +1,16 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import DogForm from './DogForm'
 import Moment from 'react-moment'
 import { useQuery, useMutation } from 'react-apollo-hooks'
 import { ALL_DOGS, DELETE_DOG } from '../graphql/dogs'
-import { USER } from '../graphql/user'
 import { toast } from 'react-toastify'
 import { Redirect } from 'react-router-dom'
-import { ConfirmButton, Loading } from '../components'
+import { ConfirmButton, Loading, UserContext } from '../components'
 
 const Dogs = () => {
   const dogs = useQuery(ALL_DOGS)
-  const user = useQuery(USER)
+  const userContext = useContext(UserContext)
+  const { user } = userContext
 
   const deleteDog = useMutation(DELETE_DOG, {
     update: (store, response) => {
@@ -36,7 +36,7 @@ const Dogs = () => {
     backgroundColor: 'rgba(255, 255, 255, 0.3)',
   }
 
-  if (!user.data.me || !['breeder', 'admin'].includes(user.data.me.role))
+  if (!user || !['breeder', 'admin'].includes(user.role))
     return <Redirect to='/' />
 
   if (dogs.loading) return <Loading />
@@ -61,8 +61,8 @@ const Dogs = () => {
             <tbody>
               {dogs.data.allDogs.map(
                 dog =>
-                  (user.data.me.role === 'admin' ||
-                    user.data.me.username === dog.owner.username) && (
+                  (user.role === 'admin' ||
+                    user.username === dog.owner.username) && (
                     <tr key={dog.id}>
                       <td>{dog.name}</td>
                       <td>{dog.breed}</td>
