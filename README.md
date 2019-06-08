@@ -11,9 +11,9 @@ An fancy single page app for an imaginary puppy farm.
 - to test all functionality:
   - login as 'breeder' pw: ananas
     - add a couple dogs
-    - add a litter with an estimated due date
-    - edit the litter, mark how many puppies were born
-  - login as 'user' pw: ananas, or register as a new user
+    - add a litter with an estimated due date in the future
+    - edit the litter, change the due date for today, mark how many puppies were born
+  - register as a new user or login as 'user' pw: ananas
     - make a puppy reservation
   - login as 'admin' pw: ananas
     - review all the litters and see the reservations
@@ -29,29 +29,10 @@ App state is stored in the Apollo Client cache. Forms rely on useState().
 Very few props are passed around, currentUser is read from Apollo cache for example.
 The app doesn't use Redux or the Context API for this reason.
 
-### Front-end component hierarchy tree
+### React client component diagram
 
-- App
-  - Navigation
-  - Footer
-  - Routes
-    - ErrorBoundary
-      - LoginForm
-      - UserForm
-      - LitterForm
-        - PuppyList
-      - Roles
-        - Pagination
-      - Dogs
-        - DogForm
-        - ConfirmButton
-      - LitterList
-        - Pagination
-        - Litter
-          - LitterProgressBar
-          - LitterDetails
-            - Reservations
-            - ConfirmButton
+![Component diagram](https://github.com/simosavonen/pentutehdas/blob/modular/componentdiagram.png)
+
 
 ### Completed functionality, Front / Back
 
@@ -62,20 +43,20 @@ The app doesn't use Redux or the Context API for this reason.
 | User        |  F, B  | F, B |  F, B  |        |
 | Reservation |  F, B  | F, B |  F, B  |  F, B  |
 
-**Missing by design**
 
+######Missing by design
 - Dogs can't be updated, can delete one and create another with correct info
 - Users can't be deleted, admin can do it manually if needed
 - User password can't be changed or get a reminder in email
 
-**Critical missing features**
 
+######Critical missing features
 - User registering doesn't use any bot prevention method
 - GraphQL endpoint for creating a user is also left open
 
+
 ### time records
 
-<!-- prettier-ignore -->
 | date  | hours | time was spent on  |
 | :---: | :---: | ------- |
 | 9.5.  |  6    | react frontend aloitus, graphql backend aloitus |
@@ -100,4 +81,5 @@ The app doesn't use Redux or the Context API for this reason.
 | 5.6.  |  9    | Pagination component is now reusable, start using Prettier, Pagination uses divs for layout, Prettier made Router look messy, do the redirecting inside the components, ConfirmButton made reusable, install Cypress |
 | 6.6.  |  9    | Cypress resets database beforeEach test, Cypress kept clearing localStorage after each tests, Cypress tests cover most functionality |
 | 7.6.  |  11    | learning about Heroku Scheduler scripts, db-clean-up.js removes over 6 month old litters, separate LitterDetails as a component, move handling user state inside apollo cache and avoid passing it as a prop, app refactoring complete, Litter components into a subfolder, Loading animation of a running dog, Bug fix, translate readme.md |
-| total | 169   |   |
+| 8.6.  |  1    | component diagram |
+| total | 170   |   |
