@@ -121,6 +121,9 @@ const Roles = () => {
                       ${user.role === 'breeder' && ' is-info'}
                       ${user.role === 'admin' && ' is-danger'}
                     `}
+                      disabled={['admin', 'breeder', 'user'].includes(
+                        user.username
+                      )}
                       onClick={() => toggleBreederStatus(user)}
                     >
                       {user.role}

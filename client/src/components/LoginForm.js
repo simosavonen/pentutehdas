@@ -52,6 +52,11 @@ let LoginForm = props => {
           throw new Error('not today, spammer')
         }
 
+        if (phone === '' && email === '') {
+          toast.error('We need some way to contact you.')
+          throw new Error('both phone and email left empty')
+        }
+
         await addUser({
           variables: {
             username,
