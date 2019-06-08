@@ -81,5 +81,5 @@ The app doesn't use Redux or the Context API for this reason.
 | 5.6.  |  9    | Pagination component is now reusable, start using Prettier, Pagination uses divs for layout, Prettier made Router look messy, do the redirecting inside the components, ConfirmButton made reusable, install Cypress |
 | 6.6.  |  9    | Cypress resets database beforeEach test, Cypress kept clearing localStorage after each tests, Cypress tests cover most functionality |
 | 7.6.  |  11    | learning about Heroku Scheduler scripts, db-clean-up.js removes over 6 month old litters, separate LitterDetails as a component, move handling user state inside apollo cache and avoid passing it as a prop, app refactoring complete, Litter components into a subfolder, Loading animation of a running dog, Bug fix, translate readme.md |
-| 8.6.  |  5    | component diagram, png looked blurry, basic honeypot for spambots, show users advice about a reservation, prevent username changing |
-| total | 174   |   |
+| 8.6.  |  6    | component diagram, png looked blurry, basic honeypot for spambots, show users advice about a reservation, prevent username changing, import Bulma instead of loading CSS from CDN |
+| total | 175   |   |

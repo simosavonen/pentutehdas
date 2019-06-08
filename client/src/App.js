@@ -4,6 +4,7 @@ import { BrowserRouter as Router } from 'react-router-dom'
 import { useApolloClient } from 'react-apollo-hooks'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.min.css'
+import 'bulma/css/bulma.min.css'
 
 import { Navigation, Footer, Routes } from './components'
 import { ALL_LITTERS, LITTER_ADDED } from './graphql/litters'
