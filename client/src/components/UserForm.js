@@ -9,7 +9,6 @@ import { USER, UPDATE_USER } from '../graphql/user'
 let UserForm = props => {
   const { data } = useQuery(USER)
 
-  const [username, setUsername] = useState(data.me.username)
   const [phone, setPhone] = useState(data.me.phone)
   const [email, setEmail] = useState(data.me.email)
   const [city, setCity] = useState(data.me.city)
@@ -30,7 +29,7 @@ let UserForm = props => {
     await updateUser({
       variables: {
         id: data.me.id,
-        username,
+        username: data.me.username,
         phone,
         email,
         city,
@@ -54,11 +53,11 @@ let UserForm = props => {
               <div className='field'>
                 <p className='control'>
                   <input
-                    className='input'
+                    className='input is-static'
+                    readOnly
                     type='text'
                     placeholder='username'
-                    value={username}
-                    onChange={({ target }) => setUsername(target.value)}
+                    defaultValue={data.me.username}
                   />
                 </p>
               </div>

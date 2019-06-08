@@ -7,15 +7,16 @@ An fancy single page app for an imaginary puppy farm.
 
 ## Demo
 
-- running at: https://pentutehdas.surge.sh
-- to test all functionality:
-  - login as 'breeder' pw: ananas
+Running at: https://pentutehdas.surge.sh
+
+To test all functionality:
+  - login as **breeder** pw: ananas
     - add a couple dogs
     - add a litter with an estimated due date in the future
     - edit the litter, change the due date for today, mark how many puppies were born
-  - register as a new user or login as 'user' pw: ananas
+  - register as a new user or login as **user** pw: ananas
     - make a puppy reservation
-  - login as 'admin' pw: ananas
+  - login as **admin** pw: ananas
     - review all the litters and see the reservations
     - check user roles and statistics, promote a user
 
@@ -25,7 +26,7 @@ An fancy single page app for an imaginary puppy farm.
 - front-end made with React
 - MongoDB running in atlas
 
-App state is stored in the Apollo Client cache. Forms rely on useState().
+App state is stored in the Apollo Client cache. Form fields rely on useState().
 Very few props are passed around, for example currentUser is read from the Apollo cache.
 The app doesn't use Redux or the Context API for this reason.
 
@@ -50,7 +51,7 @@ The app doesn't use Redux or the Context API for this reason.
 
 
 #### Critical missing features
-- User registering doesn't use any bot prevention method
+- User registering doesn't use any real bot prevention method, like reCAPTCHA
 - GraphQL endpoint for creating a user is also left open
 
 
@@ -80,5 +81,5 @@ The app doesn't use Redux or the Context API for this reason.
 | 5.6.  |  9    | Pagination component is now reusable, start using Prettier, Pagination uses divs for layout, Prettier made Router look messy, do the redirecting inside the components, ConfirmButton made reusable, install Cypress |
 | 6.6.  |  9    | Cypress resets database beforeEach test, Cypress kept clearing localStorage after each tests, Cypress tests cover most functionality |
 | 7.6.  |  11    | learning about Heroku Scheduler scripts, db-clean-up.js removes over 6 month old litters, separate LitterDetails as a component, move handling user state inside apollo cache and avoid passing it as a prop, app refactoring complete, Litter components into a subfolder, Loading animation of a running dog, Bug fix, translate readme.md |
-| 8.6.  |  3    | component diagram, png looked blurry, basic honeypot for spambots, show users advice about a reservation |
-| total | 172   |   |
+| 8.6.  |  5    | component diagram, png looked blurry, basic honeypot for spambots, show users advice about a reservation, prevent username changing |
+| total | 174   |   |
