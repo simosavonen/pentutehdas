@@ -31,7 +31,8 @@ The app doesn't use Redux or the Context API for this reason.
 
 ### React client component diagram
 
-![Component diagram](https://github.com/simosavonen/pentutehdas/blob/master/component_diagram.png)
+![Component diagram](./component_diagram.svg)
+<img src="./component_diagram.svg">
 
 
 ### Completed functionality, Front / Back
