@@ -4,11 +4,7 @@ import { USERS } from '../../graphql/user'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const Reservations = ({ reservations }) => (
-  <Query
-    query={USERS}
-    variables={{ ids: reservations }}
-    fetchPolicy={'no-cache'}
-  >
+  <Query query={USERS} variables={{ ids: reservations }}>
     {({ loading, error, data }) => {
       if (loading) return 'Loading reservations...'
       if (error) return 'Error! Failed to load reservations.'

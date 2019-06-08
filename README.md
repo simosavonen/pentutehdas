@@ -26,14 +26,12 @@ An fancy single page app for an imaginary puppy farm.
 - MongoDB running in atlas
 
 App state is stored in the Apollo Client cache. Forms rely on useState().
-Very few props are passed around, currentUser is read from Apollo cache for example.
+Very few props are passed around, for example currentUser is read from the Apollo cache.
 The app doesn't use Redux or the Context API for this reason.
 
 ### React client component diagram
 
 ![Component diagram](./component_diagram.svg)
-<img src="./component_diagram.svg">
-
 
 ### Completed functionality, Front / Back
 
@@ -45,13 +43,13 @@ The app doesn't use Redux or the Context API for this reason.
 | Reservation |  F, B  | F, B |  F, B  |  F, B  |
 
 
-######Missing by design
+#### Missing by design
 - Dogs can't be updated, can delete one and create another with correct info
 - Users can't be deleted, admin can do it manually if needed
 - User password can't be changed or get a reminder in email
 
 
-######Critical missing features
+#### Critical missing features
 - User registering doesn't use any bot prevention method
 - GraphQL endpoint for creating a user is also left open
 
@@ -82,5 +80,5 @@ The app doesn't use Redux or the Context API for this reason.
 | 5.6.  |  9    | Pagination component is now reusable, start using Prettier, Pagination uses divs for layout, Prettier made Router look messy, do the redirecting inside the components, ConfirmButton made reusable, install Cypress |
 | 6.6.  |  9    | Cypress resets database beforeEach test, Cypress kept clearing localStorage after each tests, Cypress tests cover most functionality |
 | 7.6.  |  11    | learning about Heroku Scheduler scripts, db-clean-up.js removes over 6 month old litters, separate LitterDetails as a component, move handling user state inside apollo cache and avoid passing it as a prop, app refactoring complete, Litter components into a subfolder, Loading animation of a running dog, Bug fix, translate readme.md |
-| 8.6.  |  1    | component diagram |
-| total | 170   |   |
+| 8.6.  |  3    | component diagram, png looked blurry, basic honeypot for spambots, show users advice about a reservation |
+| total | 172   |   |

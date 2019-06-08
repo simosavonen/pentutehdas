@@ -11,6 +11,7 @@ let LoginForm = props => {
   const [password, setPassword] = useState('')
   const [phone, setPhone] = useState('')
   const [email, setEmail] = useState('')
+  const [address, setAddress] = useState('')
   const [city, setCity] = useState('')
   const [isNewUser, setIsNewUser] = useState(false)
   const [taken, setTaken] = useState(false)
@@ -38,6 +39,10 @@ let LoginForm = props => {
 
     if (isNewUser) {
       try {
+        if (address !== '') {
+          throw new Error('not today, spammer')
+        }
+
         await addUser({
           variables: {
             username,
@@ -79,6 +84,16 @@ let LoginForm = props => {
 
   const formStyles = {
     padding: '1em',
+  }
+
+  const specialStyles = {
+    opacity: 0,
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    height: 0,
+    width: 0,
+    zIndex: -1,
   }
 
   return (
@@ -204,6 +219,18 @@ let LoginForm = props => {
                   </button>
                 </div>
               </div>
+
+              <label style={specialStyles} for='address' />
+              <input
+                style={specialStyles}
+                autocomplete='off'
+                type='text'
+                id='address'
+                name='address'
+                placeholder='address'
+                value={address}
+                onChange={({ target }) => setAddress(target.value)}
+              />
             </React.Fragment>
           ) : (
             <div className='field is-grouped'>

@@ -2,7 +2,6 @@ import React from 'react'
 import { useQuery, useMutation } from 'react-apollo-hooks'
 import { Reservations, ConfirmButton } from '..'
 import { toast } from 'react-toastify'
-import * as Sentry from '@sentry/browser'
 import {
   ALL_LITTERS,
   DELETE_LITTER,
@@ -14,14 +13,12 @@ const LitterDetails = ({ litter, setLitterToEdit }) => {
   const user = useQuery(USER)
 
   const toggleReservation = useMutation(TOGGLE_RESERVATION, {
-    onError: error => Sentry.captureException(error),
     update: () => {
       toast.info('Toggled puppy reservation.')
     },
   })
 
   const deleteLitter = useMutation(DELETE_LITTER, {
-    onError: error => Sentry.captureException(error),
     update: (store, response) => {
       const dataInStore = store.readQuery({ query: ALL_LITTERS })
       dataInStore.allLitters = dataInStore.allLitters.filter(
@@ -55,6 +52,17 @@ const LitterDetails = ({ litter, setLitterToEdit }) => {
             {litter.reservations.length} Reservation
             {litter.reservations.length !== 1 && 's'}
           </p>
+
+          {litter.reservations
+            .map(reservation => reservation.username)
+            .includes(user.data.me.username) && (
+            <p className='is-size-7 is-size-6-fullhd'>
+              You've reserved a puppy.
+              <br />
+              Wait for the breeder to contact you.
+            </p>
+          )}
+
           {user.data.me &&
             (litter.breeder.username === user.data.me.username ||
               user.data.me.role === 'admin') &&
