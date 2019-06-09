@@ -1,8 +1,13 @@
 import React, { useState } from 'react'
-import { useQuery } from 'react-apollo-hooks'
+import { useQuery, useSubscription } from 'react-apollo-hooks'
 import { LitterForm, Litter, Pagination, Loading } from '..'
+import { toast } from 'react-toastify'
 
-import { ALL_LITTERS } from '../../graphql/litters'
+import {
+  ALL_LITTERS,
+  LITTER_ADDED,
+  LITTER_UPDATED,
+} from '../../graphql/litters'
 
 const LitterList = () => {
   const [cursor, setCursor] = useState(0)
@@ -11,6 +16,27 @@ const LitterList = () => {
 
   const { data, loading, error } = useQuery(ALL_LITTERS, {
     notifyOnNetworkStatusChange: true,
+  })
+
+  useSubscription(LITTER_ADDED, {
+    onSubscriptionData: ({ client, subscriptionData }) => {
+      const addedLitter = subscriptionData.data.litterAdded
+      const dataInStore = client.readQuery({ query: ALL_LITTERS })
+      if (!dataInStore.allLitters.map(p => p.id).includes(addedLitter.id)) {
+        dataInStore.allLitters.push(addedLitter)
+        client.writeQuery({
+          query: ALL_LITTERS,
+          data: dataInStore,
+        })
+        toast.info('A litter was added.')
+      }
+    },
+  })
+
+  useSubscription(LITTER_UPDATED, {
+    onSubscriptionData: () => {
+      toast.info('A litter was updated.')
+    },
   })
 
   if (loading) return <Loading />

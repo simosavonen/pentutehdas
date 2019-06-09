@@ -47,6 +47,15 @@ export const LITTER_ADDED = gql`
   ${LITTER_DETAILS}
 `
 
+export const LITTER_UPDATED = gql`
+  subscription {
+    litterUpdated {
+      ...LitterDetails
+    }
+  }
+  ${LITTER_DETAILS}
+`
+
 export const CREATE_LITTER = gql`
   mutation createLitter(
     $duedate: String!

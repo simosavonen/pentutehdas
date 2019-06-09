@@ -46,6 +46,7 @@ export const typeDefs = gql`
 
   type Subscription {
     litterAdded: Litter!
+    litterUpdated: Litter!
   }
 `
 
@@ -110,6 +111,7 @@ export const resolvers = {
           },
           { new: true }
         ).populate(['dam', 'sire', 'breeder', 'reservations'])
+        pubsub.publish('LITTER_UPDATED', { litterUpdated: updatedLitter })
         return updatedLitter
       } else {
         throw new ForbiddenError('you are not the admin, or the breeder')
@@ -176,6 +178,9 @@ export const resolvers = {
   Subscription: {
     litterAdded: {
       subscribe: () => pubsub.asyncIterator(['LITTER_ADDED']),
+    },
+    litterUpdated: {
+      subscribe: () => pubsub.asyncIterator(['LITTER_UPDATED']),
     },
   },
 }

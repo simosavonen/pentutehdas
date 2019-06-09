@@ -50,11 +50,7 @@ let LitterForm = ({ litter, setLitterToEdit, history }) => {
     },
   })
 
-  const editLitter = useMutation(UPDATE_LITTER, {
-    update: () => {
-      toast.info('A litter was updated.')
-    },
-  })
+  const editLitter = useMutation(UPDATE_LITTER)
 
   const adjustPuppies = (event, value) => {
     event.preventDefault()

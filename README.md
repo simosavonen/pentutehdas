@@ -82,5 +82,5 @@ User state is provided to child components via the Context API
 | 6.6.  |  9    | Cypress resets database beforeEach test, Cypress kept clearing localStorage after each tests, Cypress tests cover most functionality |
 | 7.6.  |  11    | learning about Heroku Scheduler scripts, db-clean-up.js removes over 6 month old litters, separate LitterDetails as a component, move handling user state inside apollo cache and avoid passing it as a prop, app refactoring complete, Litter components into a subfolder, Loading animation of a running dog, Bug fix, translate readme.md |
 | 8.6.  |  10    | component diagram, png looked blurry, basic honeypot for spambots, show users advice about a reservation, prevent username changing, import Bulma instead of loading CSS from CDN<br/> Apollo cache was causing issues when logging out and setting fetchPolicy to 'no-cache' caused every component to query the backend for current logged in user, so Context API to the rescue<br/> require either phone or email when registering, disallow changing role of usernames 'admin, breeder, user' |
-| 9.6.  |  4    | move components into folders, user profile edits were not being updated to the context, Cypress test tweaks, add route for bad URL |
-| total | 182   |   |
+| 9.6.  |  6    | move components into folders, user profile edits were not being updated to the context, Cypress test tweaks, add route for bad URL, subscribe to litter edits and use hooks for subs, persist user login accross reloads |
+| total | 184   |   |
