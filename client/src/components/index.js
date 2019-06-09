@@ -17,6 +17,7 @@ export { default as Roles } from './Roles'
 export { default as Routes } from './Routes'
 export { default as UserForm } from './User/UserForm'
 export { default as Loading } from './Utils/Loading'
+export { default as NoMatch } from './NoMatch'
 export {
   Context as UserContext,
   Provider as UserContextProvider,

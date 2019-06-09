@@ -26,8 +26,9 @@ To test all functionality:
 - front-end made with React
 - MongoDB running in atlas
 
-App state is stored in the Apollo Client cache. Form fields rely on useState().
-Current logged in user state is provided to child components via the Context API.
+Data on dogs, litters and users (for the admin) is stored in the Apollo Client cache 
+User state is provided to child components via the Context API
+
 
 ### React client component diagram
 
@@ -80,6 +81,6 @@ Current logged in user state is provided to child components via the Context API
 | 5.6.  |  9    | Pagination component is now reusable, start using Prettier, Pagination uses divs for layout, Prettier made Router look messy, do the redirecting inside the components, ConfirmButton made reusable, install Cypress |
 | 6.6.  |  9    | Cypress resets database beforeEach test, Cypress kept clearing localStorage after each tests, Cypress tests cover most functionality |
 | 7.6.  |  11    | learning about Heroku Scheduler scripts, db-clean-up.js removes over 6 month old litters, separate LitterDetails as a component, move handling user state inside apollo cache and avoid passing it as a prop, app refactoring complete, Litter components into a subfolder, Loading animation of a running dog, Bug fix, translate readme.md |
-| 8.6.  |  10    | component diagram<br/> png looked blurry<br/> basic honeypot for spambots<br/> show users advice about a reservation<br/> prevent username changing<br/> import Bulma instead of loading CSS from CDN<br/> Apollo cache was causing issues when logging out and setting fetchPolicy to 'no-cache' caused every component to query the backend for current logged in user, so Context API to the rescue<br/> require either phone or email when registering<br/> disallow changing role of usernames 'admin, breeder, user' |
-| 9.6.  |  3    | move components into folders<br/> user profile edits were not being updated to the context<br/> Cypress test tweaks<br/> |
-| total | 181   |   |
+| 8.6.  |  10    | component diagram, png looked blurry, basic honeypot for spambots, show users advice about a reservation, prevent username changing, import Bulma instead of loading CSS from CDN<br/> Apollo cache was causing issues when logging out and setting fetchPolicy to 'no-cache' caused every component to query the backend for current logged in user, so Context API to the rescue<br/> require either phone or email when registering, disallow changing role of usernames 'admin, breeder, user' |
+| 9.6.  |  4    | move components into folders, user profile edits were not being updated to the context, Cypress test tweaks, add route for bad URL |
+| total | 182   |   |

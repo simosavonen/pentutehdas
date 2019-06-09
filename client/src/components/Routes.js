@@ -1,5 +1,5 @@
 import React from 'react'
-import { Route } from 'react-router-dom'
+import { Route, Switch } from 'react-router-dom'
 import {
   LitterList,
   LitterForm,
@@ -8,28 +8,32 @@ import {
   UserForm,
   Roles,
   ErrorBoundary,
+  NoMatch,
 } from '../components'
 
 const Routes = () => {
   return (
     <section className='section site-content'>
       <ErrorBoundary>
-        <Route exact path='/' render={() => <LitterList />} />
-        <Route exact path='/login' render={() => <LoginForm />} />
-        <Route
-          exact
-          path='/litter'
-          render={() => (
-            <div className='section columns is-centered'>
-              <div className='column is-full-mobile is-two-thirds-tablet is-half-desktop'>
-                <LitterForm />
+        <Switch>
+          <Route exact path='/' component={LitterList} />
+          <Route exact path='/login' component={LoginForm} />
+          <Route
+            exact
+            path='/litter'
+            render={() => (
+              <div className='section columns is-centered'>
+                <div className='column is-full-mobile is-two-thirds-tablet is-half-desktop'>
+                  <LitterForm />
+                </div>
               </div>
-            </div>
-          )}
-        />
-        <Route exact path='/dog' render={() => <Dogs />} />
-        <Route exact path='/user' render={() => <UserForm />} />
-        <Route exact path='/roles' render={() => <Roles />} />
+            )}
+          />
+          <Route exact path='/dog' component={Dogs} />
+          <Route exact path='/user' component={UserForm} />
+          <Route exact path='/roles' component={Roles} />
+          <Route component={NoMatch} />
+        </Switch>
       </ErrorBoundary>
     </section>
   )
