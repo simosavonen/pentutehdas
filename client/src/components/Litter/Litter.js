@@ -17,10 +17,13 @@ const Litter = ({ litter, setLitterToEdit }) => {
       <div
         className='columns is-centered is-mobile is-clickable'
         onClick={() => setActive(active === litter.id ? '' : litter.id)}
-        style={{ padding: '1rem' }}
+        style={{ padding: '1rem 0 1rem 0' }}
       >
-        <div className='column is-2-mobile is-2-tablet is-1-desktop'>
-          <div style={{ maxWidth: '65px' }}>
+        <div
+          className='column is-2-mobile is-2-tablet is-1-desktop'
+          style={{ padding: '0.75rem 0.15rem 0 0.15rem' }}
+        >
+          <div style={{ maxWidth: '65px', minWidth: '45px', margin: '0 auto' }}>
             <LitterProgressBar date={litter.duedate} />
           </div>
         </div>
@@ -90,10 +93,15 @@ const Litter = ({ litter, setLitterToEdit }) => {
             <LitterDetails litter={litter} setLitterToEdit={setLitterToEdit} />
           )}
         </div>
-        <div className='column is-2-mobile is-2-tablet is-1-desktop'>
+        <div
+          className='column is-2-mobile is-2-tablet is-1-desktop'
+          style={{ padding: '0.75rem 0.3rem 0 0.3rem' }}
+        >
           <div>
             <p className='heading is-size-7 is-size-6-fullhd'>Price</p>
-            <div className='is-size-6 is-size-5-fullhd'>{litter.price} €</div>
+            <div className='is-size-6 is-size-5-fullhd'>
+              {litter.price}&nbsp;€
+            </div>
           </div>
         </div>
       </div>

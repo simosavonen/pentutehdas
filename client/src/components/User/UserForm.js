@@ -3,13 +3,13 @@ import { withRouter, Redirect } from 'react-router-dom'
 import { useMutation } from 'react-apollo-hooks'
 import { toast } from 'react-toastify'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { ALL_LITTERS } from '../graphql/litters'
-import { UPDATE_USER } from '../graphql/user'
-import { UserContext } from '../components'
+import { ALL_LITTERS } from '../../graphql/litters'
+import { UPDATE_USER } from '../../graphql/user'
+import { UserContext } from '..'
 
 let UserForm = props => {
   const userContext = useContext(UserContext)
-  const { user } = userContext
+  const { user, setUser } = userContext
 
   const [phone, setPhone] = useState(user.phone)
   const [email, setEmail] = useState(user.email)
@@ -17,7 +17,9 @@ let UserForm = props => {
 
   const updateUser = useMutation(UPDATE_USER, {
     refetchQueries: [{ query: ALL_LITTERS }],
-    update: () => {
+    update: (store, response) => {
+      const updatedUser = response.data.updateUser
+      setUser(updatedUser)
       toast.info('User was updated.')
     },
   })
@@ -170,6 +172,7 @@ let UserForm = props => {
                 </div>
                 <div className='control'>
                   <button
+                    id='cancel'
                     className='button is-danger is-outlined'
                     onClick={event => {
                       event.preventDefault()

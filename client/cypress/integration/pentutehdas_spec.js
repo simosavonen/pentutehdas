@@ -17,10 +17,10 @@ describe('Pentutehdas ', function() {
     it('can register a new user', function() {
       cy.contains('Login / Register').click()
       cy.contains('register new user').click()
-      cy.get('#username').type('breeder')
+      cy.get('#username').type('tester')
       cy.get('#password').type('ananas')
       cy.get('#phone').type('040765421')
-      cy.get('#email').type('breeder@test.com')
+      cy.get('#email').type('tester@test.com')
       cy.get('#city').type('Cypress Village')
       cy.get('#register').click()
     })
@@ -58,6 +58,10 @@ describe('Pentutehdas ', function() {
       cy.get('.button')
         .contains('user')
         .click()
+      cy.contains('breeder')
+      cy.get('.button')
+        .contains('user')
+        .click()
     })
   })
 
@@ -72,7 +76,7 @@ describe('Pentutehdas ', function() {
       cy.contains('Logout').click()
       this.token = null
       cy.contains('Login / Register').click()
-      cy.get('#username').type('breeder')
+      cy.get('#username').type('tester')
       cy.get('#password').type('ananas')
       cy.get('#login').click()
       cy.contains('add a litter').then(function() {
@@ -121,20 +125,20 @@ describe('Pentutehdas ', function() {
       cy.get('#duedate').type(new Date().toISOString().substring(0, 10))
       cy.get('#dam').select('Milja, Finnish Hound')
       cy.get('#sire').select('Rufus, German Shepherd Dog')
-      cy.get('#price').type('1200')
-      cy.get('#addOrSave').click()
+      cy.get('#price').type('{backspace}1200')
+      cy.get('#addOrSaveLitter').click()
     })
 
     it('can edit the litter', function() {
       cy.contains('Location').click()
       cy.contains('edit the litter').click()
-      cy.get('#female').click()
-      cy.get('#male').click()
-      cy.get('#addOrSave').click()
+      cy.get('#addFemalePuppy').click()
+      cy.get('#addMalePuppy').click()
+      cy.get('#addOrSaveLitter').click()
     })
   })
 
-  describe('when logged in as a different user', function() {
+  describe('when logged in as a user', function() {
     beforeEach(function() {
       if (this.token) {
         localStorage.setItem('pentutehdas-user-token', this.token)
@@ -145,10 +149,10 @@ describe('Pentutehdas ', function() {
       cy.contains('Logout').click()
       this.token = null
       cy.contains('Login / Register').click()
-      cy.get('#username').type('admin')
+      cy.get('#username').type('testuser')
       cy.get('#password').type('ananas')
       cy.get('#login').click()
-      cy.contains('add a litter').then(function() {
+      cy.contains('profile').then(function() {
         cy.wrap(localStorage.getItem('pentutehdas-user-token')).as('token')
       })
     })
@@ -156,7 +160,7 @@ describe('Pentutehdas ', function() {
     it('can make a puppy reservation', function() {
       cy.contains('Location').click()
       cy.contains('reserve a puppy').click()
-      cy.contains('admin@test.com')
+      cy.contains('Wait for the seller to contact you.')
     })
 
     it('can edit user profile', function() {
@@ -165,8 +169,9 @@ describe('Pentutehdas ', function() {
         .clear()
         .type('Kaarina')
       cy.get('#save').click()
-      cy.contains('Location').click()
-      cy.contains('Kaarina')
+      cy.contains('profile').click()
+      cy.get('#city').should('have.value', 'Kaarina')
+      cy.get('#cancel').click()
     })
   })
 
@@ -178,7 +183,7 @@ describe('Pentutehdas ', function() {
     it('hamburger menu appears', function() {
       cy.get('.burger').should('be.visible')
       cy.get('.burger').click()
-      cy.contains('home')
+      cy.contains('profile')
     })
   })
 })

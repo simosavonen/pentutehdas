@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { withRouter } from 'react-router-dom'
 import { useMutation } from 'react-apollo-hooks'
 import Select from 'react-select'
-import { ALL_DOGS, CREATE_DOG } from '../graphql/dogs'
+import { ALL_DOGS, CREATE_DOG } from '../../graphql/dogs'
 import { toast } from 'react-toastify'
 
 let DogForm = props => {

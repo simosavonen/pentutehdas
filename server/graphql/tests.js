@@ -31,6 +31,16 @@ export const resolvers = {
             city: 'Cypress City',
           })
           await admin.save()
+
+          const user = new User({
+            username: 'testuser',
+            passwordHash: passwordHash,
+            role: 'user',
+            phone: '050555000',
+            email: 'user@test.com',
+            city: 'Cypress Capitol',
+          })
+          await user.save()
         } catch (error) {
           console.log('DB reset failed', error)
         } finally {

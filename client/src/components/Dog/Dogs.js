@@ -2,10 +2,10 @@ import React, { useContext } from 'react'
 import DogForm from './DogForm'
 import Moment from 'react-moment'
 import { useQuery, useMutation } from 'react-apollo-hooks'
-import { ALL_DOGS, DELETE_DOG } from '../graphql/dogs'
+import { ALL_DOGS, DELETE_DOG } from '../../graphql/dogs'
 import { toast } from 'react-toastify'
 import { Redirect } from 'react-router-dom'
-import { ConfirmButton, Loading, UserContext } from '../components'
+import { ConfirmButton, Loading, UserContext } from '..'
 
 const Dogs = () => {
   const dogs = useQuery(ALL_DOGS)

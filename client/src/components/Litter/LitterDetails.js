@@ -61,7 +61,7 @@ const LitterDetails = ({ litter, setLitterToEdit }) => {
               <p className='is-size-7 is-size-6-fullhd'>
                 You've reserved a puppy.
                 <br />
-                Wait for the breeder to contact you.
+                Wait for the seller to contact you.
               </p>
             )}
 

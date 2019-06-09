@@ -48,7 +48,6 @@ export const typeDefs = gql`
 export const resolvers = {
   Query: {
     me: (root, args, context) => {
-      console.log('query user.me called')
       return context.currentUser
     },
     users: async (root, args, context) => {
@@ -104,7 +103,6 @@ export const resolvers = {
       const updatedUser = await User.findByIdAndUpdate(
         currentUser._id,
         {
-          username: args.username,
           phone: args.phone,
           email: args.email,
           city: args.city,

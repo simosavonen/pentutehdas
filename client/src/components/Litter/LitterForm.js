@@ -265,7 +265,7 @@ let LitterForm = ({ litter, setLitterToEdit, history }) => {
               </div>
               <p className='control'>
                 <button
-                  id='female'
+                  id='addFemalePuppy'
                   className='button is-danger is-outlined is-medium'
                   title='add female puppy'
                   onClick={event => adjustPuppies(event, true)}
@@ -275,7 +275,7 @@ let LitterForm = ({ litter, setLitterToEdit, history }) => {
               </p>
               <p className='control'>
                 <button
-                  id='male'
+                  id='addMalePuppy'
                   className='button is-info is-outlined is-medium'
                   title='add male puppy'
                   onClick={event => adjustPuppies(event, false)}
@@ -310,7 +310,7 @@ let LitterForm = ({ litter, setLitterToEdit, history }) => {
           <div className='field is-grouped'>
             <p className='control'>
               <button
-                id='addOrSave'
+                id='addOrSaveLitter'
                 className='button is-success is-outlined'
                 type='submit'
               >

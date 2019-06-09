@@ -1,12 +1,12 @@
 import React, { useState, useContext } from 'react'
 import { withRouter } from 'react-router-dom'
 import { useMutation, useApolloClient } from 'react-apollo-hooks'
-import { USER, CREATE_USER, USER_AVAILABLE } from '../graphql/user'
-import { LOGIN } from '../graphql/login'
+import { USER, CREATE_USER, USER_AVAILABLE } from '../../graphql/user'
+import { LOGIN } from '../../graphql/login'
 import * as Sentry from '@sentry/browser'
 import { toast } from 'react-toastify'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { UserContext } from '../components'
+import { UserContext } from '..'
 
 let LoginForm = props => {
   const [username, setUsername] = useState('')
