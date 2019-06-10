@@ -1,13 +1,14 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import DogForm from './DogForm'
 import Moment from 'react-moment'
 import { useQuery, useMutation } from 'react-apollo-hooks'
 import { ALL_DOGS, DELETE_DOG } from '../../graphql/dogs'
 import { toast } from 'react-toastify'
 import { Redirect } from 'react-router-dom'
-import { ConfirmButton, Loading, UserContext } from '..'
+import { ConfirmButton, Loading, UserContext, Pagination } from '..'
 
 const Dogs = () => {
+  const [cursor, setCursor] = useState(0)
   const dogs = useQuery(ALL_DOGS)
   const userContext = useContext(UserContext)
   const { user } = userContext
@@ -42,11 +43,25 @@ const Dogs = () => {
   if (dogs.loading) return <Loading />
   if (dogs.error) return <div className='container'>Error loading dogs.</div>
 
+  let filtered = dogs.data.allDogs
+  if (user.role !== 'admin') {
+    filtered = dogs.data.allDogs.filter(
+      dog => dog.owner.username === user.username
+    )
+  }
+
   return (
     <>
       <DogForm />
       <div className='section columns is-centered'>
         <div className='column is-12-tablet is-11-desktop is-10-widescreen is-9-fullhd'>
+          <Pagination
+            data={filtered}
+            cursor={cursor}
+            setCursor={setCursor}
+            chunkSize={10}
+            message=''
+          />
           <table className='table is-fullwidth' style={tableStyles}>
             <thead>
               <tr>
@@ -59,37 +74,38 @@ const Dogs = () => {
               </tr>
             </thead>
             <tbody>
-              {dogs.data.allDogs.map(
-                dog =>
-                  (user.role === 'admin' ||
-                    user.username === dog.owner.username) && (
-                    <tr key={dog.id}>
-                      <td>{dog.name}</td>
-                      <td>{dog.breed}</td>
-                      <td className='has-text-centered'>
-                        {dog.isFemale ? 'female' : 'male'}
-                      </td>
-                      <td className='has-text-centered'>
-                        <Moment format='MMM YY'>
-                          {new Date(parseInt(dog.born, 10))}
-                        </Moment>
-                      </td>
-                      <td className='has-text-centered'>
-                        {dog.owner.username}
-                      </td>
-                      <td>
-                        <ConfirmButton
-                          action={handleDelete}
-                          payload={dog.id}
-                          message='remove dog'
-                          classNames='button is-outlined is-danger is-small'
-                        />
-                      </td>
-                    </tr>
-                  )
-              )}
+              {filtered.slice(cursor, cursor + 10).map(dog => (
+                <tr key={dog.id}>
+                  <td>{dog.name}</td>
+                  <td>{dog.breed}</td>
+                  <td className='has-text-centered'>
+                    {dog.isFemale ? 'female' : 'male'}
+                  </td>
+                  <td className='has-text-centered'>
+                    <Moment format='MMM YY'>
+                      {new Date(parseInt(dog.born, 10))}
+                    </Moment>
+                  </td>
+                  <td className='has-text-centered'>{dog.owner.username}</td>
+                  <td>
+                    <ConfirmButton
+                      action={handleDelete}
+                      payload={dog.id}
+                      message='remove dog'
+                      classNames='button is-outlined is-danger is-small'
+                    />
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
+          <Pagination
+            data={filtered}
+            cursor={cursor}
+            setCursor={setCursor}
+            chunkSize={10}
+            message=''
+          />
         </div>
       </div>
     </>
