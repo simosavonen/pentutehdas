@@ -14,10 +14,6 @@ const schema = new mongoose.Schema({
     ref: 'Dog',
   },
   puppies: [{ type: Boolean }],
-  hasPuppies: {
-    type: Boolean,
-    default: false,
-  },
   reservations: [
     {
       type: mongoose.Schema.Types.ObjectId,

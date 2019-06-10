@@ -87,5 +87,5 @@ To test all functionality:
 | 7.6.  |  11    | learning about Heroku Scheduler scripts, db-clean-up.js removes over 6 month old litters, separate LitterDetails as a component, move handling user state inside apollo cache and avoid passing it as a prop, app refactoring complete, Litter components into a subfolder, Loading animation of a running dog, Bug fix, translate readme.md |
 | 8.6.  |  10    | component diagram, png looked blurry, basic honeypot for spambots, show users advice about a reservation, prevent username changing, import Bulma instead of loading CSS from CDN<br/> Apollo cache was causing issues when logging out and setting fetchPolicy to 'no-cache' caused every component to query the backend for current logged in user, so Context API to the rescue<br/> require either phone or email when registering, disallow changing role of usernames 'admin, breeder, user' |
 | 9.6.  |  6    | move components into folders, user profile edits were not being updated to the context, Cypress test tweaks, add route for bad URL, subscribe to litter edits and use hooks for subs, persist user login accross reloads |
-| 10.6. |  2    | bug hunting, admin now able to remove anyone's litters |
-| total | 186   |   |
+| 10.6. |  4    | bug hunting, admin now able to remove anyone's litters, heroku scheduler script to create mock litters weekly |
+| total | 188   |   |
