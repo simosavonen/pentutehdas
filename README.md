@@ -30,8 +30,8 @@ To test all functionality:
 - MongoDB running in atlas
 
 
-- Data on dogs, litters and users (for the admin) is stored in the Apollo Client cache.
-- User state is provided to child components via the Context API
+Data on dogs, litters and users (for the admin) is stored in the Apollo Client cache.<br/>
+User state is provided to child components via the Context API
 
 
 ### React client component diagram
