@@ -58,8 +58,8 @@ const LitterList = () => {
       b.puppies.length > 0 > (a.puppies.length > 0)
         ? 1
         : a.puppies.length > 0 > (b.puppies.length > 0)
-        ? -1
-        : 0
+          ? -1
+          : 0
 
     const compareDuedates =
       a.duedate > b.duedate ? 1 : a.duedate < b.duedate ? -1 : 0
@@ -101,7 +101,7 @@ const LitterList = () => {
               chunkSize={5}
               message={`Showing ${puppies} puppies and ${
                 filtered.length
-              } litters.`}
+                } litters.`}
             />
           </div>
         </div>
@@ -125,7 +125,7 @@ const LitterList = () => {
               chunkSize={5}
               message={`Showing ${puppies} puppies and ${
                 filtered.length
-              } litters.`}
+                } litters.`}
             />
 
             <div style={{ paddingLeft: '1em' }}>

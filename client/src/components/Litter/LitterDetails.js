@@ -59,9 +59,9 @@ const LitterDetails = ({ litter, setLitterToEdit }) => {
               .includes(user.username) &&
             user.role !== 'admin' && (
               <p className='is-size-7 is-size-6-fullhd'>
-                You've reserved a puppy.
+                {`You've reserved a puppy.`}
                 <br />
-                Wait for the seller to contact you.
+                {'Wait for the seller to contact you.'}
               </p>
             )}
 
