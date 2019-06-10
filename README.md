@@ -19,6 +19,9 @@ To test all functionality:
   - login as **admin** pw: ananas
     - review all the litters and see the reservations
     - check user roles and statistics, promote a user
+  - to test the subscriptions, open the website in 2 browsers or tabs
+    - adding or editing a litter should pop up a toast notification in both browsers, and the list of litters should reflect the changes live
+    - the demo website sometimes has problems connecting to the sleeping heroku backend, and it can require a page reload to get the subcriptions working
 
 ### Tech stack
 
@@ -26,8 +29,9 @@ To test all functionality:
 - front-end made with React
 - MongoDB running in atlas
 
-Data on dogs, litters and users (for the admin) is stored in the Apollo Client cache 
-User state is provided to child components via the Context API
+
+- Data on dogs, litters and users (for the admin) is stored in the Apollo Client cache.
+- User state is provided to child components via the Context API
 
 
 ### React client component diagram
@@ -83,4 +87,5 @@ User state is provided to child components via the Context API
 | 7.6.  |  11    | learning about Heroku Scheduler scripts, db-clean-up.js removes over 6 month old litters, separate LitterDetails as a component, move handling user state inside apollo cache and avoid passing it as a prop, app refactoring complete, Litter components into a subfolder, Loading animation of a running dog, Bug fix, translate readme.md |
 | 8.6.  |  10    | component diagram, png looked blurry, basic honeypot for spambots, show users advice about a reservation, prevent username changing, import Bulma instead of loading CSS from CDN<br/> Apollo cache was causing issues when logging out and setting fetchPolicy to 'no-cache' caused every component to query the backend for current logged in user, so Context API to the rescue<br/> require either phone or email when registering, disallow changing role of usernames 'admin, breeder, user' |
 | 9.6.  |  6    | move components into folders, user profile edits were not being updated to the context, Cypress test tweaks, add route for bad URL, subscribe to litter edits and use hooks for subs, persist user login accross reloads |
-| total | 184   |   |
+| 10.6. |  2    | bug hunting, admin now able to remove anyone's litters |
+| total | 186   |   |

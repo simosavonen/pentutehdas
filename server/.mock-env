@@ -1,0 +1,10 @@
+MONGODB_URI=mongodb+srv://dbusername:dbpassword@some-server.mongodb.net/pentutehdas?retryWrites=true
+TEST_MONGODB_URI=mongodb+srv://dbusername:dbpassword@some-server.mongodb.net/testpentutehdas?retryWrites=true
+
+PORT=4000
+
+JWT_SECRET=yoursecretstring
+
+ENGINE_API_KEY=api-key-for-engine.apollographql.com
+
+SENTRY=api-key-for-sentry.io

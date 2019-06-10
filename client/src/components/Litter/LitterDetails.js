@@ -76,41 +76,44 @@ const LitterDetails = ({ litter, setLitterToEdit }) => {
       <div className='column'>
         <div>
           <p className='heading is-size-7 is-size-6-fullhd'>Actions</p>
-
-          {user && litter.breeder.username !== user.username && (
-            <button
-              className='button is-info is-outlined'
-              onClick={event => {
-                event.stopPropagation()
-                handleReservation(litter.id)
-              }}
-            >
-              {litter.reservations
-                .map(reservation => reservation.username)
-                .includes(user.username)
-                ? 'cancel reservation'
-                : 'reserve a puppy'}
-            </button>
-          )}
-          {user && litter.breeder.username === user.username && (
-            <div className='buttons'>
+          <div className='buttons'>
+            {user && litter.breeder.username !== user.username && (
               <button
                 className='button is-info is-outlined'
                 onClick={event => {
                   event.stopPropagation()
-                  setLitterToEdit(litter)
+                  handleReservation(litter.id)
                 }}
               >
-                edit the litter
+                {litter.reservations
+                  .map(reservation => reservation.username)
+                  .includes(user.username)
+                  ? 'cancel reservation'
+                  : 'reserve a puppy'}
               </button>
-              <ConfirmButton
-                action={handleDelete}
-                payload={litter.id}
-                message='remove litter'
-                classNames='button is-outlined is-danger'
-              />
-            </div>
-          )}
+            )}
+            {user &&
+              (litter.breeder.username === user.username ||
+                user.role === 'admin') && (
+                <>
+                  <button
+                    className='button is-info is-outlined'
+                    onClick={event => {
+                      event.stopPropagation()
+                      setLitterToEdit(litter)
+                    }}
+                  >
+                    edit the litter
+                  </button>
+                  <ConfirmButton
+                    action={handleDelete}
+                    payload={litter.id}
+                    message='remove litter'
+                    classNames='button is-outlined is-danger'
+                  />
+                </>
+              )}
+          </div>
           {!user && (
             <p className='title is-size-7 is-size-6-fullhd'>
               Login to reserve a puppy

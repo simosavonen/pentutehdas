@@ -47,7 +47,7 @@ const Dogs = () => {
       <DogForm />
       <div className='section columns is-centered'>
         <div className='column is-12-tablet is-11-desktop is-10-widescreen is-9-fullhd'>
-          <table className='table is-fullwidth is-striped' style={tableStyles}>
+          <table className='table is-fullwidth' style={tableStyles}>
             <thead>
               <tr>
                 <th>Name</th>
