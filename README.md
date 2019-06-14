@@ -3,7 +3,24 @@
 Full Stack exercise project for University of Helsinki course
 https://courses.helsinki.fi/en/aytkt21010/129098202
 
-An fancy single page app for an imaginary puppy farm.
+A fancy single page app for an imaginary puppy farm.
+
+
+# Improvements to-do
+
+- use passport.js for authentication
+- use transition animations when revealing litter details or when submitting forms
+- redesign the idea of users/breeders/admins, every user should be allowed to post their dogs for sale, admin can verify the data looks valid and isn't just spam
+- make the admin experience a separate view completely, not just some buttons that are normally hidden
+- the components should not care if a user has logged in, or if the user is a breeder/admin, such components (for showing breeder/admin functionality) should be in their own separate files
+- secure the API so that it's not possible to create users simply by posting a correctly formatted query to the API, only allow register-form submissions and filter bots there
+- write instructions for users
+- allow users to upload photos of their puppies or the dam/sire
+- prepare to charge a fee for posting litters, or implement some mock payment button
+- filter the litters according to breed, location, age, price, what else?
+- a single litter should have a dedicated details view, not be a part of a long list of litters
+- use multiple languages in the site. Solve how dog breeds are stored in the database if we allow them in many languages
+- final step for going mainstream, change the name from shady puppyfarm to something family friendly
 
 ## Demo
 
