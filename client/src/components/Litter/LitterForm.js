@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { useQuery, useMutation } from 'react-apollo-hooks'
-import { withRouter, Redirect } from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { PuppyList, Loading, UserContext } from '..'
@@ -95,7 +95,7 @@ let LitterForm = ({ litter, setLitterToEdit, history }) => {
   }
 
   if (!user || !['breeder', 'admin'].includes(user.role))
-    return <Redirect to='/' />
+    return <div>Loading user credentials...</div>
 
   if (loading) return <Loading />
   if (error) return <div className='box'>Error loading dogs.</div>
