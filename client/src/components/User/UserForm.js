@@ -11,9 +11,9 @@ let UserForm = props => {
   const userContext = useContext(UserContext)
   const { user, setUser } = userContext
 
-  const [phone, setPhone] = useState(user.phone)
-  const [email, setEmail] = useState(user.email)
-  const [city, setCity] = useState(user.city)
+  const [phone, setPhone] = useState(user ? user.phone : '')
+  const [email, setEmail] = useState(user ? user.email : '')
+  const [city, setCity] = useState(user ? user.city : '')
 
   const updateUser = useMutation(UPDATE_USER, {
     refetchQueries: [{ query: ALL_LITTERS }],
