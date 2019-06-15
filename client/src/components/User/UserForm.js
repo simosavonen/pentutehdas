@@ -1,11 +1,11 @@
-import React, { useState, useContext, useEffect } from 'react'
-import { withRouter } from 'react-router-dom'
-import { useMutation } from 'react-apollo-hooks'
-import { toast } from 'react-toastify'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import React, { useContext, useEffect, useState } from 'react'
+import { useMutation } from 'react-apollo-hooks'
+import { withRouter } from 'react-router-dom'
+import { toast } from 'react-toastify'
+import { UserContext } from '..'
 import { ALL_LITTERS } from '../../graphql/litters'
 import { UPDATE_USER } from '../../graphql/user'
-import { UserContext } from '..'
 
 let UserForm = props => {
   const userContext = useContext(UserContext)

@@ -1,15 +1,15 @@
-import React, { useState, useEffect, useContext } from 'react'
-import { useQuery, useMutation } from 'react-apollo-hooks'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import React, { useContext, useEffect, useState } from 'react'
+import { useMutation, useQuery } from 'react-apollo-hooks'
 import { withRouter } from 'react-router-dom'
 import { toast } from 'react-toastify'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { PuppyList, Loading, UserContext } from '..'
+import { Loading, PuppyList, UserContext } from '..'
+import { ALL_DOGS } from '../../graphql/dogs'
 import {
   ALL_LITTERS,
   CREATE_LITTER,
   UPDATE_LITTER,
 } from '../../graphql/litters'
-import { ALL_DOGS } from '../../graphql/dogs'
 
 let LitterForm = ({ litter, setLitterToEdit, history }) => {
   const [duedate, setDuedate] = useState(

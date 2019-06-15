@@ -1,41 +1,38 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
-import App from './App'
-import ApolloClient from 'apollo-client'
-import { ApolloProvider } from 'react-apollo'
-import { ApolloProvider as ApolloHooksProvider } from 'react-apollo-hooks'
-import { createHttpLink } from 'apollo-link-http'
-import { InMemoryCache } from 'apollo-cache-inmemory'
-import { setContext } from 'apollo-link-context'
-
-import { split } from 'apollo-link'
-import { WebSocketLink } from 'apollo-link-ws'
-import { getMainDefinition } from 'apollo-utilities'
-
 import { library } from '@fortawesome/fontawesome-svg-core'
-import {
-  fas,
-  faMars,
-  faVenus,
-  faAt,
-  faPhone,
-  faGlobe,
-  faCalendarAlt,
-  faEuroSign,
-  faPaw,
-  faUser,
-  faLock,
-} from '@fortawesome/free-solid-svg-icons'
 import {
   fab,
   faGithub,
-  faLinkedin,
   faGithubSquare,
+  faLinkedin,
 } from '@fortawesome/free-brands-svg-icons'
+import {
+  faAt,
+  faCalendarAlt,
+  faEuroSign,
+  faGlobe,
+  faLock,
+  faMars,
+  faPaw,
+  faPhone,
+  fas,
+  faUser,
+  faVenus,
+} from '@fortawesome/free-solid-svg-icons'
+import * as Sentry from '@sentry/browser'
+import { InMemoryCache } from 'apollo-cache-inmemory'
+import ApolloClient from 'apollo-client'
+import { split } from 'apollo-link'
+import { setContext } from 'apollo-link-context'
+import { createHttpLink } from 'apollo-link-http'
+import { WebSocketLink } from 'apollo-link-ws'
+import { getMainDefinition } from 'apollo-utilities'
+import React from 'react'
+import { ApolloProvider } from 'react-apollo'
+import { ApolloProvider as ApolloHooksProvider } from 'react-apollo-hooks'
+import ReactDOM from 'react-dom'
+import App from './App'
 import './index.css'
 
-// error monitoring service
-import * as Sentry from '@sentry/browser'
 Sentry.init({
   dsn: 'https://614a80e14fd14c1c9e0b6e8621dddc31@sentry.io/1473320',
 })

@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { PuppyList, LitterProgressBar, LitterDetails } from '..'
+import React, { useState } from 'react'
+import { LitterDetails, LitterProgressBar, PuppyList } from '..'
 
 const Litter = ({ litter, setLitterToEdit }) => {
   const [active, setActive] = useState('')

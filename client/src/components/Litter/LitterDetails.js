@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { useMutation } from 'react-apollo-hooks'
-import { Reservations, ConfirmButton, UserContext } from '..'
 import { toast } from 'react-toastify'
+import { ConfirmButton, Reservations, UserContext } from '..'
 import {
   ALL_LITTERS,
   DELETE_LITTER,

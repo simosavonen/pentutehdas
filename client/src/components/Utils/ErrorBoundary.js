@@ -1,5 +1,5 @@
-import React from 'react'
 import * as Sentry from '@sentry/browser'
+import React from 'react'
 
 class ErrorBoundary extends React.Component {
   constructor(props) {

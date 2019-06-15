@@ -1,10 +1,10 @@
 import React, { useContext, useState } from 'react'
-import DogForm from './DogForm'
+import { useMutation, useQuery } from 'react-apollo-hooks'
 import Moment from 'react-moment'
-import { useQuery, useMutation } from 'react-apollo-hooks'
-import { ALL_DOGS, DELETE_DOG } from '../../graphql/dogs'
 import { toast } from 'react-toastify'
-import { ConfirmButton, Loading, UserContext, Pagination } from '..'
+import { ConfirmButton, Loading, Pagination, UserContext } from '..'
+import { ALL_DOGS, DELETE_DOG } from '../../graphql/dogs'
+import DogForm from './DogForm'
 
 const Dogs = () => {
   const [cursor, setCursor] = useState(0)

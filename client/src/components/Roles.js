@@ -1,12 +1,12 @@
-import React, { useState, useContext } from 'react'
-import { useQuery, useMutation } from 'react-apollo-hooks'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import * as Sentry from '@sentry/browser'
+import React, { useContext, useState } from 'react'
+import { useMutation, useQuery } from 'react-apollo-hooks'
+import { toast } from 'react-toastify'
+import { Loading, Pagination, UserContext } from '../components'
+import { ALL_DOGS } from '../graphql/dogs'
 import { ALL_LITTERS } from '../graphql/litters'
 import { ALL_USERS, UPDATE_ROLE } from '../graphql/user'
-import { ALL_DOGS } from '../graphql/dogs'
-import { toast } from 'react-toastify'
-import * as Sentry from '@sentry/browser'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Pagination, Loading, UserContext } from '../components'
 
 const countLitters = (litterArray, breeder) => {
   return litterArray.filter(l => l.breeder.username === breeder.username).length
