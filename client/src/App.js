@@ -3,7 +3,7 @@ import { BrowserRouter as Router } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.min.css'
 import 'bulma/css/bulma.min.css'
-import { Navigation, Footer, Routes, UserContextProvider } from './components'
+import { Footer, Navigation, Routes, UserContextProvider } from './components'
 
 const App = () => {
   return (

@@ -1,5 +1,4 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import * as Sentry from '@sentry/browser'
 import React, { useContext, useState } from 'react'
 import { useMutation, useQuery } from 'react-apollo-hooks'
 import { toast } from 'react-toastify'
@@ -37,7 +36,6 @@ const Roles = () => {
   const dogs = useQuery(ALL_DOGS)
 
   const updateRole = useMutation(UPDATE_ROLE, {
-    onError: error => Sentry.captureException(error),
     update: () => {
       toast.info('Role was updated')
     },

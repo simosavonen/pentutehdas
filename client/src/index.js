@@ -1,23 +1,3 @@
-import { library } from '@fortawesome/fontawesome-svg-core'
-import {
-  fab,
-  faGithub,
-  faGithubSquare,
-  faLinkedin,
-} from '@fortawesome/free-brands-svg-icons'
-import {
-  faAt,
-  faCalendarAlt,
-  faEuroSign,
-  faGlobe,
-  faLock,
-  faMars,
-  faPaw,
-  faPhone,
-  fas,
-  faUser,
-  faVenus,
-} from '@fortawesome/free-solid-svg-icons'
 import * as Sentry from '@sentry/browser'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import ApolloClient from 'apollo-client'
@@ -31,29 +11,12 @@ import { ApolloProvider } from 'react-apollo'
 import { ApolloProvider as ApolloHooksProvider } from 'react-apollo-hooks'
 import ReactDOM from 'react-dom'
 import App from './App'
+import './fontawesome'
 import './index.css'
 
 Sentry.init({
   dsn: 'https://614a80e14fd14c1c9e0b6e8621dddc31@sentry.io/1473320',
 })
-
-library.add(
-  fas,
-  faMars,
-  faVenus,
-  faAt,
-  faPhone,
-  faGlobe,
-  faCalendarAlt,
-  faEuroSign,
-  faPaw,
-  faUser,
-  faLock,
-  fab,
-  faGithub,
-  faLinkedin,
-  faGithubSquare
-)
 
 const socketUri =
   process.env.NODE_ENV === 'development'
