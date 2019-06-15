@@ -1,5 +1,5 @@
-import React, { useState, useContext } from 'react'
-import { withRouter, Redirect } from 'react-router-dom'
+import React, { useState, useContext, useEffect } from 'react'
+import { withRouter } from 'react-router-dom'
 import { useMutation } from 'react-apollo-hooks'
 import { toast } from 'react-toastify'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -11,9 +11,15 @@ let UserForm = props => {
   const userContext = useContext(UserContext)
   const { user, setUser } = userContext
 
-  const [phone, setPhone] = useState(user.phone)
-  const [email, setEmail] = useState(user.email)
-  const [city, setCity] = useState(user.city)
+  const [phone, setPhone] = useState('')
+  const [email, setEmail] = useState('')
+  const [city, setCity] = useState('')
+
+  useEffect(() => {
+    setPhone(user ? user.phone : '')
+    setEmail(user ? user.email : '')
+    setCity(user ? user.city : '')
+  }, [user])
 
   const updateUser = useMutation(UPDATE_USER, {
     refetchQueries: [{ query: ALL_LITTERS }],
@@ -42,7 +48,8 @@ let UserForm = props => {
     props.history.push('/')
   }
 
-  if (!user) return <Redirect to='/' />
+  if (!user)
+    return <div className='section'>This page requires a logged in user.</div>
 
   return (
     <div className='section columns is-centered'>

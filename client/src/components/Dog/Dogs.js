@@ -4,7 +4,6 @@ import Moment from 'react-moment'
 import { useQuery, useMutation } from 'react-apollo-hooks'
 import { ALL_DOGS, DELETE_DOG } from '../../graphql/dogs'
 import { toast } from 'react-toastify'
-import { Redirect } from 'react-router-dom'
 import { ConfirmButton, Loading, UserContext, Pagination } from '..'
 
 const Dogs = () => {
@@ -38,7 +37,9 @@ const Dogs = () => {
   }
 
   if (!user || !['breeder', 'admin'].includes(user.role))
-    return <Redirect to='/' />
+    return (
+      <div className='section'>This page is meant for logged in users.</div>
+    )
 
   if (dogs.loading) return <Loading />
   if (dogs.error) return <div className='container'>Error loading dogs.</div>
