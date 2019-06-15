@@ -8,6 +8,8 @@ A fancy single page app for an imaginary puppy farm.
 
 # Improvements to-do
 
+- make it easier for users to see what reservations they have made
+- write instructions for setting up the codebase and running the website locally
 - use passport.js for authentication
 - use transition animations when revealing litter details or when submitting forms
 - redesign the idea of users/breeders/admins, every user should be allowed to post their dogs for sale, admin can verify the data looks valid and isn't just spam
