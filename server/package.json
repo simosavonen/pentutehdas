@@ -9,7 +9,8 @@
     "watch": "cross-env NODE_ENV=development nodemon -r esm index.js",
     "watch:test": "cross-env NODE_ENV=test nodemon -r esm index.js",
     "lint": "eslint .",
-    "lintfix": "eslint . --fix"
+    "lintfix": "eslint . --fix",
+    "set-value": ">=2.0.1"
   },
   "repository": {
     "type": "git",
