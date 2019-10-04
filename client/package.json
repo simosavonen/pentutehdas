@@ -27,8 +27,7 @@
     "react-scripts": "3.0.1",
     "react-select": "^2.4.3",
     "react-toastify": "^5.2.1",
-    "subscriptions-transport-ws": "^0.9.16",
-    "set-value": ">=2.0.1"
+    "subscriptions-transport-ws": "^0.9.16"
   },
   "scripts": {
     "start": "cross-env NODE_ENV=development react-scripts start",
