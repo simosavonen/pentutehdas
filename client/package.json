@@ -14,7 +14,7 @@
     "apollo-link-ws": "^1.0.17",
     "bulma": "^0.7.5",
     "graphql": "^14.3.0",
-    "moment": "^2.24.0",
+    "moment": "^2.29.2",
     "querystringify": "^2.1.1",
     "react": "^16.8.6",
     "react-apollo": "^2.5.5",
